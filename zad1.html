@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta align="center" name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        canvas {
+            border: 1px solid #d3d3d3;
+            background-color: #f1f1f1;
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body onload="startGame()">
+    <script>
+
+        var platform;
+        var ball;
+        var isGamePaused = false;
+        var isGameLost = false;
+
+        function startGame() {
+            platform = new defPlatform(100, 20, "magenta", 200, 480);
+            ball = new defBall(5, "red", 3);
+            myGameArea.start();
+        }
+
+        var myGameArea = {
+            canvas: document.createElement("canvas"),
+            start: function () {
+                this.canvas.width = 500;
+                this.canvas.height = 500;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval(updateGameArea, 20);
+
+                window.addEventListener('keydown', function (e) {
+                    myGameArea.key = e.keyCode;
+                })
+                window.addEventListener('keyup', function (e) {
+                    myGameArea.key = false;
+                })
+            },
+            clear: function () {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        }
+
+        function defPlatform(width, height, color, x, y) {
+            this.width = width;
+            this.height = height;
+            this.speedX = 0;
+            this.x = x;
+            this.y = y;
+            this.update = function () {
+                gameContext = myGameArea.context;
+                gameContext.fillStyle = color;
+                gameContext.fillRect(this.x, this.y, this.width, this.height);
+            }
+            this.newPos = function () {
+                this.x += this.speedX;
+            }
+        }
+
+        function defBall(radius, color, speed) {
+            this.radius = radius;
+            this.x = Math.floor(Math.random() * 490) + 10;
+            this.y = Math.floor(Math.random() * 200) + 10;
+            this.speed = speed;
+            if (Math.random() < 0.5) {
+                this.isMovingRight = true;
+            } else {
+                this.isMovingRight = false;
+            }
+            this.isMovingDown = true;
+            this.update = function () {
+                gameContext = myGameArea.context;
+                gameContext.beginPath();
+                gameContext.fillStyle = color;
+                gameContext.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+                gameContext.fill();
+                gameContext.closePath();
+            }
+            this.newPos = function () {
+                gameContext = myGameArea.context
+                if (this.isMovingRight) {
+                    if (this.x + this.radius > gameContext.canvas.width) {
+                        this.isMovingRight = false;
+                    }
+                    this.x += this.speed;
+                } else {
+                    if (this.x < 0 + this.radius) {
+                        this.isMovingRight = true;
+                    }
+                    this.x -= this.speed;
+                }
+
+                if (this.isMovingDown) {
+                    this.y += this.speed;
+                } else {
+                    if (this.y < 0 + this.radius) {
+                        this.isMovingDown = true;
+                    }
+                    this.y -= this.speed;
+                }
+            }
+        }
+
+        function updateGameArea() {
+            if (!isGamePaused) {
+                if (isGameLost) {
+                    isGamePaused = true;
+                    isGameLost = false;
+                    clearInterval(myGameArea.interval);
+                    startGame();
+                }
+                myGameArea.clear();
+                platform.newPos();
+                ball.newPos();
+                stopPlatform();
+                if (myGameArea && myGameArea.key == 37) {
+                    moveLeft();
+                }
+                if (myGameArea && myGameArea.key == 39) {
+                    moveRight();
+                }
+                platform.update();
+                ball.update();
+                if ((ball.y - ball.radius > platform.y - platform.height) && (ball.x + ball.radius > platform.x) && (ball.x + ball.radius < platform.x + platform.width)) {
+                    ball.isMovingDown = !ball.isMovingDown;
+                }
+                if (ball.y + ball.radius >= gameContext.canvas.height) {
+                    isGameLost = true;
+                }
+            }
+            
+        }
+
+        function moveLeft() {
+            if (platform.x > 0) {
+                platform.speedX = -4;
+            }
+        }
+
+        function moveRight() {
+            if (platform.x < myGameArea.canvas.width - platform.width) {
+                platform.speedX = 4;
+            }
+        }
+
+        function stopPlatform() {
+            platform.speedX = 0;
+        }
+
+        function pause() {
+            if (!isGamePaused) {
+               isGamePaused = true;
+            }
+        }
+
+        function start() {
+            if (isGamePaused) {
+                isGamePaused = false;
+            }
+        }
+
+    </script>
+    <div style="text-align:center;width:auto;">
+        <button style="width:100px" onclick="moveLeft()">LEFT</button>
+        <button style="width:100px" onclick="moveRight()">RIGHT</button>
+    </div>
+    <div style="text-align:center;width:auto;">
+        <button style="width:100px" onclick="start()">START</button>
+        <button style="width:100px" onclick="pause()">STOP</button>
+    </div>
+</body>
+</html>
