@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta align="center" name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,7 +24,7 @@
 
         function startGame() {
             platform = new defPlatform(100, 20, "magenta", 200, 480);
-            ball = new defBall(5, "red", 3);
+            ball = new defBall(5, "red", 1);
             myGameArea.start();
         }
 
@@ -86,6 +86,7 @@
             }
             this.newPos = function () {
                 gameContext = myGameArea.context
+
                 if (this.isMovingRight) {
                     if (this.x + this.radius > gameContext.canvas.width) {
                         this.isMovingRight = false;
@@ -129,7 +130,9 @@
                 }
                 platform.update();
                 ball.update();
-                if ((ball.y - ball.radius > platform.y - platform.height) && (ball.x + ball.radius > platform.x) && (ball.x + ball.radius < platform.x + platform.width)) {
+                if ((ball.y + ball.radius > platform.y) &&
+                    (ball.x + ball.radius > platform.x) &&
+                    (ball.x + ball.radius < platform.x + platform.width)) {
                     ball.isMovingDown = !ball.isMovingDown;
                 }
                 if (ball.y + ball.radius >= gameContext.canvas.height) {
