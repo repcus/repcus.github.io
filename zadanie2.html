@@ -16,38 +16,43 @@
 </head>
 <body onload="startGame()">
     <script>
-
+        var score = 0;
         var platform;
+        var speed = 4;
+        var ballSpeed = speed - 1;
+        var ballRadius = 5;
         var ball;
         var isGamePaused = false;
         var isGameLost = false;
-		var rows = 3;
-		var columns = 10;
-		var blockCount = rows * columns;
-		var blockArr = new Array(blockCount);
-		var colorArr = new Array("red", "green", "blue");
-		var canvasWidth = 500;
-		var canvasHeight = 500;
-		var blockWidth = (canvasWidth - 2) / columns - 1;
-		var blockHeight = 20;
+        var rows = 4;
+        var columns = 20;
+        var blockCount = rows * columns;
+        let blockArr = new Array(blockCount);
+        var colorArr = ["red", "green", "blue"];
+        var canvasWidth = 500;
+        var canvasHeight = 500;
+        var blockWidth = (canvasWidth - 2) / columns - 1;
+        var blockHeight = 20;
 
         function startGame() {
-            platform = new defPlatform(100, 50, "magenta", 200, 450);
-            ball = new defBall(5, "black", 3);
-			var blockCounter = 0;
-			for(var i = 1; i < rows * (blockHeight + 1); i += blockHeight + 1){
-				for(var j = 1; j < columns * (blockWidth + 1); j += blockWidth + 1){
+            platform = new defPlatform(100, 20, "magenta", 200, 480, speed);
+            ball = new defBall(ballRadius, "black", ballSpeed);
+            let blockCounter = 0;
+            for(let i = 1; i < rows * (blockHeight + 1); i += blockHeight + 1){
+				for(let j = 1; j < columns * (blockWidth + 1); j += blockWidth + 1){
 					blockArr[blockCounter++] = new defBlock(j, i, blockWidth, blockHeight);
 				}
 			}
             myGameArea.start();
         }
 
-        var myGameArea = {
+        myGameArea = {
             canvas: document.createElement("canvas"),
             start: function () {
                 this.canvas.width = canvasWidth;
                 this.canvas.height = canvasHeight;
+                this.canvas.x = 0;
+                this.canvas.y = 0;
                 this.context = this.canvas.getContext("2d");
                 document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                 this.interval = setInterval(updateGameArea, 20);
@@ -55,7 +60,7 @@
                 window.addEventListener('keydown', function (e) {
                     myGameArea.key = e.keyCode;
                 })
-                window.addEventListener('keyup', function (e) {
+                window.addEventListener('keyup', function () {
                     myGameArea.key = false;
                 })
             },
@@ -64,10 +69,11 @@
             }
         }
 
-        function defPlatform(width, height, color, x, y) {
+        function defPlatform(width, height, color, x, y, speed) {
             this.width = width;
             this.height = height;
             this.speedX = 0;
+            this.speed = speed;
             this.x = x;
             this.y = y;
             this.update = function () {
@@ -83,13 +89,9 @@
         function defBall(radius, color, speed) {
             this.radius = radius;
             this.x = Math.floor(Math.random() * 490) + 10;
-            this.y = Math.floor(Math.random() * 200) + 10;
+            this.y = Math.floor(Math.random() * 150) + 200;
             this.speed = speed;
-            if (Math.random() < 0.5) {
-                this.isMovingRight = true;
-            } else {
-                this.isMovingRight = false;
-            }
+            this.isMovingRight = Math.random() < 0.5;
             this.isMovingDown = true;
             this.update = function () {
                 gameContext = myGameArea.context;
@@ -100,15 +102,17 @@
                 gameContext.closePath();
             }
             this.newPos = function () {
-                gameContext = myGameArea.context
+                gameContext = myGameArea.context;
 
                 if (this.isMovingRight) {
                     if (this.x + this.radius > gameContext.canvas.width) {
+                        changeYSpeed(ball, gameContext.canvas);
                         this.isMovingRight = false;
                     }
                     this.x += this.speed;
                 } else {
                     if (this.x < 0 + this.radius) {
+                        changeYSpeed(ball, gameContext.canvas);
                         this.isMovingRight = true;
                     }
                     this.x -= this.speed;
@@ -118,6 +122,7 @@
                     this.y += this.speed;
                 } else {
                     if (this.y - this.radius <= 0) {
+                        changeXSpeed(ball, gameContext.canvas);
                         this.isMovingDown = true;
                     }
                     this.y -= this.speed;
@@ -126,21 +131,30 @@
         }
 		
 		function defBlock(x, y, width, height){
-			var color = colorArr[Math.floor(Math.random() * 3)];
+			let color = colorArr[Math.floor(Math.random() * 3)];
             this.width = width;
             this.height = height;
+            this.destroyed = false;
             this.update = function () {
-                gameContext = myGameArea.context;
-                gameContext.fillStyle = color;
-                gameContext.fillRect(this.x, this.y, this.width, this.height);
+                if(!this.destroyed){
+                    gameContext = myGameArea.context;
+                    gameContext.fillStyle = color;
+                    gameContext.fillRect(this.x, this.y, this.width, this.height);
+                }
             }
 			this.newPos = function(){
-				this.x = x;
-				this.y = y;
+                if(!this.destroyed){
+                    this.x = x;
+                    this.y = y;
+                }else{
+                    this.x = -this.width - 10;
+                    this.y = -this.height - 10;
+                }
 			}
 		}
 
         function updateGameArea() {
+            document.getElementById("score").innerHTML = score.toString();
             if (!isGamePaused) {
                 if (isGameLost) {
                     isGamePaused = true;
@@ -152,55 +166,102 @@
                 platform.newPos();
                 ball.newPos();
                 stopPlatform();
-                if (myGameArea && myGameArea.key == 37) {
+                if (myGameArea && myGameArea.key === 37) {
                     moveLeft();
                 }
-                if (myGameArea && myGameArea.key == 39) {
+                if (myGameArea && myGameArea.key === 39) {
                     moveRight();
                 }
-				
                 platform.update();
                 ball.update();
-				for(var i = 0; i < blockArr.length; i++){
+				for(let i = 0; i < blockArr.length; i++){
 					blockArr[i].newPos();
 					blockArr[i].update();
-					//popBlock(ball, blockArr[i]);
+					if(bounceBlock(ball, blockArr[i])){
+					    blockArr[i].destroyed = true;
+					    score++;
+                    }
 				}
-                checkCollision(ball, platform);
+                bouncePlatform(ball, platform);
                 if (ball.y + ball.radius >= gameContext.canvas.height) {
                     isGameLost = true;
+                    score = 0;
                 }
             }
         }
 		
-		function checkCollision(ball, rectangle){
-			if ((ball.y - ball.radius >= rectangle.y) && ((ball.x - ball.radius >= rectangle.x) && (ball.x + ball.radius <= rectangle.x + rectangle.width)) && ball.isMovingDown){
-				    ball.isMovingDown = !ball.isMovingDown;
-					return true;
-			}else if (((ball.x + ball.radius >= rectangle.x) && (ball.x - ball.radius <= rectangle.x + rectangle.width)) && (ball.y + ball.radius > rectangle.y)){
-					ball.isMovingRight = !ball.isMovingRight;
-					return true;
-			}else{
-				return false;
-			}
-		}
-		
-		function popBlock(ball, block){
-			if(checkCollision(ball, block)){
-				block.x = -100;
-				block.y = -100;
-			}
-		}
+		function bouncePlatform(ball, platform) {
+            if (ball.isMovingDown) {
+                if (ball.y + ball.radius >= platform.y) {
+                    if (ball.x < platform.x + platform.width && ball.x > platform.x && ball.y + ball.radius <= platform.y + ball.speed) {
+                        changeXSpeed(ball, platform);
+                        ball.isMovingDown = !ball.isMovingDown;
+                    } else if (ball.x + ball.radius >= platform.x && ball.x - ball.radius <= platform.x + platform.width) {
+                        changeYSpeed(ball, platform);
+                        if (ball.isMovingRight) {
+                            ball.x = platform.x - ball.radius;
+                        } else {
+                            ball.x = platform.x + platform.width + ball.radius;
+                        }
+                        ball.speed = platform.speed + 1;
+                        ball.isMovingRight = !ball.isMovingRight;
+                    }
+                }
+            }
+        }
+
+		function bounceBlock(ball, block) {
+            if (!ball.isMovingDown) {
+                if (ball.y - ball.radius <= block.y + block.height) {
+                    if (ball.x < block.x + block.width && ball.x > block.x && ball.y - ball.radius >= block.y - ball.speed - 1) {
+                        changeXSpeed(ball, block);
+                        ball.isMovingDown = !ball.isMovingDown;
+                        return true;
+                    }
+                }
+            }
+            if(ball.y >= block.y && ball.y <= block.y + block.height){
+                if((ball.x + ball.radius >= block.x && ball.x - ball.radius <= block.x + block.width)) {
+                    changeYSpeed(ball, block);
+                    ball.isMovingRight = !ball.isMovingRight;
+                    return true;
+                }
+            }
+        }
+        
+        function changeXSpeed(ball, line){
+            if(ball.x > line.x && ball.x < line.x + line.width * 10/100  || ball.x > line.x + line.width * 90/100 && ball.x < line.x + line.width){
+                ball.speed = ballSpeed * 3;
+            }else if(ball.x >= line.x + line.width * 10/100 && ball.x <= line.x + line.width * 30/100  || ball.x >= line.x + line.width * 70/100 && ball.x <= line.x + line.width * 90/100){
+                ball.speed = ballSpeed * 2;
+            }else if(ball.x > line.x + line.width * 30/100 && ball.x < line.x + line.width * 40/100  || ball.x > line.x + line.width * 60/100 && ball.x < line.x + line.width * 70/100){
+                ball.speed = ballSpeed * 1.5;
+            }else{
+                ball.speed = ballSpeed;
+            }
+        }
+
+        function changeYSpeed(ball, line){
+            if(ball.y > line.y && ball.y < line.y + line.width * 10/100  || ball.y > line.y + line.width * 90/100 && ball.y < line.y + line.width){
+                ball.speed = ballSpeed * 3;
+            }else if(ball.y >= line.y + line.width * 10/100 && ball.y <= line.y + line.width * 30/100  || ball.y >= line.y + line.width * 70/100 && ball.y <= line.y + line.width * 90/100){
+                ball.speed = ballSpeed * 2;
+            }else if(ball.y > line.y + line.width * 30/100 && ball.y < line.y + line.width * 40/100  || ball.y > line.y + line.width * 60/100 && ball.y < line.y + line.width * 70/100){
+                ball.speed = ballSpeed * 1.5;
+            }else{
+                ball.speed = ballSpeed;
+            }
+        }
 		
         function moveLeft() {
             if (platform.x > 0) {
-                platform.speedX = -4;
+                platform.speedX = -platform.speed;
             }
         }
 
         function moveRight() {
             if (platform.x < myGameArea.canvas.width - platform.width) {
-                platform.speedX = 4;
+                platform.speedX = platform.speed;
             }
         }
 
@@ -221,6 +282,10 @@
         }
 
     </script>
+    <div>
+        Score: <span id="score"></span>
+    </p>
+    </div>
     <div style="text-align:center;width:auto;">
         <button style="width:100px" onclick="moveLeft()">LEFT</button>
         <button style="width:100px" onclick="moveRight()">RIGHT</button>
