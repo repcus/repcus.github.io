@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta align="center" name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
         canvas {
             border: 1px solid #d3d3d3;
@@ -23,9 +23,9 @@
         var ballRadius = 5;
         var ball;
         var isGamePaused = false;
-        var isGameLost = false;
+        var isGameEnded = false;
         var rows = 3;
-        var columns = 10;
+        var columns = 3;
         var blockCount = rows * columns;
         let blockArr = new Array(blockCount);
         var colorArr = ["red", "green", "blue"];
@@ -155,10 +155,15 @@
 
         function updateGameArea() {
             document.getElementById("score").innerHTML = score.toString();
+            if(score == columns * rows){
+                isGameEnded = true;
+                window.alert("You won! \nYour score: " + score.toString());
+				score = 0;
+            }
             if (!isGamePaused) {
-                if (isGameLost) {
+                if (isGameEnded) {
                     isGamePaused = true;
-                    isGameLost = false;
+                    isGameEnded = false;
                     clearInterval(myGameArea.interval);
                     startGame();
                 }
@@ -175,16 +180,17 @@
                 platform.update();
                 ball.update();
 				for(let i = 0; i < blockArr.length; i++){
-					blockArr[i].newPos();
-					blockArr[i].update();
 					if(bounceBlock(ball, blockArr[i])){
-					    blockArr[i].destroyed = true;
+                        blockArr[i].destroyed = true;
 					    score++;
                     }
+                    blockArr[i].newPos();
+                    blockArr[i].update();
 				}
                 bouncePlatform(ball, platform);
                 if (ball.y + ball.radius >= gameContext.canvas.height) {
-                    isGameLost = true;
+                    isGameEnded = true;
+					window.alert("You lost! \nYour score: " + score.toString());
                     score = 0;
                 }
             }
