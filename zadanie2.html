@@ -21,19 +21,23 @@
         var ball;
         var isGamePaused = false;
         var isGameLost = false;
-		var blockCount = 30;
+		var rows = 3;
+		var columns = 40;
+		var blockCount = rows * columns;
 		var blockArr = new Array(blockCount);
 		var colorArr = new Array("red", "green", "blue");
-		var blockWidth = 10;
-		var blockHeight = 10;
+		var canvasWidth = 500;
+		var canvasHeight = 500;
+		var blockWidth = (canvasWidth - 2) / columns - 1;
+		var blockHeight = 20;
 
         function startGame() {
-            platform = new defPlatform(100, 20, "magenta", 200, 480);
-            ball = new defBall(5, "black", 1);
+            platform = new defPlatform(100, 50, "magenta", 200, 450);
+            ball = new defBall(5, "black", 3);
 			var blockCounter = 0;
-			for(var i = 0; i < 3 * (blockHeight + 1); i += blockHeight + 1){
-				for(var j = 0; j < 10 * (blockWidth + 1); j += blockWidth + 1){
-					blockArr[blockCounter++] = defPlatform(j, i, blockWidth, blockHeight);
+			for(var i = 1; i < rows * (blockHeight + 1); i += blockHeight + 1){
+				for(var j = 1; j < columns * (blockWidth + 1); j += blockWidth + 1){
+					blockArr[blockCounter++] = new defBlock(j, i, blockWidth, blockHeight);
 				}
 			}
             myGameArea.start();
@@ -42,8 +46,8 @@
         var myGameArea = {
             canvas: document.createElement("canvas"),
             start: function () {
-                this.canvas.width = 500;
-                this.canvas.height = 500;
+                this.canvas.width = canvasWidth;
+                this.canvas.height = canvasHeight;
                 this.context = this.canvas.getContext("2d");
                 document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                 this.interval = setInterval(updateGameArea, 20);
@@ -122,16 +126,18 @@
         }
 		
 		function defBlock(x, y, width, height){
-			var color = colorArr[Math.floor(Math.random() * 2)];
+			var color = colorArr[Math.floor(Math.random() * 3)];
             this.width = width;
             this.height = height;
-            this.x = x;
-            this.y = y;
             this.update = function () {
                 gameContext = myGameArea.context;
                 gameContext.fillStyle = color;
                 gameContext.fillRect(this.x, this.y, this.width, this.height);
             }
+			this.newPos = function(){
+				this.x = x;
+				this.y = y;
+			}
 		}
 
         function updateGameArea() {
@@ -155,6 +161,11 @@
 				
                 platform.update();
                 ball.update();
+				for(var i = 0; i < blockArr.length; i++){
+					blockArr[i].newPos();
+					blockArr[i].update();
+					//popBlock(ball, blockArr[i]);
+				}
                 checkCollision(ball, platform);
                 if (ball.y + ball.radius >= gameContext.canvas.height) {
                     isGameLost = true;
@@ -162,18 +173,22 @@
             }
         }
 		
-		function checkCollision(ball, platform){
-			if(ball.isMovingDown){
-				if ((ball.y + ball.radius == platform.y) &&
-                    (ball.x + ball.radius > platform.x) &&
-                    (ball.x + ball.radius < platform.x + platform.width)) {
-                    ball.isMovingDown = !ball.isMovingDown;
-                }
-				if (ball.x + ball.radius >= platform.x && ball.x - ball.radius <= platform.x + platform.width){
-					if(ball.y + ball.radius >= platform.y - platform.height) {
-                            ball.isMovingRight = !ball.isMovingRight;
-					}
-				}
+		function checkCollision(ball, rectangle){
+			if ((ball.y - ball.radius >= rectangle.y) && ((ball.x - ball.radius >= rectangle.x) && (ball.x + ball.radius <= rectangle.x + rectangle.width)) && ball.isMovingDown){
+				    ball.isMovingDown = !ball.isMovingDown;
+					return true;
+			}else if (((ball.x + ball.radius >= rectangle.x) && (ball.x - ball.radius <= rectangle.x + rectangle.width)) && (ball.y + ball.radius > rectangle.y)){
+					ball.isMovingRight = !ball.isMovingRight;
+					return true;
+			}else{
+				return false;
+			}
+		}
+		
+		function popBlock(ball, block){
+			if(checkCollision(ball, block)){
+				block.x = -100;
+				block.y = -100;
 			}
 		}
 		
