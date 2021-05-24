@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <title>Arkanoid</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
         canvas {
@@ -16,33 +17,44 @@
 </head>
 <body onload="startGame()">
     <script>
-        var score = 0;
-        var platformHorizontal;
-        var platformVertical;
-        var speed = 4;
-        var ballSpeed = speed - 1;
-        var ballRadius = 5;
-        var ball;
-        var isGamePaused = true;
-        var isGameEnded = false;
-        var rows = 3;
-        var columns = 10;
-        var blockCount = rows * columns;
+        let score = 0;
+        let platformHorizontal;
+        let platformVertical;
+        let speed = 4;
+        let ballSpeed = speed - 1;
+        let ballRadius = 5;
+        let ball;
+        let isGamePaused = true;
+        let isGameEnded = false;
+        const rows = 3;
+        const columns = 10;
+        const blockCount = rows * columns;
         let blockArr = new Array(blockCount);
-        var colorArr = ["red", "green", "blue"];
-        var canvasWidth = 500;
-        var canvasHeight = 500;
-        var blockWidth = (canvasWidth - 2) / columns - 1;
-        var blockHeight = 20;
+        const colorArr = ["red", "green", "blue"];
+        const canvasWidth = 500;
+        const canvasHeight = 500;
+        const blockWidth = (canvasWidth - 2) / columns - 1;
+        const blockHeight = 20;
 
         function startGame() {
-            platformHorizontal = new defPlatform(100, 20, "magenta", 200, 480, speed);
-            platformVertical = new defPlatform(20, 100, "cyan", 0, 250, speed);
-            ball = new defBall(ballRadius, "black", ballSpeed);
+            platformHorizontal = new Platform(100, 20, "magenta", 200, 480, speed);
+            platformVertical = new Platform(20, 100, "cyan", 0, 250, speed);
+            ball = new Ball(ballRadius, "black", ballSpeed);
             let blockCounter = 0;
+            let tempBlockColChecker = blockWidth;
+            let blockColChecker = blockWidth;
+            do{
+                tempBlockColChecker -= blockWidth;
+                blockColChecker += blockWidth;
+            }while(platformVertical.width > blockColChecker);
+
             for(let i = 1; i < rows * (blockHeight + 1); i += blockHeight + 1){
 				for(let j = 1; j < columns * (blockWidth + 1); j += blockWidth + 1){
-					blockArr[blockCounter++] = new defBlock(j, i, blockWidth, blockHeight);
+					blockArr[blockCounter++] = new Block(j, i, blockWidth, blockHeight);
+					if(j === 1){
+					    //nie sprawdza block.width < platform.width
+					    blockArr[blockCounter - 1].isColWPlatform = true;
+                    }
 				}
 			}
             myGameArea.start();
@@ -71,7 +83,7 @@
             }
         }
 
-        function defPlatform(width, height, color, x, y, speed) {
+        function Platform(width, height, color, x, y, speed) {
             this.width = width;
             this.height = height;
             this.speedX = 0;
@@ -80,7 +92,7 @@
             this.x = x;
             this.y = y;
             this.update = function () {
-                gameContext = myGameArea.context;
+                let gameContext = myGameArea.context;
                 gameContext.fillStyle = color;
                 gameContext.fillRect(this.x, this.y, this.width, this.height);
             }
@@ -90,7 +102,7 @@
             }
         }
 
-        function defBall(radius, color, speed) {
+        function Ball(radius, color, speed) {
             this.radius = radius;
             this.x = Math.floor(Math.random() * 490) + 10;
             this.y = Math.floor(Math.random() * 150) + 200;
@@ -98,7 +110,7 @@
             this.isMovingRight = Math.random() < 0.5;
             this.isMovingDown = true;
             this.update = function () {
-                gameContext = myGameArea.context;
+                let gameContext = myGameArea.context;
                 gameContext.beginPath();
                 gameContext.fillStyle = color;
                 gameContext.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
@@ -106,7 +118,7 @@
                 gameContext.closePath();
             }
             this.newPos = function () {
-                gameContext = myGameArea.context;
+                let gameContext = myGameArea.context;
 
                 if (this.isMovingRight) {
                     if (this.x + this.radius > gameContext.canvas.width) {
@@ -134,14 +146,15 @@
             }
         }
 		
-		function defBlock(x, y, width, height){
+		function Block(x, y, width, height){
 			let color = colorArr[Math.floor(Math.random() * 3)];
             this.width = width;
             this.height = height;
             this.destroyed = false;
+            this.isColWPlatform = false;
             this.update = function () {
                 if(!this.destroyed){
-                    gameContext = myGameArea.context;
+                    let gameContext = myGameArea.context;
                     gameContext.fillStyle = color;
                     gameContext.fillRect(this.x, this.y, this.width, this.height);
                 }
@@ -159,7 +172,8 @@
 
         function updateGameArea() {
             document.getElementById("score").innerHTML = score.toString();
-            if(score == columns * rows){
+            let gameContext = myGameArea.context;
+            if(score === columns * rows){
                 isGameEnded = true;
                 window.alert("You won!\nYour score: " + score.toString());
 				score = 0;
@@ -200,6 +214,9 @@
                     }
                     blockArr[i].newPos();
                     blockArr[i].update();
+                    if(blockArr[i].isColWPlatform){
+                        platformBlockCollision(platformVertical, blockArr[i]);
+                    }
 				}
                 bouncePlatform(ball, platformHorizontal);
                 bouncePlatform(ball, platformVertical);
@@ -213,7 +230,7 @@
 		
 		function bouncePlatform(ball, platform) {
             if (ball.isMovingDown) {
-                if (ball.y + ball.radius >= platform.y) {
+                if (ball.y + ball.radius >= platform.y && ball.y - ball.radius <= platform.y + platform.height) {
                     if (ball.x < platform.x + platform.width && ball.x > platform.x && ball.y + ball.radius <= platform.y + ball.speed) {
                         changeXSpeed(ball, platform);
                         ball.isMovingDown = !ball.isMovingDown;
@@ -315,7 +332,9 @@
         }
 
         function platformBlockCollision(platform, block){
-            return platform.y < block.y + block.height;
+            if(block.y + block.height >= platform.y) {
+                platform.y = block.y + block.height;
+            }
         }
 
         function stopPlatform(platform) {
