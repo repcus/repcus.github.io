@@ -107,6 +107,8 @@
             this.x = Math.floor(Math.random() * 490) + 10;
             this.y = Math.floor(Math.random() * 150) + 200;
             this.speed = speed;
+	    this.speedX = speed;
+	    this.speedY = speed;
             this.isMovingRight = Math.random() < 0.5;
             this.isMovingDown = true;
             this.update = function () {
@@ -125,23 +127,23 @@
                         changeYSpeed(ball, gameContext.canvas);
                         this.isMovingRight = false;
                     }
-                    this.x += this.speed;
+                    this.x += this.speedX;
                 } else {
                     if (this.x < 0 + this.radius) {
                         changeYSpeed(ball, gameContext.canvas);
                         this.isMovingRight = true;
                     }
-                    this.x -= this.speed;
+                    this.x -= this.speedX;
                 }
 
                 if (this.isMovingDown) {
-                    this.y += this.speed;
+                    this.y += this.speedY;
                 } else {
                     if (this.y - this.radius <= 0) {
                         changeXSpeed(ball, gameContext.canvas);
                         this.isMovingDown = true;
                     }
-                    this.y -= this.speed;
+                    this.y -= this.speedY;
                 }
             }
         }
