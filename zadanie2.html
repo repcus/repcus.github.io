@@ -179,6 +179,8 @@
                 isGameEnded = true;
                 window.alert("You won!\nYour score: " + score.toString());
 				score = 0;
+                stopPlatform(platformVertical);
+                stopPlatform(platformHorizontal);
             }
             if (!isGamePaused) {
                 if (isGameEnded) {
@@ -226,6 +228,8 @@
                     isGameEnded = true;
 					window.alert("You lost!\nYour score: " + score.toString());
                     score = 0;
+                    stopPlatform(platformVertical);
+                    stopPlatform(platformHorizontal);
                 }
             }
         }
@@ -287,25 +291,25 @@
         
         function changeXSpeed(ball, line){
             if(ball.x > line.x && ball.x < line.x + line.width * 10/100  || ball.x > line.x + line.width * 90/100 && ball.x < line.x + line.width){
-                ball.speed = ballSpeed * 3;
+                ball.speedX = ballSpeed * 3;
             }else if(ball.x >= line.x + line.width * 10/100 && ball.x <= line.x + line.width * 30/100  || ball.x >= line.x + line.width * 70/100 && ball.x <= line.x + line.width * 90/100){
-                ball.speed = ballSpeed * 2;
+                ball.speedX = ballSpeed * 2;
             }else if(ball.x > line.x + line.width * 30/100 && ball.x < line.x + line.width * 40/100  || ball.x > line.x + line.width * 60/100 && ball.x < line.x + line.width * 70/100){
-                ball.speed = ballSpeed * 1.5;
+                ball.speedX = ballSpeed * 1.5;
             }else{
-                ball.speed = ballSpeed;
+                ball.speedX = ballSpeed;
             }
         }
 
         function changeYSpeed(ball, line){
             if(ball.y > line.y && ball.y < line.y + line.width * 10/100  || ball.y > line.y + line.width * 90/100 && ball.y < line.y + line.width){
-                ball.speed = ballSpeed * 3;
+                ball.speedY = ballSpeed * 3;
             }else if(ball.y >= line.y + line.width * 10/100 && ball.y <= line.y + line.width * 30/100  || ball.y >= line.y + line.width * 70/100 && ball.y <= line.y + line.width * 90/100){
-                ball.speed = ballSpeed * 2;
+                ball.speedY = ballSpeed * 2;
             }else if(ball.y > line.y + line.width * 30/100 && ball.y < line.y + line.width * 40/100  || ball.y > line.y + line.width * 60/100 && ball.y < line.y + line.width * 70/100){
-                ball.speed = ballSpeed * 1.5;
+                ball.speedY = ballSpeed * 1.5;
             }else{
-                ball.speed = ballSpeed;
+                ball.speedY = ballSpeed;
             }
         }
 
