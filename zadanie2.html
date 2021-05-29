@@ -124,13 +124,11 @@
 
                 if (this.isMovingRight) {
                     if (this.x + this.radius > gameContext.canvas.width) {
-                        changeYSpeed(ball, gameContext.canvas);
                         this.isMovingRight = false;
                     }
                     this.x += this.speedX;
                 } else {
                     if (this.x < 0 + this.radius) {
-                        changeYSpeed(ball, gameContext.canvas);
                         this.isMovingRight = true;
                     }
                     this.x -= this.speedX;
@@ -140,7 +138,6 @@
                     this.y += this.speedY;
                 } else {
                     if (this.y - this.radius <= 0) {
-                        changeXSpeed(ball, gameContext.canvas);
                         this.isMovingDown = true;
                     }
                     this.y -= this.speedY;
@@ -179,8 +176,6 @@
                 isGameEnded = true;
                 window.alert("You won!\nYour score: " + score.toString());
 				score = 0;
-                stopPlatform(platformVertical);
-                stopPlatform(platformHorizontal);
             }
             if (!isGamePaused) {
                 if (isGameEnded) {
@@ -192,6 +187,9 @@
                 myGameArea.clear();
                 platformVertical.newPos();
                 platformHorizontal.newPos();
+                if(platformHorizontal.x < platformVertical.x + platformVertical.width && platformVertical.y > gameContext.canvas.height - platformVertical.height){
+                    platformHorizontal.x += platformHorizontal.speed + 1;
+                }
                 ball.newPos();
                 stopPlatform(platformVertical);
                 stopPlatform(platformHorizontal);
@@ -228,8 +226,6 @@
                     isGameEnded = true;
 					window.alert("You lost!\nYour score: " + score.toString());
                     score = 0;
-                    stopPlatform(platformVertical);
-                    stopPlatform(platformHorizontal);
                 }
             }
         }
@@ -247,7 +243,7 @@
                         } else {
                             ball.x = platform.x + platform.width + ball.radius;
                         }
-                        ball.speed = platform.speed + 1;
+                        ball.speedX = platform.speed + 1;
                         ball.isMovingRight = !ball.isMovingRight;
                     }
                 }
@@ -255,12 +251,8 @@
                 if (ball.y - ball.radius >= platform.y && ball.y + ball.radius <= platform.y + platform.height) { //to ok
                     if (ball.x <= platform.x + platform.width) {
                         changeXSpeed(ball, platform);
-                        if (ball.isMovingDown) {
-                            ball.y = platform.y - ball.radius;
-                        } else {
-                            ball.y = platform.y + platform.height + ball.radius;
-                        }
-                        ball.isMovingRight = !ball.isMovingRight;
+                        ball.y = platform.y + platform.height + ball.radius;
+                        ball.isMovingDown = !ball.isMovingDown;
                     } else if (ball.x + ball.radius >= platform.x && ball.x - ball.radius <= platform.x + platform.width) {
                         changeYSpeed(ball, platform);
                         ball.speed = platform.speed + 1;
@@ -274,7 +266,6 @@
             if (!ball.isMovingDown) {
                 if (ball.y - ball.radius <= block.y + block.height) {
                     if (ball.x < block.x + block.width && ball.x > block.x && ball.y - ball.radius >= block.y - ball.speed - 1) {
-                        changeXSpeed(ball, block);
                         ball.isMovingDown = !ball.isMovingDown;
                         return true;
                     }
@@ -282,7 +273,6 @@
             }
             if(ball.y >= block.y && ball.y <= block.y + block.height){
                 if((ball.x + ball.radius >= block.x && ball.x - ball.radius <= block.x + block.width)) {
-                    changeYSpeed(ball, block);
                     ball.isMovingRight = !ball.isMovingRight;
                     return true;
                 }
