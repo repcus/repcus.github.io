@@ -15,7 +15,7 @@
         }
     </style>
 </head>
-<body onload="startGame()">
+<body onload="startGame()" style="{margin: 0; height: 100%; overflow: hidden}">
     <script>
         /*
         const deviceType = () => {
@@ -55,13 +55,20 @@
         const blockHeight = canvasHeight * 20/500;
         let ballX = randomNum(canvasWidth * 0.2, canvasWidth * 0.8);
         let ballY = randomNum(blockHeight * rows + rows, canvasHeight * 0.5);
-        console.log('ball max min', blockHeight * rows + rows, canvasWidth * 0.5);
-        console.log('ball X Y', ballX, ballY);
-
+        let platformHorX = canvasWidth/2 - canvasWidth/5;
+        let platformHorY = canvasHeight - canvasHeight * 20 / 500;
+        let platformHorW = canvasWidth/5;
+        let platformHorH = canvasHeight * 20 / 500;
+        let platformVerX = 0;
+        let platformVerY = canvasHeight / 2;
+        let platformVerW = canvasHeight * 20 / 500;
+        let platformVerH = canvasWidth / 5;
+        let lastTouchOriginX = canvasHeight / 2 + platformHorW;
+        let lastTouchOriginY = canvasHeight / 2 + platformVerH;
         function startGame() {
-            platformHorizontal = new Platform(canvasWidth/5, canvasHeight*20/500, "magenta", canvasWidth/2 - canvasWidth/5, canvasHeight - canvasHeight*20/500, speed);
+            platformHorizontal = new Platform(platformHorW, platformHorH, "magenta", platformHorX, platformHorY, speed);
             if(askIfVertical()){
-                platformVertical = new Platform(canvasHeight*20/500, canvasWidth/5, "cyan", 0, canvasHeight/2, speed);
+                platformVertical = new Platform(platformVerW, platformVerH, "cyan", platformVerX, platformVerY, speed);
             }
             ball = new Ball(ballRadius, "black", ballSpeed, ballX, ballY);
             let blockCounter = 0;
@@ -210,7 +217,7 @@
                 platformHorizontal.x = myGameArea.canvas.width - platformHorizontal.width;
             }
             if(platformHorizontal.x < 0){
-                platformHorizontal.x = myGameArea.canvas.width/2 - platformHorizontal.width;
+                platformHorizontal.x = 0;
             }
             if(platformVertical && platformVertical.y + platformVertical.height > myGameArea.canvas.height){
                 platformVertical.y = myGameArea.canvas.height - platformVertical.height;
@@ -246,7 +253,7 @@
                 }
                 stopPlatform(platformHorizontal);
 
-                if (myGameArea &&myGameArea.key === 'ArrowLeft') {
+                if (myGameArea && myGameArea.key === 'ArrowLeft') {
                     moveLeft(platformHorizontal);
                 }
                 if (myGameArea && myGameArea.key === 'ArrowRight') {
@@ -254,9 +261,9 @@
                 }
                 if(platformVertical){
                     if(myGameArea && myGameArea.touchY){
-                        if(platformVertical.y + (myGameArea.touchY - myGameArea.touchOrigin) >= 0 &&
+                        if(platformVertical.y + (myGameArea.touchY - lastTouchOriginY) >= 0 &&
                             platformVertical.y + platformVertical.width <= myGameArea.canvas.width){
-                            platformVertical.y = Math.min(canvasWidth, myGameArea.touchY - myGameArea.touchOrigin);
+                            platformVertical.y = Math.min(canvasWidth, myGameArea.touchY - lastTouchOriginY);
                         }
                     }
                     if (myGameArea && myGameArea.key === 'ArrowDown') {
@@ -267,9 +274,9 @@
                     }
                 }
                 if(myGameArea && myGameArea.touchX){
-                    if(platformHorizontal.x + (myGameArea.touchX - myGameArea.touchOrigin) >= 0 &&
+                    if(platformHorizontal.x + (myGameArea.touchX - lastTouchOriginX) >= 0 &&
                         platformHorizontal.x + platformHorizontal.width <= myGameArea.canvas.width){
-                        platformHorizontal.x = Math.min(canvasWidth, myGameArea.touchX - myGameArea.touchOrigin);
+                        platformHorizontal.x = Math.min(canvasWidth, myGameArea.touchX - lastTouchOriginX);
                     }
                 }
                 if(platformVertical){
