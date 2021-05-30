@@ -36,8 +36,8 @@
         let speed = 4;
         let ballSpeed = speed - 1;
         let ball;
-        let ballX = randomInt(canvasWidth * .1, canvasWidth * .9);
-        let ballY = randomInt(canvasHeight * .1, canvasHeight * 5);
+        let ballX = randomInt(canvasWidth * .1, canvasWidth * .5);
+        let ballY = randomInt(canvasHeight * .1, canvasHeight * .5);
         console.log(ballX, ballY);
         let isGamePaused = true;
         let isGameEnded = false;
@@ -94,7 +94,11 @@
                 window.addEventListener('keyup', function () {
                     myGameArea.key = false;
                 })
-                window.addEventListener('touchmove', function(e) {
+                myGameArea.canvas.addEventListener('touchstart', function(e) {
+                    myGameArea.touchOrigin = e.touches[0].clientX;
+                    myGameArea.touchOrigin = e.touches[0].clientY;
+                });
+                myGameArea.canvas.addEventListener('touchmove', function(e) {
                     myGameArea.touchX = e.touches[0].clientX;
                     myGameArea.touchY = e.touches[0].clientY;
                 }, false);
@@ -171,9 +175,10 @@
                     }
                     this.y -= this.speedY;
                 }
+                this.y = 10;
             }
         }
-		
+
 		class Block{
             destroyed = false;
             isColWPlatform = false;
@@ -236,8 +241,12 @@
                         moveUp(platformVertical);
                     }
                 }
-                if(myGameArea && myGameArea.touchX ){
-                    platformHorizontal.x = myGameArea.touchX;
+                if(myGameArea && myGameArea.touchX){
+                    if(platformHorizontal.x + (myGameArea.touchX - myGameArea.touchOrigin) >= 0 &&
+                        platformHorizontal.x + platformHorizontal.width <= myGameArea.canvas.width){
+                        platformHorizontal.x = Math.min(canvasWidth, myGameArea.touchX - myGameArea.touchOrigin);
+                        console.log('l', platformHorizontal.x + platformHorizontal.width, 'p', myGameArea.canvas.width);
+                    }
                 }
                 if(platformVertical){
                     platformVertical.update();
@@ -326,7 +335,7 @@
                 }
             }
         }
-        
+
         function changeXSpeed(ball, line){
             if(ball.x > line.x && ball.x < line.x + line.width * 10/100  || ball.x > line.x + line.width * 90/100 && ball.x < line.x + line.width){
                 ball.speedX = ballSpeed * 3;
