@@ -17,6 +17,16 @@
 </head>
 <body onload="startGame()">
     <script>
+        lWidth = window.screen.width;
+        lHeight = window.screen.height;
+        if(lWidth >= lHeight){
+            var canvasWidth = lHeight/2;
+            var canvasHeight = lHeight/2;
+        }else{
+            var canvasWidth = lWidth/2;
+            var canvasHeight = lWidth/2;
+        }
+
         let score = 0;
         let platformHorizontal;
         let platformVertical = null;
@@ -31,13 +41,12 @@
         const blockCount = rows * columns;
         let blockArr = new Array(blockCount);
         const colorArr = ["red", "green", "blue"];
-        const canvasWidth = 500;
-        const canvasHeight = 500;
         const blockWidth = (canvasWidth - 2) / columns - 1;
         const blockHeight = 20;
 
+
         function startGame() {
-            platformHorizontal = new Platform(100, 20, "magenta", 200, 480, speed);
+            platformHorizontal = new Platform(100, 20, "magenta", canvasWidth/2 - 50, canvasHeight - 20, speed);
             if(askIfVertical()){
                 platformVertical = new Platform(20, 100, "cyan", 0, 250, speed);
             }
