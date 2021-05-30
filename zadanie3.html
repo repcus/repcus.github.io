@@ -31,9 +31,9 @@
         */
         deviceWidth = window.screen.width;
         deviceHeight = window.screen.height;
-        canvasWidth = Math.min(deviceHeight/2, deviceWidth/2);
+        canvasWidth = Math.min(deviceHeight * 0.75, deviceWidth * 0.75);
         canvasHeight = canvasWidth;
-        ballRadius = deviceHeight/100;
+        ballRadius = canvasWidth/100;
         if(canvasHeight > 500){
             canvasHeight = 500;
             canvasWidth = 500;
@@ -206,6 +206,18 @@
 		}
 
         function updateGameArea() {
+            if(platformHorizontal.x + platformHorizontal.width > myGameArea.canvas.width){
+                platformHorizontal.x = myGameArea.canvas.width - platformHorizontal.width;
+            }
+            if(platformHorizontal.x < 0){
+                platformHorizontal.x = 0;
+            }
+            if(platformHorizontal.y + platformHorizontal.height > myGameArea.canvas.height){
+                platformHorizontal.y = myGameArea.canvas.height - platformHorizontal.height;
+            }
+            if(platformHorizontal.y < 0){
+                platformHorizontal.y = 0;
+            }
             document.getElementById("score").innerHTML = score.toString();
             let gameContext = myGameArea.context;
             if(score === columns * rows){
@@ -241,6 +253,12 @@
                     moveRight(platformHorizontal);
                 }
                 if(platformVertical){
+                    if(myGameArea && myGameArea.touchY){
+                        if(platformVertical.y + (myGameArea.touchY - myGameArea.touchOrigin) >= 0 &&
+                            platformVertical.y + platformVertical.width <= myGameArea.canvas.width){
+                            platformVertical.y = Math.min(canvasWidth, myGameArea.touchY - myGameArea.touchOrigin);
+                        }
+                    }
                     if (myGameArea && myGameArea.key === 'ArrowDown') {
                         moveDown(platformVertical);
                     }
@@ -252,7 +270,6 @@
                     if(platformHorizontal.x + (myGameArea.touchX - myGameArea.touchOrigin) >= 0 &&
                         platformHorizontal.x + platformHorizontal.width <= myGameArea.canvas.width){
                         platformHorizontal.x = Math.min(canvasWidth, myGameArea.touchX - myGameArea.touchOrigin);
-                        console.log('l', platformHorizontal.x + platformHorizontal.width, 'p', myGameArea.canvas.width);
                     }
                 }
                 if(platformVertical){
