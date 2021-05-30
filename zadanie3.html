@@ -19,6 +19,7 @@
     <script>
         lWidth = window.screen.width;
         lHeight = window.screen.height;
+        console.log(lWidth, lHeight);
         if(lWidth >= lHeight){
             var canvasWidth = lHeight/2;
             var canvasHeight = lHeight/2;
@@ -34,6 +35,8 @@
         let ballSpeed = speed - 1;
         let ballRadius = 5;
         let ball;
+        let ballX = Math.floor(Math.random() * canvasWidth - 10) + 10;
+        let ballY = Math.floor(Math.random() * canvasHeight - 10) + 10;
         let isGamePaused = true;
         let isGameEnded = false;
         const rows = 3;
@@ -50,7 +53,7 @@
             if(askIfVertical()){
                 platformVertical = new Platform(20, 100, "cyan", 0, 250, speed);
             }
-            ball = new Ball(ballRadius, "black", ballSpeed);
+            ball = new Ball(ballRadius, "black", ballSpeed, ballX, ballY);
             let blockCounter = 0;
             let tempBlockColChecker = blockWidth;
             let blockColChecker = blockWidth;
@@ -128,10 +131,10 @@
         class Ball{
             isMovingRight = Math.random() < 0.5;
             isMovingDown = true;
-            constructor(radius, color, speed) {
+            constructor(radius, color, speed, x, y) {
                 this.radius = radius;
-                this.x = Math.floor(Math.random() * 490) + 10;
-                this.y = Math.floor(Math.random() * 150) + 200;
+                this.x = x;
+                this.y = y;
                 this.speed = speed;
                 this.speedX = speed;
                 this.speedY = speed;
