@@ -17,28 +17,33 @@
 </head>
 <body onload="startGame()">
     <script>
-        lWidth = window.screen.width;
-        lHeight = window.screen.height;
-        console.log(lWidth, lHeight);
-        if(lWidth >= lHeight){
-            canvasWidth = lHeight/2;
-            canvasHeight = lHeight/2;
-            ballRadius = lHeight/100;
-        }else{
-            canvasWidth = lWidth/2;
-            canvasHeight = lWidth/2;
-            ballRadius = lWidth/100;
+        /*
+        const deviceType = () => {
+            const ua = navigator.userAgent;
+            if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+                return "tablet";
+            }
+            else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+                return "mobile";
+            }
+            return "desktop";
+        };
+        */
+        deviceWidth = window.screen.width;
+        deviceHeight = window.screen.height;
+        canvasWidth = Math.min(deviceHeight/2, deviceWidth/2);
+        canvasHeight = canvasWidth;
+        ballRadius = deviceHeight/100;
+        if(canvasHeight > 500){
+            canvasHeight = 500;
+            canvasWidth = 500;
         }
-
         let score = 0;
         let platformHorizontal;
         let platformVertical = null;
-        let speed = 4;
+        let speed = 4/500 * canvasHeight;
         let ballSpeed = speed - 1;
         let ball;
-        let ballX = randomInt(canvasWidth * .1, canvasWidth * .5);
-        let ballY = randomInt(canvasHeight * .1, canvasHeight * .5);
-        console.log(ballX, ballY);
         let isGamePaused = true;
         let isGameEnded = false;
         const rows = 3;
@@ -48,7 +53,10 @@
         const colorArr = ["red", "green", "blue"];
         const blockWidth = (canvasWidth - 2) / columns - 1;
         const blockHeight = canvasHeight * 20/500;
-
+        let ballX = randomNum(canvasWidth * 0.2, canvasWidth * 0.8);
+        let ballY = randomNum(blockHeight * rows + rows, canvasHeight * 0.5);
+        console.log('ball max min', blockHeight * rows + rows, canvasWidth * 0.5);
+        console.log('ball X Y', ballX, ballY);
 
         function startGame() {
             platformHorizontal = new Platform(canvasWidth/5, canvasHeight*20/500, "magenta", canvasWidth/2 - canvasWidth/5, canvasHeight - canvasHeight*20/500, speed);
@@ -175,7 +183,6 @@
                     }
                     this.y -= this.speedY;
                 }
-                this.y = 10;
             }
         }
 
@@ -254,15 +261,15 @@
                 platformHorizontal.update();
                 ball.update();
 				for(let i = 0; i < blockArr.length; i++){
-					if(bounceBlock(ball, blockArr[i])){
-                        blockArr[i].destroyed = true;
-					    score++;
-					    blockArr.splice(i, 1);
-					    i--;
-                    }
                     blockArr[i].update();
                     if(blockArr[i].isColWPlatform && platformVertical){
                         platformBlockCollision(platformVertical, blockArr[i]);
+                    }
+                    if(bounceBlock(ball, blockArr[i])){
+                        blockArr[i].destroyed = true;
+                        score++;
+                        blockArr.splice(i, 1);
+                        i--;
                     }
 				}
                 bouncePlatform(ball, platformHorizontal);
@@ -277,10 +284,8 @@
             }
         }
 
-        function randomInt(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min + 1)) + min;
+        function randomNum(min, max) {
+            return Math.random() * (max - min + 1) + min;
         }
 
         function askIfVertical(){
