@@ -19,7 +19,7 @@
     <script>
         let score = 0;
         let platformHorizontal;
-        let platformVertical;
+        let platformVertical = null;
         let speed = 4;
         let ballSpeed = speed - 1;
         let ballRadius = 5;
@@ -38,16 +38,19 @@
 
         function startGame() {
             platformHorizontal = new Platform(100, 20, "magenta", 200, 480, speed);
-            platformVertical = new Platform(20, 100, "cyan", 0, 250, speed);
+            if(askIfVertical()){
+                platformVertical = new Platform(20, 100, "cyan", 0, 250, speed);
+            }
             ball = new Ball(ballRadius, "black", ballSpeed);
             let blockCounter = 0;
             let tempBlockColChecker = blockWidth;
             let blockColChecker = blockWidth;
-            do{
-                tempBlockColChecker -= blockWidth;
-                blockColChecker += blockWidth;
-            }while(platformVertical.width > blockColChecker);
-
+            if(platformVertical) {
+                do {
+                    tempBlockColChecker -= blockWidth;
+                    blockColChecker += blockWidth;
+                } while (platformVertical.width > blockColChecker);
+            }
             for(let i = 1; i < rows * (blockHeight + 1); i += blockHeight + 1){
 				for(let j = 1; j < columns * (blockWidth + 1); j += blockWidth + 1){
 					blockArr[blockCounter++] = new Block(j, i, blockWidth, blockHeight);
@@ -77,56 +80,64 @@
                 window.addEventListener('keyup', function () {
                     myGameArea.key = false;
                 })
+                window.addEventListener('touchmove', function(e) {
+                    myGameArea.touchX = e.touches[0].clientX;
+                    myGameArea.touchY = e.touches[0].clientY;
+                }, false);
             },
             clear: function () {
                 let r = 241;//Math.floor(Math.random() * 11) + 240;
                 let g = 241;//Math.floor(Math.random() * 11) + 240;
                 let b = 241;//Math.floor(Math.random() * 11) + 240;
-                let color = 'rgba(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ', .4)';
-                this.context.fillStyle = color;
+                this.context.fillStyle = 'rgba(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ', .4)';
                 this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
             }
         }
 
-        function Platform(width, height, color, x, y, speed) {
-            this.width = width;
-            this.height = height;
-            this.speedX = 0;
-            this.speedY = 0;
-            this.speed = speed;
-            this.x = x;
-            this.y = y;
-            this.update = function () {
+        class Platform {
+            speedX = 0;
+            speedY = 0;
+            constructor(width, height, color, x, y, speed){
+                this.width = width;
+                this.height = height;
+                this.speed = speed;
+                this.x = x;
+                this.y = y;
+                this.color = color;
+            }
+            update = function () {
                 let gameContext = myGameArea.context;
-                gameContext.fillStyle = color;
+                gameContext.fillStyle = this.color;
                 gameContext.fillRect(this.x, this.y, this.width, this.height);
             }
-            this.newPos = function () {
+            newPos = function () {
                 this.x += this.speedX;
                 this.y += this.speedY;
             }
         }
 
-        function Ball(radius, color, speed) {
-            this.radius = radius;
-            this.x = Math.floor(Math.random() * 490) + 10;
-            this.y = Math.floor(Math.random() * 150) + 200;
-            this.speed = speed;
-	        this.speedX = speed;
-	        this.speedY = speed;
-            this.isMovingRight = Math.random() < 0.5;
-            this.isMovingDown = true;
-            this.update = function () {
+        class Ball{
+            isMovingRight = Math.random() < 0.5;
+            isMovingDown = true;
+            constructor(radius, color, speed) {
+                this.radius = radius;
+                this.x = Math.floor(Math.random() * 490) + 10;
+                this.y = Math.floor(Math.random() * 150) + 200;
+                this.speed = speed;
+                this.speedX = speed;
+                this.speedY = speed;
+                this.color = color;
+            }
+            update = function () {
                 let gameContext = myGameArea.context;
                 gameContext.beginPath();
-                gameContext.fillStyle = color;
+                gameContext.fillStyle = this.color;
                 gameContext.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
                 gameContext.fill();
                 gameContext.closePath();
             }
-            this.newPos = function () {
+            newPos = function () {
                 let gameContext = myGameArea.context;
-
                 if (this.isMovingRight) {
                     if (this.x + this.radius > gameContext.canvas.width) {
                         this.isMovingRight = false;
@@ -138,7 +149,6 @@
                     }
                     this.x -= this.speedX;
                 }
-
                 if (this.isMovingDown) {
                     this.y += this.speedY;
                 } else {
@@ -150,28 +160,23 @@
             }
         }
 		
-		function Block(x, y, width, height){
-			let color = colorArr[Math.floor(Math.random() * 3)];
-            this.width = width;
-            this.height = height;
-            this.destroyed = false;
-            this.isColWPlatform = false;
-            this.update = function () {
+		class Block{
+            destroyed = false;
+            isColWPlatform = false;
+            color = colorArr[Math.floor(Math.random() * 3)];
+            constructor(x, y, width, height) {
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
+            }
+            update = function () {
                 if(!this.destroyed){
                     let gameContext = myGameArea.context;
-                    gameContext.fillStyle = color;
+                    gameContext.fillStyle = this.color;
                     gameContext.fillRect(this.x, this.y, this.width, this.height);
                 }
             }
-			this.newPos = function(){
-                if(!this.destroyed){
-                    this.x = x;
-                    this.y = y;
-                }else{
-                    this.x = -this.width - 10;
-                    this.y = -this.height - 10;
-                }
-			}
 		}
 
         function updateGameArea() {
@@ -190,43 +195,57 @@
                     startGame();
                 }
                 myGameArea.clear();
-                platformVertical.newPos();
+                if(platformVertical){
+                    platformVertical.newPos();
+                }
                 platformHorizontal.newPos();
-                if(platformHorizontal.x < platformVertical.x + platformVertical.width && platformVertical.y > gameContext.canvas.height - platformVertical.height){
+                if(platformVertical && platformHorizontal.x < platformVertical.x + platformVertical.width && platformVertical.y > gameContext.canvas.height - platformVertical.height){
                     platformHorizontal.x += platformHorizontal.speed + 1;
                 }
                 ball.newPos();
-                stopPlatform(platformVertical);
+                if(platformVertical){
+                    stopPlatform(platformVertical);
+                }
                 stopPlatform(platformHorizontal);
 
-                if (myGameArea && myGameArea.key === 'ArrowLeft') {
+                if (myGameArea &&myGameArea.key === 'ArrowLeft') {
                     moveLeft(platformHorizontal);
                 }
                 if (myGameArea && myGameArea.key === 'ArrowRight') {
                     moveRight(platformHorizontal);
                 }
-                if (myGameArea && myGameArea.key === 'ArrowDown') {
-                    moveDown(platformVertical);
+                if(platformVertical){
+                    if (myGameArea && myGameArea.key === 'ArrowDown') {
+                        moveDown(platformVertical);
+                    }
+                    if (myGameArea && myGameArea.key === 'ArrowUp') {
+                        moveUp(platformVertical);
+                    }
                 }
-                if (myGameArea && myGameArea.key === 'ArrowUp') {
-                    moveUp(platformVertical);
+                if(myGameArea && myGameArea.touchX){
+                    platformHorizontal.x = myGameArea.touchX;
                 }
-                platformVertical.update();
+                if(platformVertical){
+                    platformVertical.update();
+                }
                 platformHorizontal.update();
                 ball.update();
 				for(let i = 0; i < blockArr.length; i++){
 					if(bounceBlock(ball, blockArr[i])){
                         blockArr[i].destroyed = true;
 					    score++;
+					    blockArr.splice(i, 1);
+					    i--;
                     }
-                    blockArr[i].newPos();
                     blockArr[i].update();
-                    if(blockArr[i].isColWPlatform){
+                    if(blockArr[i].isColWPlatform && platformVertical){
                         platformBlockCollision(platformVertical, blockArr[i]);
                     }
 				}
                 bouncePlatform(ball, platformHorizontal);
-                bouncePlatform(ball, platformVertical);
+                if(platformVertical){
+                    bouncePlatform(ball, platformVertical);
+                }
                 if (ball.y + ball.radius >= gameContext.canvas.height) {
                     isGameEnded = true;
 					window.alert("You lost!\nYour score: " + score.toString());
@@ -234,7 +253,11 @@
                 }
             }
         }
-		
+
+        function askIfVertical(){
+            return confirm("Click OK if you want to have a second, vertical platform!");
+        }
+
 		function bouncePlatform(ball, platform) {
             if (ball.isMovingDown) {
                 if (ball.y + ball.radius >= platform.y && ball.y - ball.radius <= platform.y + platform.height) {
