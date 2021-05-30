@@ -212,11 +212,11 @@
             if(platformHorizontal.x < 0){
                 platformHorizontal.x = 0;
             }
-            if(platformHorizontal.y + platformHorizontal.height > myGameArea.canvas.height){
-                platformHorizontal.y = myGameArea.canvas.height - platformHorizontal.height;
+            if(platformVertical && platformVertical.y + platformVertical.height > myGameArea.canvas.height){
+                platformVertical.y = myGameArea.canvas.height - platformVertical.height;
             }
-            if(platformHorizontal.y < 0){
-                platformHorizontal.y = 0;
+            if(platformVertical && platformVertical.y < 0){
+                platformVertical.y = 0;
             }
             document.getElementById("score").innerHTML = score.toString();
             let gameContext = myGameArea.context;
