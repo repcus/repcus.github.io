@@ -210,7 +210,7 @@
                 platformHorizontal.x = myGameArea.canvas.width - platformHorizontal.width;
             }
             if(platformHorizontal.x < 0){
-                platformHorizontal.x = 0;
+                platformHorizontal.x = myGameArea.canvas.width/2 - platformHorizontal.width;
             }
             if(platformVertical && platformVertical.y + platformVertical.height > myGameArea.canvas.height){
                 platformVertical.y = myGameArea.canvas.height - platformVertical.height;
