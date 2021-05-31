@@ -39,10 +39,6 @@
             return "desktop";
         };
         */
-        disableScroll();
-        document.ontouchmove = function(event){
-            event.preventDefault();
-        }
         let deviceWidth = window.screen.width;
         let deviceHeight = window.screen.height;
         let canvasWidth = Math.min(deviceHeight * 0.75, deviceWidth * 0.75);
@@ -227,6 +223,7 @@
 		}
 
         function updateGameArea() {
+            disableScroll();
             if(platformHorizontal.x + platformHorizontal.width > myGameArea.canvas.width){
                 platformHorizontal.x = myGameArea.canvas.width - platformHorizontal.width;
             }
