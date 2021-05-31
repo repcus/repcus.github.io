@@ -29,7 +29,7 @@
     <script>
         let deviceWidth = window.screen.width;
         let deviceHeight = window.screen.height;
-        let canvasWidth = Math.min(deviceHeight * 0.75, deviceWidth * 0.75);
+        let canvasWidth = Math.min(deviceHeight * 0.60, deviceWidth * 0.60);
         let canvasHeight = canvasWidth;
         let ballRadius = canvasWidth/100;
         let score = 0;
@@ -462,13 +462,13 @@
     <div style="text-align:center;">
         Score: <span id="score"></span>
     </div>
-    <div style="text-align:center;width:auto;">
+    <!--<div style="text-align:center;width:auto;">
         <button style="width:100px" onclick="moveLeft()">LEFT</button>
         <button style="width:100px" onclick="moveRight()">RIGHT</button>
-    </div>
+    </div>-->
     <div style="text-align:center;width:auto;">
-        <button style="width:100px" onclick="start()">START</button>
-        <button style="width:100px" onclick="pause()">STOP</button>
+        <button style="height:25%" onclick="start()">START</button>
+        <button style="height:25%" onclick="pause()">STOP</button>
     </div>
 </body>
 </html>
