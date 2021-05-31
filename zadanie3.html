@@ -44,10 +44,6 @@
         let canvasWidth = Math.min(deviceHeight * 0.75, deviceWidth * 0.75);
         let canvasHeight = canvasWidth;
         let ballRadius = canvasWidth/100;
-        if(canvasHeight > 500){
-            canvasHeight = 500;
-            canvasWidth = 500;
-        }
         let score = 0;
         let platformHorizontal;
         let platformVertical = null;
@@ -76,6 +72,9 @@
         let lastTouchOriginX = canvasHeight / 2 + platformHorW;
         let lastTouchOriginY = canvasHeight / 2 + platformVerH;
         function startGame() {
+            platformHorizontal = null;
+            platformVertical = null;
+
             window.addEventListener("scroll", preventMotion, false);
             window.addEventListener("touchmove", preventMotion, false);
 
@@ -85,7 +84,7 @@
                 event.preventDefault();
                 event.stopPropagation();
             }
-            
+
             platformHorizontal = new Platform(platformHorW, platformHorH, "magenta", platformHorX, platformHorY, speed);
             if(askIfVertical()){
                 platformVertical = new Platform(platformVerW, platformVerH, "cyan", platformVerX, platformVerY, speed);
@@ -325,6 +324,10 @@
 					window.alert("You lost!\nYour score: " + score.toString());
                     score = 0;
                 }
+            }else{
+                myGameArea.context.font = "500% Helvetica";
+                myGameArea.context.textAlign = "center";
+                myGameArea.context.fillText("To play, press start!", gameContext.canvas.height/2, gameContext.canvas.height/2);
             }
         }
 
