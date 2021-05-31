@@ -15,7 +15,7 @@
         }
     </style>
 </head>
-<body onload="startGame()" style="{margin: 0; height: 100%; overflow: hidden}">
+<body onload="startGame()">
     <script>
         /*
         const deviceType = () => {
@@ -29,11 +29,14 @@
             return "desktop";
         };
         */
-        deviceWidth = window.screen.width;
-        deviceHeight = window.screen.height;
-        canvasWidth = Math.min(deviceHeight * 0.75, deviceWidth * 0.75);
-        canvasHeight = canvasWidth;
-        ballRadius = canvasWidth/100;
+        document.ontouchmove = function(event){
+            event.preventDefault();
+        }
+        let deviceWidth = window.screen.width;
+        let deviceHeight = window.screen.height;
+        let canvasWidth = Math.min(deviceHeight * 0.75, deviceWidth * 0.75);
+        let canvasHeight = canvasWidth;
+        let ballRadius = canvasWidth/100;
         if(canvasHeight > 500){
             canvasHeight = 500;
             canvasWidth = 500;
