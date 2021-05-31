@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>Arkanoid</title>
-    <meta name="viewport" content="user-scalable=no" />
+    <meta name="viewport" content="user-scalable=no initial-scale=1.0" />
     <style>
         html {
             overflow: hidden;
@@ -27,18 +27,6 @@
 </head>
 <body onload="startGame()">
     <script>
-        /*
-        const deviceType = () => {
-            const ua = navigator.userAgent;
-            if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
-                return "tablet";
-            }
-            else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
-                return "mobile";
-            }
-            return "desktop";
-        };
-        */
         let deviceWidth = window.screen.width;
         let deviceHeight = window.screen.height;
         let canvasWidth = Math.min(deviceHeight * 0.75, deviceWidth * 0.75);
@@ -69,6 +57,7 @@
         let platformVerY = canvasHeight / 2;
         let platformVerW = canvasHeight * 20 / 500;
         let platformVerH = canvasWidth / 5;
+        console.log('W H:', canvasWidth, canvasHeight);
         function startGame() {
             platformHorizontal = null;
             platformVertical = null;
