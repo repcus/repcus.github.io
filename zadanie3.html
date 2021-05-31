@@ -325,7 +325,7 @@
                     score = 0;
                 }
             }else{
-                myGameArea.context.font = "500% Helvetica";
+                myGameArea.context.font = (myGameArea.context.canvas.width/20).toString() + "px Helvetica";
                 myGameArea.context.textAlign = "center";
                 myGameArea.context.fillText("To play, press start!", gameContext.canvas.height/2, gameContext.canvas.height/2);
             }
