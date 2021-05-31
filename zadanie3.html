@@ -69,8 +69,6 @@
         let platformVerY = canvasHeight / 2;
         let platformVerW = canvasHeight * 20 / 500;
         let platformVerH = canvasWidth / 5;
-        let lastTouchOriginX = canvasHeight / 2 + platformHorW;
-        let lastTouchOriginY = canvasHeight / 2 + platformVerH;
         function startGame() {
             platformHorizontal = null;
             platformVertical = null;
@@ -129,8 +127,8 @@
                     myGameArea.key = false;
                 })
                 window.addEventListener('touchstart', function(e) {
-                    myGameArea.touchOrigin = e.touches[0].clientX;
-                    myGameArea.touchOrigin = e.touches[0].clientY;
+                    myGameArea.touchOriginX = e.touches[0].clientX;
+                    myGameArea.touchOriginY = e.touches[0].clientY;
                 });
                 window.addEventListener('touchmove', function(e) {
                     myGameArea.touchX = e.touches[0].clientX;
@@ -280,9 +278,13 @@
                 }
                 if(platformVertical){
                     if(myGameArea && myGameArea.touchY){
-                        if(platformVertical.y + (myGameArea.touchY - lastTouchOriginY) >= 0 &&
+                        if(platformVertical.y + (myGameArea.touchY - myGameArea.touchOriginY) >= 0 &&
                             platformVertical.y + platformVertical.width <= myGameArea.canvas.width){
-                            platformVertical.y = Math.min(canvasWidth, myGameArea.touchY - lastTouchOriginY);
+                            if(myGameArea.touchY - myGameArea.touchOriginY > platformVertical.y){
+                                platformVertical.y += speed;
+                            }else if(myGameArea.touchY - myGameArea.touchOriginY < platformVertical.y){
+                                platformVertical.y -= speed;
+                            }
                         }
                     }
                     if (myGameArea && myGameArea.key === 'ArrowDown') {
@@ -293,11 +295,17 @@
                     }
                 }
                 if(myGameArea && myGameArea.touchX){
-                    if(platformHorizontal.x + (myGameArea.touchX - lastTouchOriginX) >= 0 &&
+                    if(platformHorizontal.x + (myGameArea.touchX - myGameArea.touchOriginX) >= 0 &&
                         platformHorizontal.x + platformHorizontal.width <= myGameArea.canvas.width){
-                        platformHorizontal.x = Math.min(canvasWidth, myGameArea.touchX - lastTouchOriginX);
+                        if(myGameArea.touchX - myGameArea.touchOriginX > platformHorizontal.x){
+                            platformHorizontal.x += speed;
+                        }else if(myGameArea.touchX - myGameArea.touchOriginX < platformHorizontal.x){
+                            platformHorizontal.x -= speed;
+                        }
                     }
                 }
+                myGameArea.touchX = null;
+                myGameArea.touchY = null;
                 if(platformVertical){
                     platformVertical.update();
                 }
@@ -413,38 +421,40 @@
         }
 
         function moveLeft(platform) {
-            if (platform.x > 0) {
+            if (platform && platform.x > 0) {
                 platform.speedX = -platform.speed;
             }
         }
 
         function moveRight(platform) {
-            if (platform.x + platform.width < myGameArea.canvas.width) {
+            if (platform && platform.x + platform.width < myGameArea.canvas.width) {
                 platform.speedX = platform.speed;
             }
         }
 
         function moveUp(platform) {
-            if (platform.y > 0) {
+            if (platform && platform.y > 0) {
                 platform.speedY = -platform.speed;
             }
         }
 
         function moveDown(platform) {
-            if (platform.y + platform.height < myGameArea.canvas.height) {
+            if (platform && platform.y + platform.height < myGameArea.canvas.height) {
                 platform.speedY = platform.speed;
             }
         }
 
         function platformBlockCollision(platform, block){
-            if(block.y + block.height >= platform.y) {
+            if(platform && block &&block.y + block.height >= platform.y) {
                 platform.y = block.y + block.height;
             }
         }
 
         function stopPlatform(platform) {
-            platform.speedX = 0;
-            platform.speedY = 0;
+            if(platform){
+                platform.speedX = 0;
+                platform.speedY = 0;
+            }
         }
 
         function pause() {
