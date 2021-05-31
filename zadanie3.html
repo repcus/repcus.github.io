@@ -2,8 +2,18 @@
 <html lang="en">
 <head>
     <title>Arkanoid</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="user-scalable=no" />
     <style>
+        html {
+            overflow: hidden;
+        }
+
+        body {
+            overflow: hidden;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
         canvas {
             border: 1px solid #d3d3d3;
             background-color: #f1f1f1;
@@ -17,16 +27,6 @@
 </head>
 <body onload="startGame()">
     <script>
-        function preventDefault(e){
-            e.preventDefault();
-        }
-
-        function disableScroll(){
-            document.body.addEventListener('touchmove', preventDefault, { passive: false });
-        }
-        function enableScroll(){
-            document.body.removeEventListener('touchmove', preventDefault);
-        }
         /*
         const deviceType = () => {
             const ua = navigator.userAgent;
@@ -76,6 +76,16 @@
         let lastTouchOriginX = canvasHeight / 2 + platformHorW;
         let lastTouchOriginY = canvasHeight / 2 + platformVerH;
         function startGame() {
+            window.addEventListener("scroll", preventMotion, false);
+            window.addEventListener("touchmove", preventMotion, false);
+
+            function preventMotion(event)
+            {
+                window.scrollTo(0, 0);
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
             platformHorizontal = new Platform(platformHorW, platformHorH, "magenta", platformHorX, platformHorY, speed);
             if(askIfVertical()){
                 platformVertical = new Platform(platformVerW, platformVerH, "cyan", platformVerX, platformVerY, speed);
@@ -223,7 +233,6 @@
 		}
 
         function updateGameArea() {
-            disableScroll();
             if(platformHorizontal.x + platformHorizontal.width > myGameArea.canvas.width){
                 platformHorizontal.x = myGameArea.canvas.width - platformHorizontal.width;
             }
