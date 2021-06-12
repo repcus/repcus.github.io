@@ -66,7 +66,7 @@ class Ball{
             this.velocity = new Vector(-this.velocity.x, this.velocity.y);
         }
 
-        if (this.position.y + this.radius >= 0){
+        if (this.position.y + this.radius <= 0){
             this.velocity = new Vector(this.velocity.x, -this.velocity.y);
         }
         this.position = this.position.add(this.velocity);
