@@ -5,11 +5,11 @@
     let canvasHeight = canvasWidth;
     let ballRadius = canvasWidth/100;
     let score = 0;
+    let scoreB = 0;
     let platformHorizontal;
     let platformVertical = null;
     let speed = 4/500 * canvasHeight;
     let ballSpeed = speed - 1;
-    let ball;
     let isGamePaused = true;
     let isGameEnded = false;
     const rows = 3;
@@ -18,19 +18,22 @@
     let blockArr = new Array(blockCount);
     const colorArr = ["red", "green"];
     const blockWidth = (canvasWidth - 2) / columns - 1;
-    const blockHeight = canvasHeight * 20/500;
+    const blockHeight = canvasHeight * 0.04;
     let ballX = randomNum(canvasWidth * 0.2, canvasWidth * 0.8);
     let ballY = randomNum(blockHeight * rows + rows, canvasHeight * 0.5);
-    let platformHorX = canvasWidth/2 - canvasWidth/5;
-    let platformHorY = canvasHeight - canvasHeight * 20 / 500;
-    let platformHorW = canvasWidth/5;
-    let platformHorH = canvasHeight * 20 / 500;
+    let platformHorX = canvasWidth / 2 - canvasWidth/5;
+    let platformHorY = canvasHeight - canvasHeight * 0.04;
+    let platformHorW = canvasWidth / 5;
+    let platformHorH = canvasHeight * 0.04;
     let platformVerX = 0;
     let platformVerY = canvasHeight / 2;
-    let platformVerW = canvasHeight * 20 / 500;
+    let platformVerW = canvasHeight * 0.04;
     let platformVerH = canvasWidth / 5;
     let time = 0;
-    let poppedBlocks = new Array();
+    let poppedBlocks;
+    let balls = new Array();
+    let ballsCount = 1;
+
     function startGame() {
         time = 0;
         //źródło mobile checkera http://detectmobilebrowsers.com/
@@ -41,11 +44,16 @@
         };
         platformHorizontal = null;
         platformVertical = null;
+        poppedBlocks = null;
         platformHorizontal = new Platform(platformHorW, platformHorH, "magenta", platformHorX, platformHorY, speed);
         if(askIfVertical()){
             platformVertical = new Platform(platformVerW, platformVerH, "cyan", platformVerX, platformVerY, speed);
         }
-        ball = new Ball(ballRadius, "black", ballSpeed, ballX, ballY);
+        poppedBlocks= new Array();
+        balls.push(new Ball(ballRadius, "black", ballSpeed, ballX, ballY));
+        if(ballsCount !== 1){
+            ballsCount = 1;
+        }
         let blockCounter = 0;
         let tempBlockColChecker = blockWidth;
         let blockColChecker = blockWidth;
@@ -90,8 +98,8 @@
         },
         clear: function () {
             let r = 241;
-            let g = 241;//Math.floor(Math.random() * 11) + 240;
-            let b = 241;//Math.floor(Math.random() * 11) + 240;
+            let g = 241;
+            let b = 241;
             this.context.fillStyle = 'rgba(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ', .4)';
             this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         }
@@ -137,90 +145,12 @@
 
     }
 
-    class Platform {
-        speedX = 0;
-        speedY = 0;
-        constructor(width, height, color, x, y, speed){
-            this.width = width;
-            this.height = height;
-            this.speed = speed;
-            this.x = x;
-            this.y = y;
-            this.color = color;
-        }
-        update() {
-            let gameContext = myGameArea.context;
-            gameContext.fillStyle = this.color;
-            gameContext.fillRect(this.x, this.y, this.width, this.height);
-        }
-        newPos() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-        }
-    }
-
-    class Ball{
-        isMovingRight = Math.random() < 0.5;
-        isMovingDown = true;
-        constructor(radius, color, speed, x, y) {
-            this.radius = radius;
-            this.x = x;
-            this.y = y;
-            this.speed = speed;
-            this.speedX = speed;
-            this.speedY = speed;
-            this.color = color;
-        }
-        update() {
-            let gameContext = myGameArea.context;
-            gameContext.beginPath();
-            gameContext.fillStyle = this.color;
-            gameContext.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-            gameContext.fill();
-            gameContext.closePath();
-        }
-        newPos() {
-            let gameContext = myGameArea.context;
-            if (this.isMovingRight) {
-                if (this.x + this.radius > gameContext.canvas.width) {
-                    this.isMovingRight = false;
-                }
-                this.x += this.speedX;
-            } else {
-                if (this.x < 0 + this.radius) {
-                    this.isMovingRight = true;
-                }
-                this.x -= this.speedX;
-            }
-            if (this.isMovingDown) {
-                this.y += this.speedY;
-            } else {
-                if (this.y - this.radius <= 0) {
-                    this.isMovingDown = true;
-                }
-                this.y -= this.speedY;
-            }
-        }
-    }
-
-    class Block{
-        isColWPlatform = false;
-        color = colorArr[Math.floor(Math.random() * 2)];
-
-        constructor(x, y, width, height) {
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-        }
-        update() {
-            let gameContext = myGameArea.context;
-            gameContext.fillStyle = this.color;
-            gameContext.fillRect(this.x, this.y, this.width, this.height);
-        }
-    }
-
     function updateGameArea() {
+        if(scoreB === 5 && ballsCount < 2){
+            balls.push(new Ball(ballRadius, "black", ballSpeed, ballX, ballY));
+            scoreB = 0;
+            ballsCount++;
+        }
         if(platformHorizontal.x + platformHorizontal.width > myGameArea.canvas.width){
             platformHorizontal.x = myGameArea.canvas.width - platformHorizontal.width;
         }
@@ -234,13 +164,10 @@
             platformVertical.y = 0;
         }
         document.getElementById("score").innerHTML = score.toString();
+
         let gameContext = myGameArea.context;
-        if(score === columns * rows){
-            isGameEnded = true;
-            window.alert("You won!\nYour score: " + score.toString());
-            score = 0;
-        }
         if (!isGamePaused) {
+            spawnBlock(poppedBlocks, blockArr, time);
             time += 20;
             document.getElementById("timer").innerHTML = Math.floor(time / 1000) + " s";
             if (isGameEnded) {
@@ -257,17 +184,19 @@
             if(platformVertical && platformHorizontal.x < platformVertical.x + platformVertical.width && platformVertical.y > gameContext.canvas.height - platformVertical.height){
                 platformHorizontal.x += platformHorizontal.speed + 1;
             }
-            ball.newPos();
-            if(platformVertical){
-                stopPlatform(platformVertical);
+            for(let i = 0; i < ballsCount; i++){
+                balls[i].newPos();
             }
-            stopPlatform(platformHorizontal);
+            if(platformVertical){
+                platformVertical.stopPlatform();
+            }
+            platformHorizontal.stopPlatform();
 
             if (myGameArea && myGameArea.key === 'ArrowLeft') {
-                moveLeft(platformHorizontal);
+                platformHorizontal.moveLeft();
             }
             if (myGameArea && myGameArea.key === 'ArrowRight') {
-                moveRight(platformHorizontal);
+                platformHorizontal.moveRight();
             }
             if(platformVertical){
                 if(myControlArea && myControlArea.touchY){
@@ -278,10 +207,10 @@
                     }
                 }
                 if (myGameArea && myGameArea.key === 'ArrowDown') {
-                    moveDown(platformVertical);
+                    platformVertical.moveDown();
                 }
                 if (myGameArea && myGameArea.key === 'ArrowUp') {
-                    moveUp(platformVertical);
+                    platformVertical.moveUp();
                 }
             }
             if(myControlArea && myControlArea.touchX){
@@ -295,32 +224,48 @@
                 platformVertical.update();
             }
             platformHorizontal.update();
-            ball.update();
+            for(let i = 0; i < ballsCount; i++){
+                balls[i].update();
+            }
             for(let i = 0; i < blockArr.length; i++){
                 blockArr[i].update();
                 if(blockArr[i].isColWPlatform && platformVertical){
                     platformBlockCollision(platformVertical, blockArr[i]);
                 }
-                if(bounceBlock(ball, blockArr[i])){
-                    score++;
-                    poppedBlocks.push(blockArr[i]);
-                    blockArr.splice(i, 1);
-                    i--;
-                    console.log(poppedBlocks);
+                for(let z = 0; z < ballsCount; z++){
+                    let flag;
+                    if(blockArr[i].color === "green"){
+                        flag = true;
+                    }
+                    if(bounceBlock(balls[z], blockArr[i])){
+                        score++;
+                        if(flag){
+                            scoreB++;
+                        }
+                        poppedBlocks.push(blockArr[i]);
+                        blockArr.splice(i, 1);
+                        i--;
+                    }
                 }
             }
-            bouncePlatform(ball, platformHorizontal);
-            if(platformVertical){
-                bouncePlatform(ball, platformVertical);
+            for(let i = 0; i < ballsCount; i++){
+                bouncePlatform(balls[i], platformHorizontal);
+                if(platformVertical){
+                    bouncePlatform(balls[i], platformVertical);
+                }
             }
-            if (ball.y + ball.radius >= gameContext.canvas.height) {
-                isGameEnded = true;
-                window.alert("You lost!\nYour score: " + score.toString());
-                score = 0;
-            }
-            if(time%5000 && (poppedBlocks.length < 25 && poppedBlocks.length > 5)){
-                blockArr.push(poppedBlocks[0]);
-                poppedBlocks.splice(0,1);
+            for(let i = 0; i < ballsCount; i++){
+                if(balls[i].position.y + balls[i].radius >= gameContext.canvas.height){
+                    balls.splice(i, 1);
+                    i--;
+                    ballsCount--;
+                    if(ballsCount === 0){
+                        isGameEnded = true;
+                        window.alert("You lost!\nYour score: " + score.toString());
+                        score = 0;
+                    }
+                    scoreB = 0;
+                }
             }
         }else{
             myGameArea.context.font = (myGameArea.context.canvas.width/20).toString() + "px Helvetica";
@@ -342,119 +287,26 @@
         return confirm("Click OK if you want to have a second, vertical platform!");
     }
 
-    function bouncePlatform(ball, platform) {
-        if (ball.isMovingDown) {
-            if (ball.y + ball.radius >= platform.y && ball.y - ball.radius <= platform.y + platform.height) {
-                if (ball.x < platform.x + platform.width && ball.x > platform.x && ball.y + ball.radius <= platform.y + ball.speed) {
-                    changeXSpeed(ball, platform);
-                    ball.isMovingDown = !ball.isMovingDown;
-                } else if (ball.x + ball.radius >= platform.x && ball.x - ball.radius <= platform.x + platform.width) {
-                    changeYSpeed(ball, platform);
-                    if (ball.isMovingRight) {
-                        ball.x = platform.x - ball.radius;
-                    } else {
-                        ball.x = platform.x + platform.width + ball.radius;
-                    }
-                    ball.speedX = platform.speed + 1;
-                    ball.isMovingRight = !ball.isMovingRight;
-                }
-            }
-        }else{
-            if (ball.y - ball.radius >= platform.y && ball.y + ball.radius <= platform.y + platform.height) { //to ok
-                if (ball.x <= platform.x + platform.width) {
-                    changeXSpeed(ball, platform);
-                    ball.y = platform.y + platform.height + ball.radius;
-                    ball.isMovingDown = !ball.isMovingDown;
-                } else if (ball.x + ball.radius >= platform.x && ball.x - ball.radius <= platform.x + platform.width) {
-                    changeYSpeed(ball, platform);
-                    ball.speed = platform.speed + 1;
-                    ball.isMovingRight = !ball.isMovingRight;
-                }
-            }
-        }
-    }
-
-    function bounceBlock(ball, block) {
-        if (!ball.isMovingDown) {
-            if (ball.y - ball.radius <= block.y + block.height) {
-                if (ball.x < block.x + block.width && ball.x > block.x && ball.y - ball.radius >= block.y - ball.speed - 1) {
-                    ball.isMovingDown = !ball.isMovingDown;
-                    return true;
-                }
-            }
-        }
-        if(ball.y >= block.y && ball.y <= block.y + block.height){
-            if((ball.x + ball.radius >= block.x && ball.x - ball.radius <= block.x + block.width)) {
-                ball.isMovingRight = !ball.isMovingRight;
-                return true;
-            }
-        }
-    }
-
-    function changeXSpeed(ball, line){
-        if(ball.x > line.x && ball.x < line.x + line.width * 10/100  || ball.x > line.x + line.width * 90/100 && ball.x < line.x + line.width){
-            ball.speedX = ballSpeed * 3;
-        }else if(ball.x >= line.x + line.width * 10/100 && ball.x <= line.x + line.width * 30/100  || ball.x >= line.x + line.width * 70/100 && ball.x <= line.x + line.width * 90/100){
-            ball.speedX = ballSpeed * 2;
-        }else if(ball.x > line.x + line.width * 30/100 && ball.x < line.x + line.width * 40/100  || ball.x > line.x + line.width * 60/100 && ball.x < line.x + line.width * 70/100){
-            ball.speedX = ballSpeed * 1.5;
-        }else{
-            ball.speedX = ballSpeed;
-        }
-    }
-
-    function changeYSpeed(ball, line){
-        if(ball.y > line.y && ball.y < line.y + line.width * 10/100  || ball.y > line.y + line.width * 90/100 && ball.y < line.y + line.width){
-            ball.speedY = ballSpeed * 3;
-        }else if(ball.y >= line.y + line.width * 10/100 && ball.y <= line.y + line.width * 30/100  || ball.y >= line.y + line.width * 70/100 && ball.y <= line.y + line.width * 90/100){
-            ball.speedY = ballSpeed * 2;
-        }else if(ball.y > line.y + line.width * 30/100 && ball.y < line.y + line.width * 40/100  || ball.y > line.y + line.width * 60/100 && ball.y < line.y + line.width * 70/100){
-            ball.speedY = ballSpeed * 1.5;
-        }else{
-            ball.speedY = ballSpeed;
-        }
-    }
-
-    function moveLeft(platform) {
-        if (platform && platform.x > 0) {
-            platform.speedX = -platform.speed;
-        }
-    }
-
-    function moveRight(platform) {
-        if (platform && platform.x + platform.width < myGameArea.canvas.width) {
-            platform.speedX = platform.speed;
-        }
-    }
-
-    function moveUp(platform) {
-        if (platform && platform.y > 0) {
-            platform.speedY = -platform.speed;
-        }
-    }
-
-    function moveDown(platform) {
-        if (platform && platform.y + platform.height < myGameArea.canvas.height) {
-            platform.speedY = platform.speed;
-        }
-    }
-
-    function platformBlockCollision(platform, block){
-        if(platform && block &&block.y + block.height >= platform.y) {
-            platform.y = block.y + block.height;
-        }
-    }
-
-    function stopPlatform(platform) {
-        if(platform){
-            platform.speedX = 0;
-            platform.speedY = 0;
-        }
-    }
-
     function pause() {
         if (!isGamePaused) {
             isGamePaused = true;
+        }
+    }
+
+    function spawnBlock(poppedBlocks, blockArr, time){
+        let sec = time / 5000; 
+        let cond = Math.random() > 0.75;
+        if(poppedBlocks.length >= 25){
+            cond = true;
+        }else if(poppedBlocks.length <= 5){
+            cond = false;
+        }
+        if(cond){
+            if(sec % 5){
+                blockArr.push(poppedBlocks[0]);
+                poppedBlocks.splice(0,1);
+                poppedBlocks.length--;
+            }
         }
     }
 
