@@ -1,9 +1,7 @@
-    let deviceWidth = window.screen.width;
-    let deviceHeight = window.screen.height;
-    let canvasWidth = Math.min(deviceHeight * 0.60, deviceWidth * 0.60);
+    let canvasWidth = 640;
     let controlCanvasWidth = canvasWidth/5;
-    let canvasHeight = canvasWidth;
-    let ballRadius = canvasWidth/100;
+    let canvasHeight = 480;
+    let ballRadius = 8;
     let score = 0;
     let scoreB = 0;
     let platformHorizontal;
@@ -16,19 +14,18 @@
     const columns = 10;
     const blockCount = rows * columns;
     let blockArr = new Array(blockCount);
-    const colorArr = ["red", "green"];
-    const blockWidth = (canvasWidth - 2) / columns - 1;
-    const blockHeight = canvasHeight * 0.04;
+    const blockWidth = 50;
+    const blockHeight = 20;
     let ballX = randomNum(canvasWidth * 0.2, canvasWidth * 0.8);
     let ballY = randomNum(blockHeight * rows + rows, canvasHeight * 0.5);
-    let platformHorX = canvasWidth / 2 - canvasWidth/5;
-    let platformHorY = canvasHeight - canvasHeight * 0.04;
-    let platformHorW = canvasWidth / 5;
-    let platformHorH = canvasHeight * 0.04;
+    let platformHorW = 128;
+    let platformHorH = 23;
+    let platformHorY = canvasHeight - platformHorH;
+    let platformHorX = canvasWidth / 2 - platformHorW / 2;
     let platformVerX = 0;
     let platformVerY = canvasHeight / 2;
-    let platformVerW = canvasHeight * 0.04;
-    let platformVerH = canvasWidth / 5;
+    let platformVerW = 23;
+    let platformVerH = 128;
     let time = 0;
     let poppedBlocks;
     let balls = [];
@@ -47,14 +44,16 @@
         platformVertical = null;
         poppedBlocks = null;
         poppedBlocks= [];
-        platformHorizontal = new Platform(platformHorW, platformHorH, "magenta", platformHorX, platformHorY, speed);
+        platformHorizontal = new Platform(platformHorW, platformHorH, "magenta",
+            platformHorX, platformHorY, speed, "images/platformh.png");
         if(askIfVertical()){
-            platformVertical = new Platform(platformVerW, platformVerH, "cyan", platformVerX, platformVerY, speed);
+            platformVertical = new Platform(platformVerW, platformVerH, "cyan",
+                platformVerX, platformVerY, speed, "images/platformv.png");
         }
         if(checkGameMode()){
             gameMode = "endless";
         }
-        balls.push(new Ball(ballRadius, "black", ballSpeed, ballX, ballY));
+        balls.push(new Ball(ballRadius, ballSpeed, ballX, ballY));
         if(ballsCount !== 1){
             ballsCount = 1;
         }
@@ -67,10 +66,30 @@
                 blockColChecker += blockWidth;
             } while (platformVertical.width > blockColChecker);
         }
-        for(let i = 1; i < rows * (blockHeight + 1); i += blockHeight + 1){
-            for(let j = 1; j < columns * (blockWidth + 1); j += blockWidth + 1){
-                blockArr[blockCounter++] = new Block(j, i, blockWidth, blockHeight);
-                if(j === 1){
+        // for(let i = 1; i < rows * (blockHeight + 1); i += blockHeight + 1){
+        //     for(let j = 1; j < columns * (blockWidth + 10); j += blockWidth + 1){
+        //         blockArr[blockCounter++] = new Block(j, i, blockWidth, blockHeight);
+        //         if(j === 1){
+        //             //nie sprawdza block.width < platform.width
+        //             blockArr[blockCounter - 1].isColWPlatform = true;
+        //         }
+        //     }
+        // }
+
+        for(let i = 12; i < 96; i += (12 + blockHeight)){
+            for(let j = 16; j <= canvasWidth - blockWidth; j += (12 + blockWidth)){
+                console.log(j);
+                if(blockCounter === 30){
+                    break;
+                }
+                if(Math.random() > 0.5){
+                    blockArr[blockCounter++] = new Block(j, i, blockWidth, blockHeight,
+                        "images/block.png", false);
+                }else{
+                    blockArr[blockCounter++] = new Block(j, i, blockWidth, blockHeight,
+                        "images/blockB.png", true);
+                }
+                if(j === 1) {
                     //nie sprawdza block.width < platform.width
                     blockArr[blockCounter - 1].isColWPlatform = true;
                 }
@@ -90,6 +109,11 @@
             this.canvas.x = 0;
             this.canvas.y = 0;
             this.context = this.canvas.getContext("2d");
+            this.bg = new Image(canvasWidth, canvasHeight);
+            this.bg.src = "images/bg.png"
+            this.bg.style.opacity = "0.9";
+            this.bg.style.filter  = 'alpha(opacity=90)';
+
             document.body.insertBefore(this.canvas, document.body.childNodes[0]);
             this.interval = setInterval(updateGameArea, 20);
 
@@ -101,11 +125,7 @@
             });
         },
         clear: function () {
-            let r = 241;
-            let g = 241;
-            let b = 241;
-            this.context.fillStyle = 'rgba(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ', .4)';
-            this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            this.context.drawImage(this.bg, 0, 0);
         }
     }
     myControlArea = {
@@ -151,15 +171,15 @@
 
     function updateGameArea() {
         if(scoreB === 5){
-            balls.push(new Ball(ballRadius, "black", ballSpeed, ballX, ballY));
+            balls.push(new Ball(ballRadius, ballSpeed, ballX, ballY));
             scoreB = 0;
             ballsCount++;
         }
-        for(let i = 0; i < ballsCount; i++){
-            for(let j = i + 1; j < i; j++){
-                balls[j].velocity = balls[i].ballBallCollision(balls[j]);
-            }
-        }
+        // for(let i = 0; i < ballsCount; i++){
+        //     for(let j = i + 1; j < i; j++){
+        //         balls[j].velocity = balls[i].ballBallCollision(balls[j]);
+        //     }
+        // }
         if(platformHorizontal.x + platformHorizontal.width > myGameArea.canvas.width){
             platformHorizontal.x = myGameArea.canvas.width - platformHorizontal.width;
         }
@@ -247,13 +267,9 @@
                     platformBlockCollision(platformVertical, blockArr[i]);
                 }
                 for(let z = 0; z < ballsCount; z++){
-                    let flag;
-                    if(blockArr[i].color === "green"){
-                        flag = true;
-                    }
                     if(bounceBlock(balls[z], blockArr[i])){
                         score++;
-                        if(flag){
+                        if(blockArr[i].isB){
                             scoreB++;
                         }
                         poppedBlocks.push(blockArr[i]);
@@ -312,7 +328,7 @@
     }
 
     function spawnBlock(poppedBlocks, blockArr, time){
-        let sec = time / 5000; 
+        let sec = time / 1000;
         let cond = Math.random() > 0.75;
         if(poppedBlocks.length >= 25){
             cond = true;
