@@ -1,18 +1,20 @@
 class Platform{
     speedX = 0;
     speedY = 0;
-    constructor(width, height, color, x, y, speed){
+    constructor(width, height, color, x, y, speed, textureSrc){
         this.width = width;
         this.height = height;
         this.speed = speed;
         this.x = x;
         this.y = y;
         this.color = color;
+        this.texture = new Image(128, 23);
+        this.texture.src = textureSrc;
     }
     update(){
         let gameContext = myGameArea.context;
-        gameContext.fillStyle = this.color;
-        gameContext.fillRect(this.x, this.y, this.width, this.height);
+        gameContext.beginPath();
+        gameContext.drawImage(this.texture, this.x, this.y, );
     }
     newPos(){
         this.x += this.speedX;
@@ -46,18 +48,18 @@ class Platform{
 
 class Ball{
     isMovingRight = Math.random() < 0.5;
-    constructor(radius, color, speed, x, y){
+    constructor(radius, speed, x, y){
         this.radius = radius;
         this.position = new Vector(x, y);
         this.velocity = new Vector(speed, speed);
-        this.color = color;
+        this.texture = new Image(16, 16);
+        this.texture.src = "images/ball.png";
     }
+
     update(){
         let gameContext = myGameArea.context;
         gameContext.beginPath();
-        gameContext.fillStyle = this.color;
-        gameContext.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
-        gameContext.fill();
+        gameContext.drawImage(this.texture, this.position.x, this.position.y)
         gameContext.closePath();
     }
     newPos(){
@@ -71,46 +73,29 @@ class Ball{
         }
         this.position = this.position.add(this.velocity);
     }
-    ballBallCollision(ball){
-        const distance =this.position.add(this.velocity)
-            .subtract(ball.position.add(ball.velocity))
-            .magnitude;
-
-        function collisionVector(b1, b2){
-            return b1.velocity.subtract(b1.position.subtract(b2.position).multiply(b1.velocity.subtract(b2.velocity).dotProduct(b1.position.subtract(b2.position))/ b1.position.subtract(b2.position).magnitude ** 2).multiply((2 * b2.sphereArea)  / (b1.sphereArea + b2.sphereArea)));
-        }
-
-        if (distance <= this.radius + ball.radius) {
-            const v1 = collisionVector(this, ball);
-            const v2 = collisionVector(ball, this);
-            this.velocity = v1;
-            return v2;
-        }
-    }
-    get sphereArea() {
-        return 4 * Math.PI * this.radius ** 2;
-    }
 }
 
 class Block{
     isColWPlatform = false;
-    color = colorArr[Math.floor(Math.random() * 2)];
-    constructor(x, y, width, height){
+    constructor(x, y, width, height, textureSrc, isB){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.blockTimer = 0;
+        this.texture = new Image(50, 20);
+        this.texture.src = textureSrc;
+        this.isB = isB;
     }
     update(){
         let gameContext = myGameArea.context;
-        gameContext.fillStyle = this.color;
-        gameContext.fillRect(this.x, this.y, this.width, this.height);
+        gameContext.beginPath();
+        gameContext.drawImage(this.texture, this.x, this.y);
         this.blockTimer++;
     }
     newPos(){
         console.log(this.blockTimer)
-        if(Math.floor(this.blockTimer ) === 500){
+        if(Math.floor(this.blockTimer) === 500){
             this.y += this.height;
             this.blockTimer = 0;
         }
