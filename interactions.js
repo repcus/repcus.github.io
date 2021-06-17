@@ -104,7 +104,15 @@ function changeYSpeed(ball, line){
 }
 
 function platformBlockCollision(platform, block){
-    if(platform && block && block.y + block.height >= platform.y) {
+    if(platform && block && block.y + block.height >= platform.y){
         platform.y = block.y + block.height;
+    }
+}
+
+function platformBonusCollision(platform, bonus){
+    if(bonus.y >= platform.y && bonus.x + 10 >= platform.x && bonus.x + 10 <= platform.x + platform.width){
+        bonus.isCaugth = true;
+    }else{
+        bonus.isCaugth =  false;
     }
 }
