@@ -6,7 +6,7 @@
     let scoreB = 0;
     let platformHorizontal;
     let platformVertical = null;
-    let speed = 4/500 * canvasHeight;
+    let speed = 4;
     let ballSpeed = speed - 2;
     let isGamePaused = true;
     let isGameEnded = false;
@@ -26,15 +26,29 @@
     let platformVerY = canvasHeight / 2;
     let platformVerW = 23;
     let platformVerH = 128;
+    let scoreMultiplier = 1;
     let time = 0;
     let poppedBlocks;
     let balls = [];
     let ballsCount = 1;
     let gameMode;
+    let bonusRand = ["x2", "x5", "long", "short", "change"];
+    let bonusWidth = 20;
+    let flyingBonuses = [];
+    let flyingBonusCounter = 0;
+    let activeBonuses = [];
+    let activeBonusesCounter = 0;
+    let areKeysReversed = false;
     function startGame() {
         gameMode = "falling";
         time = 0;
-        //źródło mobile checkera http://detectmobilebrowsers.com/
+        flyingBonuses = [];
+        flyingBonusCounter = 0;
+        activeBonuses = [];
+        activeBonusesCounter = 0;
+        areKeysReversed = false;
+
+        //mobile checker source http://detectmobilebrowsers.com/
         window.mobileCheck = function() {
             let check = false;
             (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series([46])0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br([ev])w|bumb|bw-([nu])|c55\/|capi|ccwa|cdm-|cell|chtm|cldc|cmd-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc-s|devi|dica|dmob|do([cp])o|ds(12|-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly([-_])|g1 u|g560|gene|gf-5|g-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd-([mpt])|hei-|hi(pt|ta)|hp( i|ip)|hs-c|ht(c([- _agpst])|tp)|hu(aw|tc)|i-(20|go|ma)|i230|iac([ \-\/])|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja([tv])a|jbro|jemu|jigs|kddi|keji|kgt([ \/])|klon|kpt |kwc-|kyo([ck])|le(no|xi)|lg( g|\/([klu])|50|54|-[a-w])|libw|lynx|m1-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t([- ov])|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30([02])|n50([025])|n7(0([01])|10)|ne(([cm])-|on|tf|wf|wg|wt)|nok([6i])|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan([adt])|pdxg|pg(13|-([1-8]|c))|phil|pire|pl(ay|uc)|pn-2|po(ck|rt|se)|prox|psio|pt-g|qa-a|qc(07|12|21|32|60|-[2-7]|i-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h-|oo|p-)|sdk\/|se(c([-01])|47|mc|nd|ri)|sgh-|shar|sie([-m])|sk-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h-|v-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl-|tdg-|tel([im])|tim-|t-mo|to(pl|sh)|ts(70|m-|m3|m5)|tx-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c([- ])|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas-|your|zeto|zte-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
@@ -60,12 +74,13 @@
         let blockCounter = 0;
         let tempBlockColChecker = blockWidth;
         let blockColChecker = blockWidth;
-        if(platformVertical) {
-            do {
+        if(platformVertical){
+            do{
                 tempBlockColChecker -= blockWidth;
                 blockColChecker += blockWidth;
-            } while (platformVertical.width > blockColChecker);
+            }while(platformVertical.width > blockColChecker);
         }
+
         // for(let i = 1; i < rows * (blockHeight + 1); i += blockHeight + 1){
         //     for(let j = 1; j < columns * (blockWidth + 10); j += blockWidth + 1){
         //         blockArr[blockCounter++] = new Block(j, i, blockWidth, blockHeight);
@@ -78,7 +93,6 @@
 
         for(let i = 12; i < 96; i += (12 + blockHeight)){
             for(let j = 16; j <= canvasWidth - blockWidth; j += (12 + blockWidth)){
-                console.log(j);
                 if(blockCounter === 30){
                     break;
                 }
@@ -166,7 +180,6 @@
             this.context.fillStyle = 'rgba(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ', 1)';
             this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         },
-
     }
 
     function updateGameArea() {
@@ -199,8 +212,8 @@
             if(gameMode === "endless"){
                 spawnBlock(poppedBlocks, blockArr, time);
             }
-            time += 20;
-            document.getElementById("timer").innerHTML = Math.floor(time / 1000) + " s";
+            time++;
+            document.getElementById("timer").innerHTML = Math.floor(time / 50) + " s";
             if (isGameEnded) {
                 isGamePaused = true;
                 isGameEnded = false;
@@ -212,11 +225,13 @@
                 platformVertical.newPos();
             }
             platformHorizontal.newPos();
-            if(platformVertical && platformHorizontal.x < platformVertical.x + platformVertical.width && platformVertical.y > gameContext.canvas.height - platformVertical.height){
+            if(platformVertical && platformHorizontal.x < platformVertical.x + platformVertical.width &&
+                platformVertical.y > gameContext.canvas.height - platformVertical.height){
                 platformHorizontal.x += platformHorizontal.speed + 1;
             }
             for(let i = 0; i < ballsCount; i++){
                 balls[i].newPos();
+                //ball collisions here
             }
             if(platformVertical){
                 platformVertical.stopPlatform();
@@ -224,10 +239,18 @@
             platformHorizontal.stopPlatform();
 
             if (myGameArea && myGameArea.key === 'ArrowLeft') {
-                platformHorizontal.moveLeft();
+                if(!areKeysReversed){
+                    platformHorizontal.moveLeft();
+                }else{
+                    platformHorizontal.moveRight();
+                }
             }
             if (myGameArea && myGameArea.key === 'ArrowRight') {
-                platformHorizontal.moveRight();
+                if(!areKeysReversed){
+                    platformHorizontal.moveRight();
+                }else{
+                    platformHorizontal.moveLeft();
+                }
             }
             if(platformVertical){
                 if(myControlArea && myControlArea.touchY){
@@ -266,15 +289,45 @@
                 if(blockArr[i].isColWPlatform && platformVertical){
                     platformBlockCollision(platformVertical, blockArr[i]);
                 }
-                for(let z = 0; z < ballsCount; z++){
-                    if(bounceBlock(balls[z], blockArr[i])){
-                        score++;
-                        if(blockArr[i].isB){
+                for(let z = 0; z < ballsCount; z++) {
+                    if (bounceBlock(balls[z], blockArr[i])) {
+                        score += scoreMultiplier;
+                        if (blockArr[i].isB) {
                             scoreB++;
+                        } else if (Math.random() < 0.2) {
+                            let tex = bonusRand[randomNum(0, 4)];
+                            let bonus = new Bonus(tex, blockArr[i].x + blockArr[i].width / 2 - bonusWidth / 2, blockArr[i].y, 0);
+                            flyingBonuses.push(bonus);
+                            flyingBonusCounter++;
                         }
                         poppedBlocks.push(blockArr[i]);
                         blockArr.splice(i, 1);
                         i--;
+                    }
+                }
+            }
+            for(let i = 0; i < flyingBonusCounter; i++){
+                flyingBonuses[i].update();
+                flyingBonuses[i].newPos();
+                platformBonusCollision(platformHorizontal, flyingBonuses[i]);
+                if(flyingBonuses[i].isCaugth){
+                    activeBonuses.push(new Bonus(flyingBonuses[i].bonusType, 0, 0, time));
+                    flyingBonuses.splice(i, 1);
+                    flyingBonusCounter--;
+                    activeBonusesCounter++;
+                    i--;
+                }
+            }
+            for(let i = 0; i < activeBonusesCounter; i++){
+                if(activeBonuses[i]){
+                    activeBonuses[i].activate();
+                    activeBonuses[i].update();
+                    if (!activeBonuses[i].isActive) {
+                        bonusReverse(activeBonuses[i]);
+                        activeBonuses.splice(i, 1);
+                        i--;
+                    }else{
+                        bonusEffect(activeBonuses[i]);
                     }
                 }
             }
@@ -298,9 +351,10 @@
                 }
             }
         }else{
-            myGameArea.context.font = (myGameArea.context.canvas.width / 20).toString() + "px Helvetica";
+            myGameArea.context.font = "50px Helvetica";
             myGameArea.context.textAlign = "center";
-            myGameArea.context.fillText("To play, press start!", gameContext.canvas.height/2, gameContext.canvas.height/2);
+            myGameArea.context.fillStyle = "#3df550";
+            myGameArea.context.fillText("To play, press start!", 320, 240);
         }
     }
 
@@ -309,8 +363,10 @@
         gameContext.clear();
     }
 
-    function randomNum(min, max) {
-        return Math.random() * (max - min + 1) + min;
+    function randomNum(min, max){
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     function askIfVertical(){
@@ -321,7 +377,7 @@
         return confirm("Click OK -> endless, cancel -> falling blocks");
     }
 
-    function pause() {
+    function pause(){
         if (!isGamePaused) {
             isGamePaused = true;
         }
@@ -347,5 +403,41 @@
     function start() {
         if (isGamePaused) {
             isGamePaused = false;
+        }
+    }
+
+    function bonusEffect(bonus){
+        switch(bonus.bonusType){
+            case "x2":
+                scoreMultiplier = 2;
+                break;
+            case "x5":
+                scoreMultiplier = 5;
+                break;
+            case "short":
+                platformHorizontal.width =  128  * 0.8;
+                break;
+            case "long":
+                platformHorizontal.width = 128 * 1.2;
+                break;
+            case "change":
+                areKeysReversed = true;
+                break;
+        }
+    }
+
+    function bonusReverse(bonus){
+        switch(bonus.bonusType){
+            case "x2":
+            case "x5":
+                scoreMultiplier = 1;
+                break;
+            case "short":
+            case "long":
+                platformHorizontal.width = 128;
+                break;
+            case "change":
+                areKeysReversed = false;
+                break;
         }
     }
