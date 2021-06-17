@@ -7,14 +7,13 @@ class Platform{
         this.speed = speed;
         this.x = x;
         this.y = y;
-        this.color = color;
-        this.texture = new Image(128, 23);
+        this.texture = new Image(this.width, this.height);
         this.texture.src = textureSrc;
     }
     update(){
         let gameContext = myGameArea.context;
         gameContext.beginPath();
-        gameContext.drawImage(this.texture, this.x, this.y, );
+        gameContext.drawImage(this.texture, this.x, this.y, this.width, this.height);
     }
     newPos(){
         this.x += this.speedX;
@@ -59,16 +58,18 @@ class Ball{
     update(){
         let gameContext = myGameArea.context;
         gameContext.beginPath();
-        gameContext.drawImage(this.texture, this.position.x, this.position.y)
+        gameContext.drawImage(this.texture, this.position.x - 8, this.position.y - 8)
         gameContext.closePath();
     }
     newPos(){
         let gameContext = myGameArea.context;
-        if (this.position.x + this.radius >= gameContext.canvas.width || this.position.x - this.radius <= 0){
+        if(this.velocity.x > 0 && this.position.x + this.radius >= gameContext.canvas.width){
+                this.velocity = new Vector(-this.velocity.x, this.velocity.y);
+        }
+        if(this.velocity.x < 0 && this.position.x - this.radius <= 0){
             this.velocity = new Vector(-this.velocity.x, this.velocity.y);
         }
-
-        if (this.position.y + this.radius <= 0){
+        if (this.position.y + this.radius + this.velocity.y <= 0){
             this.velocity = new Vector(this.velocity.x, -this.velocity.y);
         }
         this.position = this.position.add(this.velocity);
@@ -94,11 +95,55 @@ class Block{
         this.blockTimer++;
     }
     newPos(){
-        console.log(this.blockTimer)
         if(Math.floor(this.blockTimer) === 500){
             this.y += this.height;
             this.blockTimer = 0;
         }
+    }
+}
+
+class Bonus{
+    constructor(bonusType, originX, originY){
+        this.x = originX;
+        this.y = originY;
+        this.texture = new Image();
+        this.isCaugth = false;
+        this.isActive = false;
+        this.bonusTimer = 0;
+        this.bonusType = bonusType;
+        switch(this.bonusType){
+            case "x2":
+                this.texture.src = "images/x2.png";
+                break;
+            case "x5":
+                this.texture.src = "images/x5.png";
+                break;
+            case "short":
+                this.texture.src = "images/short.png";
+                break;
+            case "long":
+                this.texture.src = "images/long.png";
+                break;
+            case "change":
+                this.texture.src = "images/change.png";
+                break;
+            default:
+                break;
+        }
+    }
+    update(){
+        let gameContext = myGameArea.context;
+        if(!this.isCaugth && !this.isActive && this.y <= gameContext.canvas.height){
+            gameContext.beginPath();
+            gameContext.drawImage(this.texture, this.x, this.y);
+        }
+        this.bonusTimer++;
+    }
+    newPos(){
+        this.y++;
+    }
+    activate(){
+        this.isActive = this.bonusTimer < 500;
     }
 }
 
