@@ -37,8 +37,7 @@ function bounceBlock(ball, block) {
                 return true;
             }
         }
-    }
-    if(ball.position.y >= block.y && ball.position.y <= block.y + block.height){
+    }else if(ball.position.y >= block.y && ball.position.y <= block.y + block.height){
         if((ball.position.x + ball.radius >= block.x && ball.position.x - ball.radius <= block.x + block.width)) {
             ball.velocity.x = -ball.velocity.x;
             return true;
