@@ -69,7 +69,7 @@ class Ball{
         if(this.velocity.x < 0 && this.position.x - this.radius <= 0){
             this.velocity = new Vector(-this.velocity.x, this.velocity.y);
         }
-        if (this.position.y + this.radius + this.velocity.y <= 0){
+        if (this.position.y - this.radius + this.velocity.y <= 0){
             this.velocity = new Vector(this.velocity.x, -this.velocity.y);
         }
         this.position = this.position.add(this.velocity);
@@ -95,7 +95,7 @@ class Block{
         this.blockTimer++;
     }
     newPos(){
-        if(Math.floor(this.blockTimer) === 500){
+        if(Math.floor(this.blockTimer) === 1000){
             this.y += this.height;
             this.blockTimer = 0;
         }
