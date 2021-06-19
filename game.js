@@ -133,7 +133,7 @@
             });
         },
         clear: function () {
-            this.context.globalAlpha = 0.4;
+            //this.context.globalAlpha = 0.4;
             this.context.drawImage(this.bg, 0, 0);
             this.context.globalAlpha = 1;
         }
