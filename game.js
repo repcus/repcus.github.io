@@ -16,8 +16,8 @@
     let blockArr = new Array(blockCount);
     const blockWidth = 50;
     const blockHeight = 20;
-    let ballX = randomNum(canvasWidth * 0.2, canvasWidth * 0.8);
-    let ballY = randomNum(blockHeight * rows + rows, canvasHeight * 0.5);
+    let ballX = randomNum(40, 600);
+    let ballY = randomNum(160, 250);
     let platformHorW = 128;
     let platformHorH = 23;
     let platformHorY = canvasHeight - platformHorH;
@@ -39,6 +39,8 @@
     let activeBonuses = [];
     let activeBonusesCounter = 0;
     let areKeysReversed = false;
+    let isAI = false;
+    let result = [];
     function startGame() {
         gameMode = "falling";
         time = 0;
@@ -67,6 +69,10 @@
         if(checkGameMode()){
             gameMode = "endless";
         }
+        askForName();
+        if(checkAI()){
+            isAI = true;
+        }
         balls.push(new Ball(ballRadius, ballSpeed, ballX, ballY));
         if(ballsCount !== 1){
             ballsCount = 1;
@@ -91,7 +97,7 @@
         //     }
         // }
 
-        for(let i = 12; i < 96; i += blockHeight){
+        for(let i = 50; i < 146; i += blockHeight){
             for(let j = 70; j <= 560; j += blockWidth){
                 if(blockCounter === 30){
                     break;
@@ -180,6 +186,8 @@
 
     function updateGameArea() {
         if(scoreB === 5){
+            ballX = randomNum(40, 600);
+            ballY = randomNum(160, 250);
             balls.push(new Ball(ballRadius, ballSpeed, ballX, ballY));
             scoreB = 0;
             ballsCount++;
@@ -208,13 +216,13 @@
             if(gameMode === "endless"){
                 spawnBlock(poppedBlocks, blockArr, time);
             }
-            if(blockArr[0].y !== 12 && gameMode !== "endless"){
+            if(blockArr[0].y !== 50 && gameMode !== "endless"){
                 let temp = [];
                 for(let i = 70; i <= 560; i += blockWidth){
                     if(Math.random() > 0.5){
-                        temp.push(new Block(i, 12, blockWidth, blockHeight, "images/block.png", false));
+                        temp.push(new Block(i, 50, blockWidth, blockHeight, "images/block.png", false));
                     }else{
-                        temp.push(new Block(i, 12, blockWidth, blockHeight, "images/blockB.png", true));
+                        temp.push(new Block(i, 50, blockWidth, blockHeight, "images/blockB.png", true));
                     }
                 }
                 for(let i = 0; i < blockArr.length; i++){
@@ -228,6 +236,8 @@
             time++;
             document.getElementById("timer").innerHTML = Math.floor(time / 50) + " s";
             if (isGameEnded) {
+                result = {mode: gameMode, name: nick, score: score, seconds: (time / 50)};
+                addGameResults(db, result);
                 isGamePaused = true;
                 isGameEnded = false;
                 clearInterval(myGameArea.interval);
@@ -250,7 +260,13 @@
                 platformVertical.stopPlatform();
             }
             platformHorizontal.stopPlatform();
-
+            if(isAI){
+                if(balls[0].position.x < platformHorizontal.x + platformHorizontal.width / 2){
+                    platformHorizontal.moveLeft();
+                }else if(balls[0].position.x > platformHorizontal.x + platformHorizontal.width / 2){
+                    platformHorizontal.moveRight();
+                }
+            }
             if (myGameArea && myGameArea.key === 'ArrowLeft') {
                 if(!areKeysReversed){
                     platformHorizontal.moveLeft();
@@ -305,7 +321,7 @@
                 if(blockArr[i].isColWPlatform && platformVertical){
                     platformBlockCollision(platformVertical, blockArr[i]);
                 }
-                for(let z = 0; z < ballsCount; z++) {
+                for(let z = 0; z < balls.length; z++) {
                     if (bounceBlock(balls[z], blockArr[i])) {
                         score += scoreMultiplier;
                         if (blockArr[i].isB) {
@@ -316,9 +332,11 @@
                             flyingBonuses.push(bonus);
                             flyingBonusCounter++;
                         }
+                        console.log(blockArr[i], balls[z])
                         poppedBlocks.push(blockArr[i]);
                         blockArr.splice(i, 1);
                         i--;
+                        break;
                     }
                 }
             }
@@ -331,7 +349,6 @@
                     bonus.isActive = true;
                     bonus.isCaugth = true;
                     bonus.bonusTimer = 0;
-                    console.log(bonus)
                     activeBonuses.push(bonus);
                     flyingBonuses.splice(i, 1);
                     flyingBonusCounter--;
@@ -341,7 +358,6 @@
             }
             for(let i = 0; i < activeBonusesCounter; i++){
                 if(activeBonuses[i]){
-                    console.log(activeBonuses[i])
                     activeBonuses[i].update();
                     if (!activeBonuses[i].isActive) {
                         bonusReverse(activeBonuses[i]);
@@ -396,6 +412,10 @@
 
     function checkGameMode(){
         return confirm("Click OK -> endless, cancel -> falling blocks");
+    }
+
+    function checkAI(){
+        return confirm("Click OK to activate ARTIFICIAL INTELLIGENCE");
     }
 
     function pause(){
@@ -460,5 +480,12 @@
             case "change":
                 areKeysReversed = false;
                 break;
+        }
+    }
+
+    function askForName() {
+        nick = prompt("Please enter your name:", "nick");
+        if (nick == null || nick == "") {
+            nick = "nick not set";
         }
     }
