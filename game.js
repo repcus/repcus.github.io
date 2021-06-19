@@ -327,7 +327,12 @@
                 flyingBonuses[i].newPos();
                 platformBonusCollision(platformHorizontal, flyingBonuses[i]);
                 if(flyingBonuses[i].isCaugth){
-                    activeBonuses.push(new Bonus(flyingBonuses[i].bonusType, -20, -20, time));
+                    let bonus = new Bonus(flyingBonuses[i].bonusType, -20, -20, time);
+                    bonus.isActive = true;
+                    bonus.isCaugth = true;
+                    bonus.bonusTimer = 0;
+                    console.log(bonus)
+                    activeBonuses.push(bonus);
                     flyingBonuses.splice(i, 1);
                     flyingBonusCounter--;
                     activeBonusesCounter++;
@@ -336,6 +341,7 @@
             }
             for(let i = 0; i < activeBonusesCounter; i++){
                 if(activeBonuses[i]){
+                    console.log(activeBonuses[i])
                     activeBonuses[i].update();
                     if (!activeBonuses[i].isActive) {
                         bonusReverse(activeBonuses[i]);
