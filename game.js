@@ -91,8 +91,8 @@
         //     }
         // }
 
-        for(let i = 12; i < 96; i += (12 + blockHeight)){
-            for(let j = 16; j <= canvasWidth - blockWidth; j += (12 + blockWidth)){
+        for(let i = 12; i < 96; i += blockHeight){
+            for(let j = 70; j <= 560; j += blockWidth){
                 if(blockCounter === 30){
                     break;
                 }
@@ -102,10 +102,6 @@
                 }else{
                     blockArr[blockCounter++] = new Block(j, i, blockWidth, blockHeight,
                         "images/blockB.png", true);
-                }
-                if(j === 1) {
-                    //nie sprawdza block.width < platform.width
-                    blockArr[blockCounter - 1].isColWPlatform = true;
                 }
             }
         }
@@ -124,9 +120,7 @@
             this.canvas.y = 0;
             this.context = this.canvas.getContext("2d");
             this.bg = new Image(canvasWidth, canvasHeight);
-            this.bg.src = "images/bg.png"
-            this.bg.style.opacity = "0.9";
-            this.bg.style.filter  = 'alpha(opacity=90)';
+            this.bg.src = "images/bg.png";
 
             document.body.insertBefore(this.canvas, document.body.childNodes[0]);
             this.interval = setInterval(updateGameArea, 20);
@@ -139,7 +133,9 @@
             });
         },
         clear: function () {
+            this.context.globalAlpha = 0.4;
             this.context.drawImage(this.bg, 0, 0);
+            this.context.globalAlpha = 1;
         }
     }
     myControlArea = {
@@ -212,6 +208,23 @@
             if(gameMode === "endless"){
                 spawnBlock(poppedBlocks, blockArr, time);
             }
+            if(blockArr[0].y !== 12 && gameMode !== "endless"){
+                let temp = [];
+                for(let i = 70; i <= 560; i += blockWidth){
+                    if(Math.random() > 0.5){
+                        temp.push(new Block(i, 12, blockWidth, blockHeight, "images/block.png", false));
+                    }else{
+                        temp.push(new Block(i, 12, blockWidth, blockHeight, "images/blockB.png", true));
+                    }
+                }
+                for(let i = 0; i < blockArr.length; i++){
+                    temp.push(blockArr[i]);
+                }
+                blockArr = [];
+                for(let i = 0; i < temp.length; i++){
+                    blockArr.push(temp[i]);
+                }
+            }
             time++;
             document.getElementById("timer").innerHTML = Math.floor(time / 50) + " s";
             if (isGameEnded) {
@@ -283,6 +296,9 @@
             }
             for(let i = 0; i < blockArr.length; i++){
                 blockArr[i].update();
+                if(blockArr[i].y >= platformHorizontal.y){
+                    isGameEnded = true;
+                }
                 if(gameMode === "falling"){
                     blockArr[i].newPos(time);
                 }
@@ -311,7 +327,7 @@
                 flyingBonuses[i].newPos();
                 platformBonusCollision(platformHorizontal, flyingBonuses[i]);
                 if(flyingBonuses[i].isCaugth){
-                    activeBonuses.push(new Bonus(flyingBonuses[i].bonusType, 0, 0, time));
+                    activeBonuses.push(new Bonus(flyingBonuses[i].bonusType, -20, -20, time));
                     flyingBonuses.splice(i, 1);
                     flyingBonusCounter--;
                     activeBonusesCounter++;
@@ -320,7 +336,6 @@
             }
             for(let i = 0; i < activeBonusesCounter; i++){
                 if(activeBonuses[i]){
-                    activeBonuses[i].activate();
                     activeBonuses[i].update();
                     if (!activeBonuses[i].isActive) {
                         bonusReverse(activeBonuses[i]);
@@ -384,7 +399,7 @@
     }
 
     function spawnBlock(poppedBlocks, blockArr, time){
-        let sec = time / 1000;
+        let sec = time / 50;
         let cond = Math.random() > 0.75;
         if(poppedBlocks.length >= 25){
             cond = true;
@@ -393,8 +408,8 @@
         }
         if(cond){
             if(sec % 5){
-                blockArr.push(poppedBlocks[0]);
-                poppedBlocks.splice(0,1);
+                blockArr.push(poppedBlocks[randomNum(0, poppedBlocks.length - 1)]);
+                poppedBlocks.splice(randomNum(0, poppedBlocks.length - 1) ,1);
                 poppedBlocks.length--;
             }
         }
