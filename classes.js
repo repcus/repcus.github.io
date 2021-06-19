@@ -138,7 +138,11 @@ class Bonus{
             gameContext.drawImage(this.texture, this.x, this.y);
         }
         this.bonusTimer++;
-        this.isActive = this.bonusTimer < 500;
+        if(this.bonusTimer < 500 && this.isCaugth){
+            this.isActive = true;
+        }else{
+            this.isActive = false;
+        }
     }
     newPos(){
         this.y++;
