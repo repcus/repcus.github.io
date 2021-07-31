@@ -1,14 +1,11 @@
 html{
-
-scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
-
 
 .red{
     background-color: red;
 }
 video {
-    /* override other styles to make responsive */
     width: auto    !important;
     height: 100vh   !important;
   }
