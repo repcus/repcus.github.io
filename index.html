@@ -30,19 +30,11 @@
 			Wektoryzacja budynków
 			Wycieczki ?
 		-->
-		<ul id="myMenu" 
-			style="
-			    position: fixed;
-				bottom: 0px;
-				left: 0px;
-				height: 40px;
-				z-index: 70;
-				width: 100%;
-				padding: 0;
-				margin: 0;
-			">
-			<li data-menuanchor="firstPage" class="active"><a href="#home"><button type="button" class="btn btn-dark">&#8593;</button></a></li>
+
+		<ul id="menu">
+			<li data-menuanchor="home" class="active"><a href="#home">&#8593;</a></li>
 		</ul>
+
 		<div id="pagepiling">
 			<div data-anchor="home" class="section">
 				<div
@@ -55,7 +47,7 @@
 						background-position: center;
 					"
 				>
-					<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+					<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #e3f2fd2a;">
 						<div class="container-fluid">
 							<a class="navbar-brand" href="#home">SPU Studio</a>
 							<button
@@ -492,7 +484,7 @@
 					</div>
 				</div>
 			</div>
-			<div data-anchor="about-us" class="section" style="height: 100%; background-color: seashell;">
+			<div data-anchor="about-us" class="section" style="height: 100%; background-color: rgb(240, 240, 240);">
 				<div
 				style="
 					margin: auto;
@@ -511,6 +503,9 @@
 						>
 						<h1 class="display-4">O nas</h1>
 						<hr class="my-4"/>
+						<h2>
+							Tu też się coś wstawi.
+						</h2>
 					</div>
 				</div>
 			</div>
@@ -580,7 +575,7 @@
 					anchors: ['home', 'services', 'about-us', 'contact'],
 					loopBottom: true,
 					loopTop: false,
-					menu: 'myMenu',
+					menu: 'menu',
 				});
 			});
 		</script>
