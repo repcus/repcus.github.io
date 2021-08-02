@@ -9,3 +9,6 @@ video {
     width: auto    !important;
     height: 100vh   !important;
   }
+.navbar-nav > li{
+    padding-left:5vh;
+}

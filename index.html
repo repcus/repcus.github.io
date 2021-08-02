@@ -16,7 +16,7 @@
 
 <body>
   <div id="pagepiling">
-    <div class="section">
+    <div data-anchor="page1" class="section">
       <div style="height:100%; background-color:royalblue; height: 100%; color:seashell; background-image: url('/img/bg.png'); background-position: center;">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
           <div class="container-fluid">
@@ -32,25 +32,25 @@
                   <a class="nav-link active" aria-current="page" href="#">Strona główna</a>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                  <a class="nav-link dropdown-toggle" href="#page2" id="navbarDropdown" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Usługi
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Wektoryzacja budynków</a></li>
-                    <li><a class="dropdown-item" href="#">Tworzenie modeli 3D</a></li>
-                    <li><a class="dropdown-item" href="#">?</a></li>
+                    <li><a class="dropdown-item" href="#page2">Wektoryzacja budynków</a></li>
+                    <li><a class="dropdown-item" href="#page2">Tworzenie modeli 3D</a></li>
+                    <li><a class="dropdown-item" href="#page2">?</a></li>
                   </ul>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                  <a class="nav-link dropdown-toggle" href="#page3" id="navbarDropdown" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Realizacje
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Architektura</a></li>
-                    <li><a class="dropdown-item" href="#">Inwentaryzacja</a></li>
-                    <li><a class="dropdown-item" href="#">?</a></li>
+                    <li><a class="dropdown-item" href="#page3">Architektura</a></li>
+                    <li><a class="dropdown-item" href="#page3">Inwentaryzacja</a></li>
+                    <li><a class="dropdown-item" href="#page3">?</a></li>
                   </ul>
                 </li>
                 <li class="nav-item">
@@ -73,7 +73,7 @@
         </div>
       </div>
     </div>
-    <div class="section" style="height: 100%;">
+    <div data-anchor="page2" class="section" style="height: 100%;">
       <div style="height:100%; overflow: hidden;">
         <div style="height:100%; display: block; margin: auto; background-color: black;" id="carouselExampleIndicators"
           class="carousel slide carousel-fade" data-bs-ride="carousel" data-interval="false">
@@ -196,7 +196,7 @@
         </div>
       </div>
     </div>
-    <div class="section" style="height: 100%;">
+    <div id="page3" class="section" style="height: 100%;">
       <h1>Dalsze tekściki</h1>
     </div>
   </div>
