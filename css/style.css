@@ -1,59 +1,92 @@
-html{
+html {
     scroll-behavior: smooth;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+    font-size: 6em;
 }
 
 video {
-    width: auto    !important;
-    height: 100vh   !important;
-  }
-.navbar-nav > li{
-    padding-left:5vh;
+    height: 100vh;
+    width: 100%;
+    object-fit: contain;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
+
+img {
+    height: 100vh;
+    width: 100%;
+    object-fit: contain;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section {
+    color: #000807;
+    background-color: #f9f8f8;
+    height: 100%;
+}
+
+.navbar-nav>li {
+    padding-left: 5vh;
+}
+
 #menu li {
-	display:inline-block;
-	margin: 10px;
-	color: #000;
-	background:#fff;
-	background: rgba(255,255,255, 0.5);
-	-webkit-border-radius: 10px;
-            border-radius: 10px;
-    position: fixed;
-    bottom: 5px;
+    display: inline-block;
+    color: #000;
+    background: #fff;
+    background: rgba(255, 255, 255, 0.5);
+    position: relative;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    top: 5px;
     left: 5px;
 }
-#menu li.active{
-	background:#666;
-	background: rgba(0,0,0, 0.5);
-	color: #fff;
+
+#menu li.active {
+    background: #666;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
 }
-#menu li a{
-	text-decoration:none;
-	color: #000;
+
+#menu li a {
+    text-decoration: none;
+    color: #000;
 }
-#menu li.active a:hover{
-	color: #000;
+
+#menu li.active a:hover {
+    color: #000;
 }
-#menu li:hover{
-	background: rgba(255,255,255, 0.8);
+
+#menu li:hover {
+    background: rgba(255, 255, 255, 0.8);
 }
+
 #menu li a,
-#menu li.active a{
-	padding: 9px 18px;
-	display:block;
+#menu li.active a {
+    padding: 9px 18px;
+    display: block;
 }
-#menu li.active a{
-	color: #fff;
+
+#menu li.active a {
+    color: #fff;
 }
-#menu{
-	position:fixed;
-	top:0;
-	left:0;
-	height: 40px;
-	z-index: 70;
-	width: 100%;
-	padding: 0;
-	margin:0;
+
+#menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 40px;
+    z-index: 70;
+    width: 100%;
+    padding: 0;
+    margin: 0;
 }
+
 
 /* 
 $azure: rgba(0, 123, 255, 1);
