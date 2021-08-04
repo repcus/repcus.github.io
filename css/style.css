@@ -1,8 +1,54 @@
+html {
+    scroll-behavior: smooth;
+    font-family: 'Roboto', sans-serif;
+}
+
+.section:nth-child(n) {
+    background-color: #073a66;
+    color: #dfeaee;
+}
+
+.section:nth-child(2n) {
+    background-color: #dfeaee;
+    color: #073a66;
+}
+
+.carousel-caption {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    height: 100px;
+    width: 100px;
+    background-image: none;
+}
+
+#menu li.active {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+#menu li.active a:hover {
+    color: #000;
+}
+
+#menu li:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+#menu li a,
+#menu li.active a {
+    padding: 9px 18px;
+    display: block;
+}
+
+#menu li.active a {
+    color: #fff;
+}
+
 @media (max-width:375px) {
-    html {
-        scroll-behavior: smooth;
-        font-family: 'Roboto', sans-serif;
-    }
     h1 {
         font-size: 3em;
     }
@@ -26,14 +72,6 @@
         margin-left: auto;
         margin-right: auto;
     }
-    .section:nth-child(n) {
-        background-color: #073a66;
-        color: #dfeaee;
-    }
-    .section:nth-child(2n) {
-        background-color: #dfeaee;
-        color: #073a66;
-    }
     .home {
         margin: auto;
         width: 60vw;
@@ -51,10 +89,6 @@
         display: block;
         background-color: inherit;
     }
-    .carousel-caption {
-        color: white;
-        background-color: rgba(0, 0, 0, 0.3);
-    }
     .carousel-inner {
         height: inherit;
         background-color: #dfeaee;
@@ -71,12 +105,6 @@
     }
     .navbar-nav>li {
         padding-left: 5vh;
-    }
-    .carousel-control-prev-icon,
-    .carousel-control-next-icon {
-        height: 100px;
-        width: 100px;
-        background-image: none;
     }
     .carousel-control-next-icon:after {
         font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -96,28 +124,10 @@
         color: #000;
         width: fit-content;
     }
-    #menu li.active {
-        background: rgba(0, 0, 0, 0.5);
-        color: #fff;
-    }
     #menu li a {
         text-decoration: none;
         color: #000;
         font-size: 0.8em;
-    }
-    #menu li.active a:hover {
-        color: #000;
-    }
-    #menu li:hover {
-        background: rgba(255, 255, 255, 0.8);
-    }
-    #menu li a,
-    #menu li.active a {
-        padding: 9px 18px;
-        display: block;
-    }
-    #menu li.active a {
-        color: #fff;
     }
     #menu {
         position: fixed;
@@ -132,12 +142,8 @@
 }
 
 @media (min-width:376px) and (max-width: 450px) {
-    html {
-        scroll-behavior: smooth;
-        font-family: 'Roboto', sans-serif;
-    }
     h1 {
-        font-size: 3em;
+        font-size: .2em;
     }
     h2 {
         font-size: 1.5em;
@@ -159,14 +165,6 @@
         margin-left: auto;
         margin-right: auto;
     }
-    .section:nth-child(n) {
-        background-color: #073a66;
-        color: #dfeaee;
-    }
-    .section:nth-child(2n) {
-        background-color: #dfeaee;
-        color: #073a66;
-    }
     .home {
         margin: auto;
         width: 60vw;
@@ -184,10 +182,6 @@
         display: block;
         background-color: inherit;
     }
-    .carousel-caption {
-        color: white;
-        background-color: rgba(0, 0, 0, 0.3);
-    }
     .carousel-inner {
         height: inherit;
         background-color: #dfeaee;
@@ -204,12 +198,6 @@
     }
     .navbar-nav>li {
         padding-left: 5vh;
-    }
-    .carousel-control-prev-icon,
-    .carousel-control-next-icon {
-        height: 100px;
-        width: 100px;
-        background-image: none;
     }
     .carousel-control-next-icon:after {
         font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -229,27 +217,9 @@
         color: #000;
         width: fit-content;
     }
-    #menu li.active {
-        background: rgba(0, 0, 0, 0.5);
-        color: #fff;
-    }
     #menu li a {
         text-decoration: none;
         color: #000;
-    }
-    #menu li.active a:hover {
-        color: #000;
-    }
-    #menu li:hover {
-        background: rgba(255, 255, 255, 0.8);
-    }
-    #menu li a,
-    #menu li.active a {
-        padding: 9px 18px;
-        display: block;
-    }
-    #menu li.active a {
-        color: #fff;
     }
     #menu {
         position: fixed;
@@ -264,10 +234,6 @@
 }
 
 @media (min-width: 451px) {
-    html {
-        scroll-behavior: smooth;
-        font-family: 'Roboto', sans-serif;
-    }
     h1 {
         font-size: 6em;
     }
@@ -280,24 +246,12 @@
         margin-right: auto;
         padding-top: auto;
     }
-    .section:nth-child(n) {
-        background-color: #073a66;
-        color: #dfeaee;
-    }
-    .section:nth-child(2n) {
-        background-color: #dfeaee;
-        color: #073a66;
-    }
     .fh-carousel {
         width: 100vw;
         height: 100vh;
         object-fit: cover;
         display: block;
         background-color: inherit;
-    }
-    .carousel-caption {
-        color: white;
-        background-color: rgba(0, 0, 0, 0.3);
     }
     .carousel-inner {
         height: inherit;
@@ -357,27 +311,9 @@
         min-width: 1cm;
         max-width: 25vw;
     }
-    #menu li.active {
-        background: rgba(0, 0, 0, 0.5);
-        color: #fff;
-    }
     #menu li a {
         text-decoration: none;
         color: #000;
-    }
-    #menu li.active a:hover {
-        color: #000;
-    }
-    #menu li:hover {
-        background: rgba(255, 255, 255, 0.8);
-    }
-    #menu li a,
-    #menu li.active a {
-        padding: 9px 18px;
-        display: block;
-    }
-    #menu li.active a {
-        color: #fff;
     }
     #menu {
         position: fixed;
@@ -387,12 +323,3 @@
         padding: 5px;
     }
 }
-
-
-/* 
-$azure: rgba(0, 123, 255, 1);
-$alice-blue: rgba(233, 245, 248, 1);
-$alice-blue-2: rgba(238, 242, 248, 1);
-$pacific-blue: rgba(23, 162, 184, 1);
-$black-chocolate: rgba(31, 19, 0, 1); 
-*/
