@@ -11,12 +11,13 @@
     }
     img,
     video {
-        object-fit: fill;
+        width: 100%;
+        object-fit: contain;
         display: block;
         margin-left: auto;
         margin-right: auto;
         position: inherit;
-        background-color: #fff;
+        background-color: #dfeaee;
     }
     .section {
         color: #000807;
@@ -56,6 +57,7 @@
     }
     .carousel-inner {
         height: inherit;
+        background-color: #dfeaee;
     }
     .carousel-item {
         height: inherit;
