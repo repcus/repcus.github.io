@@ -127,16 +127,16 @@
     <script>
         var orientation = (screen.orientation || {}).type || screen.mozOrientation || screen.msOrientation;
         console.log(orientation);
-        // if (orientation === 0) {
-        //     console.log("That looks good.");
-        // } else if (orientation === 90) {
-        //     var _img = document.getElementById('pic1');
-        //     var _img2 = document.getElementById('pic2');
-        //     var newImg = new Image;
-        //     _img.src = './img/OBR.svg';
-        //     _img2.src = './img/OBR.svg';
-        //     console.log("wtf")
-        // }
+        if (orientation === 0) {
+            console.log("That looks good.");
+        } else if (orientation === 90) {
+            var _img = document.getElementById('pic1');
+            var _img2 = document.getElementById('pic2');
+            var newImg = new Image;
+            _img.src = './img/OBR.svg';
+            _img2.src = './img/OBR.svg';
+            console.log("wtf")
+        }
         if (window.innerHeight > window.innerWidth) {
             alert("Please use Landscape!");
         }
