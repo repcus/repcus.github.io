@@ -1,10 +1,13 @@
-@media (max-width: 600px) {
+@media (max-width: 750px) {
     html {
         scroll-behavior: smooth;
         font-family: 'Roboto', sans-serif;
     }
     h1 {
-        font-size: 6em;
+        font-size: 3em;
+    }
+    h2 {
+        font-size: 1.5em;
     }
     img,
     video {
@@ -13,7 +16,14 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
-        padding-top: 20vh;
+        position: inherit;
+    }
+    .section {
+        color: #000807;
+        background-color: #f9f8f8;
+        max-height: 100vh;
+        margin-left: auto;
+        margin-right: auto;
     }
     .section:nth-child(n) {
         background-color: #073a66;
@@ -22,6 +32,16 @@
     .section:nth-child(2n) {
         background-color: #dfeaee;
         color: #073a66;
+    }
+    .home {
+        margin: auto;
+        width: 60vw;
+        height: 60vh;
+        display: table;
+    }
+    .home-text {
+        display: table-cell;
+        vertical-align: top;
     }
     .fh-carousel {
         width: 100vw;
@@ -46,11 +66,6 @@
         height: 70vh;
         width: 80vw;
         overflow: hidden;
-    }
-    .section {
-        color: #000807;
-        background-color: #f9f8f8;
-        height: 100%;
     }
     .navbar-nav>li {
         padding-left: 5vh;
@@ -79,6 +94,8 @@
         color: #000;
         min-width: 1cm;
         min-height: 1cm;
+        padding-left: 5vw;
+        padding-right: 5vw;
     }
     #menu li.active {
         background: rgba(0, 0, 0, 0.5);
@@ -104,8 +121,9 @@
     }
     #menu {
         position: fixed;
+        display: inline-block;
         z-index: 70;
-        width: 100%;
+        width: 100vw;
         padding: 5px;
         bottom: 0px;
         left: 5px;
@@ -113,7 +131,7 @@
     }
 }
 
-@media (min-width: 601px) {
+@media (min-width: 751px) {
     html {
         scroll-behavior: smooth;
         font-family: 'Roboto', sans-serif;
@@ -163,7 +181,19 @@
         overflow: hidden;
     }
     .section {
+        display: inline-block;
         height: 100%;
+        margin: auto;
+    }
+    .home {
+        margin: auto;
+        width: 60vw;
+        height: 80vh;
+        display: table;
+    }
+    .home-text {
+        display: table-cell;
+        vertical-align: middle;
     }
     .navbar-nav>li {
         padding-left: 5vh;
