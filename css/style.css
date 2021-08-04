@@ -7,8 +7,8 @@ h1 {
     font-size: 6em;
 }
 
+img,
 video {
-    height: 100vh;
     width: 100%;
     object-fit: contain;
     display: block;
@@ -16,18 +16,43 @@ video {
     margin-right: auto;
 }
 
-img {
-    height: 100vh;
-    object-fit: contain;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.section:nth-child(n) {
+    background-color: #073a66;
+    color: #dfeaee;
 }
 
-.home {
-    height: 100%;
-    background-color: #4169e1;
-    color: #f9f8f8;
+.section:nth-child(2n) {
+    background-color: #dfeaee;
+    color: #073a66;
+}
+
+.fh-carousel {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    display: block;
+    background-color: inherit;
+}
+
+.carousel-caption {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.carousel-inner {
+    height: inherit;
+}
+
+.carousel-item {
+    height: inherit;
+}
+
+.carousel.slide {
+    display: block;
+    margin: auto;
+    height: 80vh;
+    width: 80vw;
+    overflow: hidden;
 }
 
 .section {
@@ -38,6 +63,27 @@ img {
 
 .navbar-nav>li {
     padding-left: 5vh;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    height: 100px;
+    width: 100px;
+    background-image: none;
+}
+
+.carousel-control-next-icon:after {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    content: '>';
+    font-size: 2em;
+    color: #073a66;
+}
+
+.carousel-control-prev-icon:after {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    content: '<';
+    font-size: 2em;
+    color: #073a66;
 }
 
 #menu li {
