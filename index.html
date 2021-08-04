@@ -4,35 +4,24 @@
 <head>
     <title>SPU Studio</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="js/auto-slider.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pagePiling.js/1.5.6/jquery.pagepiling.min.css" integrity="sha512-W9OWS8dgpQBw5Hb+tbMto1BMsHvYOXT/AFBGvASCPUJleaEdpOAN5lzgj9RrTbo3YrlR+m9xdOBccp8F+SFyQg==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
-    <script src="js/auto-slider.js"></script>
 </head>
 
 <body>
-    <!--
-			LandXML
-			Chmury pkt
-			Wektoryzacja budynków
-			Wycieczki ?
-		-->
-
     <ul id="menu">
-        <li data-menuanchor="home" class="active"><a href="#home">Strona główna</a></li>
-        <li data-menuanchor="home" class="active"><a href="#services">Usługi</a></li>
-        <li data-menuanchor="home" class="active"><a href="#about-us">O nas</a></li>
-        <li data-menuanchor="home" class="active"><a href="#contact">Kontakt</a></li>
+        <li data-menuanchor="home" class="active"><a href="#home"><strong>SPU STUDIO</strong></a></li>
+        <li data-menuanchor="services" class="active"><a href="#services">Usługi</a></li>
+        <li data-menuanchor="about-us" class="active"><a href="#about-us">O nas</a></li>
+        <li data-menuanchor="contact" class="active"><a href="#contact">Kontakt</a></li>
     </ul>
 
     <div id="pagepiling">
         <div data-anchor="home" class="section">
-            <div style="
-						height: 100%;
-						background-color: #4169e1;
-						color: #f9f8f8;
-					">
+            <div class="home">
                 <div style="
 							margin: auto;
 							width: 60vw;
@@ -50,11 +39,7 @@
         </div>
         <div data-anchor="services" class="section">
             <div class="carousel slide" data-ride="carousel" style="height: 100%; overflow: hidden">
-                <div style="
-							height: 100%;
-							display: block;
-							margin: auto;
-							background-color: black;
+                <div style="background-color: black;
 						" id="carouselIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel" data-interval="50000">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -62,17 +47,17 @@
                     </div>
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <a href="/pages/kosciol.html"><img class="img" alt="Responsive image" style="max-height: 100vh; margin: auto" src="./img/P1.PNG" /></a>
+                            <a href="/pages/kosciol.html"><img class="img" alt="Kościół Pszczyna" style="max-height: 100vh; margin: auto" src="./img/P1.PNG" /></a>
                             <div class="carousel-caption d-none d-md-block">
-                                <h5>Internetowy model 3D</h5>
-                                <p>Kościół Ewangelicki w Pszczynie</p>
+                                <h2>Internetowy model 3D</h2>
+                                <h5>Kościół Ewangelicki w Pszczynie</h5>
                             </div>
                         </div>
                         <div class="carousel-item">
                             <img class="img" alt="Responsive image" style="max-height: 100vh; margin: auto" src="./img/P2.PNG" />
                             <div class="carousel-caption d-none d-md-block">
-                                <h5>Coś innego</h5>
-                                <p>Coś</p>
+                                <h2>Coś innego</h2>
+                                <h5>Coś</h5>
                             </div>
                         </div>
                     </div>
