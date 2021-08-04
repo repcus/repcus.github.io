@@ -40,7 +40,7 @@
                     </div>
                     <div class="carousel-inner ">
                         <div class="carousel-item active ">
-                            <a href="/pages/kosciol.html "><img alt="Kościół Pszczyna " src="./img/P1.PNG " /></a>
+                            <a href="/pages/kosciol.html "><img id="pic1" alt="Kościół Pszczyna " src="./img/P1.PNG " /></a>
                             <div class="carousel-caption d-none d-md-block ">
                                 <h2>Internetowy model 3D</h2>
                                 <h5>Kościół Ewangelicki w Pszczynie</h5>
@@ -123,6 +123,23 @@
                 menu: 'menu',
             });
         });
+    </script>
+    <script>
+        var orientation = (screen.orientation || {}).type || screen.mozOrientation || screen.msOrientation;
+        console.log(orientation);
+        // if (orientation === 0) {
+        //     console.log("That looks good.");
+        // } else if (orientation === 90) {
+        //     var _img = document.getElementById('pic1');
+        //     var _img2 = document.getElementById('pic2');
+        //     var newImg = new Image;
+        //     _img.src = './img/OBR.svg';
+        //     _img2.src = './img/OBR.svg';
+        //     console.log("wtf")
+        // }
+        if (window.innerHeight > window.innerWidth) {
+            alert("Please use Landscape!");
+        }
     </script>
 </body>
 
