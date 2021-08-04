@@ -148,6 +148,7 @@
         margin-left: auto;
         margin-right: auto;
         position: inherit;
+        background-color: #dfeaee;
     }
     .section {
         color: #000807;
@@ -187,6 +188,7 @@
     }
     .carousel-inner {
         height: inherit;
+        background-color: #dfeaee;
     }
     .carousel-item {
         height: inherit;
@@ -300,6 +302,7 @@
     }
     .carousel-item {
         height: inherit;
+        background-color: #dfeaee;
     }
     .carousel.slide {
         display: block;

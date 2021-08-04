@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <div class="carousel-item ">
-                            <img alt="Responsive image " src="./img/P2.PNG " />
+                            <img alt="Responsive image " id="pic2" src="./img/P2.PNG " />
                             <div class="carousel-caption d-none d-md-block ">
                                 <h2>Coś innego</h2>
                                 <h5>Coś</h5>
@@ -114,6 +114,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js " integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM " crossorigin="anonymous "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pagePiling.js/1.5.6/jquery.pagepiling.min.js " integrity="sha512-FcXc9c211aHVJEHxoj2fNFeT8+wUESf/4mUDIR7c31ccLF3Y6m+n+Wsoq4dp2sCnEEDVmjhuXX6TfYNJO6AG6A==" crossorigin=" anonymous
                     " referrerpolicy="no-referrer "></script>
+    <script src="js/orient.js"></script>
     <script>
         $(document).ready(function() {
             $("#pagepiling ").pagepiling({
@@ -123,23 +124,6 @@
                 menu: 'menu',
             });
         });
-    </script>
-    <script>
-        var orientation = (screen.orientation || {}).type || screen.mozOrientation || screen.msOrientation;
-        console.log(orientation);
-        if (orientation === 0) {
-            console.log("That looks good.");
-        } else if (orientation === 90) {
-            var _img = document.getElementById('pic1');
-            var _img2 = document.getElementById('pic2');
-            var newImg = new Image;
-            _img.src = './img/OBR.svg';
-            _img2.src = './img/OBR.svg';
-            console.log("wtf")
-        }
-        if (window.innerHeight > window.innerWidth) {
-            alert("Please use Landscape!");
-        }
     </script>
 </body>
 
