@@ -143,7 +143,7 @@ html {
 
 @media (min-width:376px) and (max-width: 450px) {
     h1 {
-        font-size: .2em;
+        font-size: 2em;
     }
     h2 {
         font-size: 1.5em;
