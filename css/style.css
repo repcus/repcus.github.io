@@ -87,7 +87,7 @@ html {
         height: 100vh;
         object-fit: cover;
         display: block;
-        background-color: inherit;
+        background-color: #dfeaee;
     }
     .carousel-inner {
         height: inherit;
@@ -180,7 +180,7 @@ html {
         height: 100vh;
         object-fit: cover;
         display: block;
-        background-color: inherit;
+        background-color: #dfeaee;
     }
     .carousel-inner {
         height: inherit;
@@ -251,7 +251,7 @@ html {
         height: 100vh;
         object-fit: cover;
         display: block;
-        background-color: inherit;
+        background-color: #dfeaee;
     }
     .carousel-inner {
         height: inherit;
