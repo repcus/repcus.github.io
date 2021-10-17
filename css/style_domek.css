@@ -1,0 +1,54 @@
+body {
+    background: #6894cc;
+}
+
+.container,
+.wall,
+.bar,
+.door {
+    position: absolute;
+}
+
+.container {
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 200px;
+    height: 100px;
+}
+
+.wall {
+    width: 100px;
+    height: 70px;
+    background: #263f81;
+    border-radius: 0px 0px 5px 5px;
+    z-index: 3;
+}
+
+.roof {
+    width: 0px;
+    height: 0px;
+    border-left: 70px solid transparent;
+    border-right: 70px solid transparent;
+    border-bottom: 70px solid #263f81;
+    transform: translateX(-20px);
+    z-index: 1;
+}
+
+.bar {
+    width: 60px;
+    height: 6px;
+    transform: translate(20px, -2px);
+    border-radius: 5px 5px 5px 5px;
+    background: #edb759;
+}
+
+.door {
+    width: 32px;
+    height: 32px;
+    background: #edb759;
+    transform: translate(34px, 38px);
+    border-radius: 5px 5px 0px 0px;
+}
