@@ -1,0 +1,10 @@
+.button {
+    margin: 1vh;
+    background-color: green;
+    border: none;
+    color: white;
+    padding: 2vh 2vw;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
