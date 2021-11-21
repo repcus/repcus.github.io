@@ -26,14 +26,12 @@ function validate(){
             document.getElementById("valid").style.visibility = "visible"
         }
     }
-    workerValidator.terminate
 }
 
 function find(){
     workerFind = new Worker("/scripts/find_valid_pesels.js");
     let last = String(document.querySelector("#last").value)
     let good = checkLast(last)
-    workerFind.terminate()
 }
 
 function show(){
@@ -44,7 +42,6 @@ function show(){
     let good = checkDMY(day, month, year)
     let generated = []
     if(good){
-        console.log(day, month, year)
         workerShow.onmessage = receivedWorkerMessage
         workerShow.postMessage(
             {year : year,
@@ -57,7 +54,6 @@ function show(){
             makeTable(generated)
         }
     }
-    workerShow.terminate()
 }
 
 function makeTable(data){
