@@ -32,6 +32,17 @@ function find(){
     workerFind = new Worker("/scripts/find_valid_pesels.js");
     let last = String(document.querySelector("#last").value)
     let good = checkLast(last)
+    if(good){
+        workerFind.onmessage = receivedWorkerMessage
+        workerFind.postMessage({
+            last: last
+        })
+
+        function receivedWorkerMessage(event) {
+            generated = event.data;
+            makeTable(generated, "Possible dates")
+        }
+    }
 }
 
 function show(){
@@ -51,17 +62,17 @@ function show(){
     
         function receivedWorkerMessage(event) {
             generated = event.data;
-            makeTable(generated)
+            makeTable(generated, "Possible PESELs")
         }
     }
 }
 
-function makeTable(data){
+function makeTable(data, title){
     let parent = document.getElementById("toCalc")
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
-    parent.appendChild(document.createElement("p").appendChild(document.createTextNode("Possible PESELs")))
+    parent.appendChild(document.createElement("p").appendChild(document.createTextNode(title)))
     for(let val in data){
         let pesel = data[val].toString().replace(",", "").replace(",", "").replace(",", "").replace(",", "").replace(",", "").replace(",", "").replace(",", "").replace(",", "").replace(",", "").replace(",", "")
         let p = document.createElement("p")
