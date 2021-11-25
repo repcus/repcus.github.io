@@ -1,6 +1,5 @@
 onmessage = function show(event) {
     let last = event.data.last
-    console.log(last)
     let checkSum = parseInt(last.charAt(4))
     let partCheckSum = (7 * parseInt(last.charAt(0)) % 10) + (9 * parseInt(last.charAt(1)) % 10) +  (parseInt(last.charAt(2)) % 10) + (3 * parseInt(last.charAt(3)) % 10)
     let generatedDates = []
@@ -8,8 +7,7 @@ onmessage = function show(event) {
         //r1
         for(let w = 0; w < 10; w++){
             //r2
-            if((q == 1 && w < 8) || (q == 2) && (w >= 3)){
-                //console.log(q + "" + w)
+            if((q == 1 && w <= 7) || ((q == 2) && (w >= 3))){
                 continue;
             }
             for(let z = 0; z < 10; z++){
@@ -27,8 +25,14 @@ onmessage = function show(event) {
                                 //d1
                                 for(let n = 0; n < 10; n++){
                                     //d2
+                                    let fyear = q * 1000 +  w * 100 + z * 10 + x
+                                    if(fyear < 1930){
+                                        continue
+                                    }
+                                    if(fyear >= 2051){
+                                        break
+                                    }
                                     let leap = false
-                                    let fyear = 1000 * q + 100 * w * 10 * z + x
                                     if (fyear/400){
                                         leap = true
                                     }else if(fyear/100){
@@ -40,6 +44,9 @@ onmessage = function show(event) {
                                     }
                                     fmonth = c * 10 + v
                                     fday = 10 * b + n
+                                    if(fday == 0){
+                                        continue
+                                    }
                                     switch(fmonth){
                                         case 1:
                                         case 3:
@@ -48,6 +55,9 @@ onmessage = function show(event) {
                                         case 8:
                                         case 10:
                                         case 12:
+                                            if(fday > 31){
+                                                continue
+                                            }
                                             break
                                         case 2:
                                             if(leap){
@@ -69,21 +79,10 @@ onmessage = function show(event) {
                                         default:
                                             continue
                                     }
-                                    let m1 = c
-                                    if(w == 8){
-                                        m1 += 8
-                                    }else if(w == 0){
-                                        m1 += 2
-                                    }else if(w == 1){
-                                        m1 += 4
-                                    }else if(w = 2){
-                                        m1 += 6
-                                    }
-                                    let checkDate = z + (x * 3) % 10 + (m1 * 7) % 10 + (v * 9) % 10 + b + (n * 3) % 10
+                                    let checkDate = z + (x * 3) % 10 + (c * 7) % 10 + (v * 9) % 10 + b + (n * 3) % 10
                                     if(checkSum == (10 - (checkDate + partCheckSum) % 10)){
                                         let date = q.toString() + w.toString() + z.toString() + x.toString() + "." + c.toString() + v.toString() + "." + b.toString() + n.toString()
-                                        //generatedDates.push(date);
-                                        console.log(date)
+                                        generatedDates.push(date);
                                     }
                                 }
                             }
@@ -93,6 +92,5 @@ onmessage = function show(event) {
             }
         }
     }
-    console.log("kupa")
     postMessage(generatedDates)
 }

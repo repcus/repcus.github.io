@@ -10,8 +10,10 @@ function validate(){
     let day = String(document.querySelector("#day").value)
     let last = String(document.querySelector("#last").value)
     let good = checkDMY(day, month, year) && checkLast(last)
-
     if(good){
+        document.getElementById("validateButton").disabled = true
+        document.getElementById("showButton").disabled = true
+        document.getElementById("findButton").disabled = true
         workerValidator.onmessage = receivedWorkerMessage
         workerValidator.postMessage(
             {year : year,
@@ -21,18 +23,29 @@ function validate(){
         );
     
         function receivedWorkerMessage(event) {
+            let parent = document.getElementById("toCalc")
+            while (parent.firstChild) {
+                parent.removeChild(parent.firstChild);
+            }
             let valid = event.data;
             document.getElementById("valid").textContent = valid
             document.getElementById("valid").style.visibility = "visible"
+            document.getElementById("validateButton").disabled = false
+            document.getElementById("showButton").disabled = false
+            document.getElementById("findButton").disabled = false
         }
     }
 }
 
 function find(){
+    document.getElementById("valid").style.visibility = "hidden"
     workerFind = new Worker("/scripts/find_valid_pesels.js");
     let last = String(document.querySelector("#last").value)
     let good = checkLast(last)
     if(good){
+        document.getElementById("validateButton").disabled = true
+        document.getElementById("showButton").disabled = true
+        document.getElementById("findButton").disabled = true
         workerFind.onmessage = receivedWorkerMessage
         workerFind.postMessage({
             last: last
@@ -41,11 +54,15 @@ function find(){
         function receivedWorkerMessage(event) {
             generated = event.data;
             makeTable(generated, "Possible dates")
+            document.getElementById("validateButton").disabled = false
+            document.getElementById("showButton").disabled = false
+            document.getElementById("findButton").disabled = false
         }
     }
 }
 
 function show(){
+    document.getElementById("valid").style.visibility = "hidden"
     workerShow = new Worker("/scripts/show_all_pesels.js");
     let year = String(document.querySelector("#year").value)
     let month = String(document.querySelector("#month").value)
@@ -53,6 +70,9 @@ function show(){
     let good = checkDMY(day, month, year)
     let generated = []
     if(good){
+        document.getElementById("validateButton").disabled = true
+        document.getElementById("showButton").disabled = true
+        document.getElementById("findButton").disabled = true
         workerShow.onmessage = receivedWorkerMessage
         workerShow.postMessage(
             {year : year,
@@ -63,6 +83,9 @@ function show(){
         function receivedWorkerMessage(event) {
             generated = event.data;
             makeTable(generated, "Possible PESELs")
+            document.getElementById("validateButton").disabled = false
+            document.getElementById("showButton").disabled = false
+            document.getElementById("findButton").disabled = false
         }
     }
 }
@@ -144,6 +167,7 @@ function checkDMY(day, month, year){
 
 function checkLast(last){
     if(last.length != 5){
+        alert("You need to provide last 5 PESEL digits")
         return false
     }
     return true
