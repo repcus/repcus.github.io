@@ -14,7 +14,7 @@ container {
     text-align: center;
     margin-top: 0px;
     margin-left: calc(50vw - 210px);
-    overflow: auto;
+    overflow: visible;
     position: absolute;
 }
 
@@ -54,4 +54,5 @@ input{
 
 #valid {
     visibility: hidden;
+    padding-bottom: 2vh;
 }
