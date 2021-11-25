@@ -1,4 +1,4 @@
-.button {
+input {
     margin: 1vh;
     background-color: green;
     border: none;
@@ -7,4 +7,10 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
+    min-width: 250px;
+    font-size: 15px;
+}
+
+body{
+    margin-left: calc(50vw - 125px);
 }
