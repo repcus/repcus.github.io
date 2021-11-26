@@ -1,0 +1,133 @@
+body{
+    font-family: 'Raleway', sans-serif;
+    background-image: url("../resources/images/background.png");
+    margin: 0;
+}
+header{
+    font-size: 11vw;
+    color: cornsilk;
+    margin: auto;
+    margin-top: 15vh;
+    width: 50%;
+    height: auto;
+    text-align: center;
+    padding-bottom: 5vh;
+}
+.button {
+    background-color: rgb(0, 204, 255);
+    color: cornsilk;
+    border: none;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 5vw;
+    width: 24vw;
+    margin-left: 12vw;
+    margin-right: 12vw;
+    min-width: 150px;
+}
+.buttons{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100vw;
+    height: 20vh;
+    margin: 0 auto;
+}
+#author {
+    position: relative;
+    color: #0c3a66;
+    background-color: #dfe9ed;
+    height: 60vh;
+    width: 60vw;
+    margin: 5vh 20vw 20vh 20vw;
+    text-align: center;
+    font-size: 5vh;
+    overflow: hidden;
+}
+
+.hidden{
+    overflow: hidden;
+    padding: 0;
+    opacity: 0;
+    height: 0;
+}
+.close{
+    min-width: 25px;
+    min-height: 25px;
+    background-color: crimson;
+    position:absolute;
+    top:0;
+    right:-12vw;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    padding: 0;
+}
+
+#author.hidden{
+    position: fixed;
+    top: 0;
+}
+
+.spu{
+    margin-top: 2vh;
+    background-color: #0c3a66;
+    font-size: 2vh;
+    color: #dfe9ed;
+}
+
+.transition{
+    transition: all .5s;
+}
+
+.animate{
+    animation-name: prepare_to_game;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+}
+
+.wrong{
+    animation-name: wrong;
+    animation-duration: 1s;
+}
+.word{
+    display: grid;
+    text-align: center;
+    width: 60vw;
+    margin-left: 20vw;
+}
+
+.letter{
+    height: 80px;
+    width: 80px;
+    color: white;
+    background-color: white;
+    font-size: 30px;
+    padding: 10px;
+    padding-top: 35px;
+    text-transform: uppercase;
+}
+
+.input{
+    width: 30vw;
+    height: 30vh;
+    margin-left: 35vw;
+    text-align: center;
+}
+
+input{
+    height: 20vh;
+    width: 10vw;
+    font-size: 8vw;
+}
+
+@keyframes prepare_to_game{
+    100%    {font-size: 5vw;
+            transform: translateY(-10vh);}
+}
+
+@keyframes wrong{
+    100%    {background-color: crimson;}
+}
