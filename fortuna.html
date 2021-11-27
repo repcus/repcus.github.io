@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style_fortuna.css">
+    <script src="/scripts/fortuna.js"></script>
+</head>
+
+<body>
+    <header id="title" class="title transition">
+        KOŁO FORTUNY
+        </br>
+    </header>
+    <section class="word" id="word" style="display: none;">
+
+    </section>
+    <section class="input" id="input" style="display: none;">
+        <h1>PODAJ LITERĘ</h1>
+        <input type="text" id="litera" name="litera" minlength="1" maxlength="1">
+        <button id="success" style="margin: 0; margin-top: 2vh; width: fit-content; font-size: 80px;" onclick="check()" class="button">SPRAWDŹ</button>
+        <button id="fail" style="display:none; margin: 0; margin-top: 2vh; width: fit-content; font-size: 80px;" onclick="window.location.reload()" class="button">OD NOWA</button>
+        <div id="lifes" style="color: rgb(0, 204, 255); font-size: 80px; position: fixed; right: 10px; bottom: 10px; height: 80px;">
+        </div>
+        <span id="numlifes" style="display: none;">5</span>
+        <span id="numsuccess" style="display: none;">0</span>
+    </section>
+    <section id="buttons" class="buttons transition">
+        <div>
+            <button class="button" id="startButton" type="submit">START</button>
+        </div>
+        <div>
+            <button class="button" id="authorButton" type="submit">AUTOR</button>
+        </div>
+    </section>
+    <footer id="author" class="author hidden transition">
+        <button id="close" class="button close transition">x</button>
+        <div id="author_text">
+            </br>
+            AUTOR:</br>
+            Kacper Kornacki</br>
+            221022
+        </div>
+        <a class="button spu transition" id="spu1" href="https://spustudio.pl" target="_blank">MÓJ NAJNOWSZY PROJEKT</a>
+        <a class="button spu transition" id="spu2" href="https://spustudio.pl/pages/Pszczyna_kosciol_www/app/index.html#%2F" target="_blank">CZYM ZAJMUJĘ SIĘ NA CODZIEŃ</a>
+    </footer>
+</body>
+
+</html>

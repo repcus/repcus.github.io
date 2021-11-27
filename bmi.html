@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/style_bmi.css">
+    <script src="/scripts/bmi.js"></script>
+</head>
+
+<body>
+    <header>
+    </header>
+    <section>
+        <container>
+            <h1>KALKULATOR BMI</h1>
+            <div class="t_inputs">
+                <label for="wzrost">Wzrost:</label>
+                <input type="number" id="wzrost" name="wzrost" min="90" max="250"> cm
+                <label for="waga">Waga:</label>
+                <input type="number" id="waga" name="waga" min="30" max="250"> kg
+            </div>
+            <div>
+                <button class="button" id="BMIbutton" type="submit">OBLICZ</button>
+            </div>
+            <div id="BMItext">Twoje BMI to: <span id="BMI"></span>
+            </div>
+        </container>
+    </section>
+    <footer>
+    </footer>
+</body>
+
+</html>
