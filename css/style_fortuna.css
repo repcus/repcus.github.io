@@ -29,6 +29,7 @@ header{
     min-width: 150px;
 }
 .buttons{
+    font-family: 'Raleway', sans-serif;
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 100vw;
@@ -95,18 +96,19 @@ header{
 .word{
     display: grid;
     text-align: center;
-    width: 60vw;
-    margin-left: 20vw;
+    margin: auto;
+    justify-items: center;
+    align-items: center;
+    width: 80%
 }
 
 .letter{
-    height: 80px;
-    width: 80px;
+    min-height: 90px;
+    padding-top: 40px;
+    width: 80%;
     color: white;
     background-color: white;
     font-size: 30px;
-    padding: 10px;
-    padding-top: 35px;
     text-transform: uppercase;
 }
 
