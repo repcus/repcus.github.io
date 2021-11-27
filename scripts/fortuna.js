@@ -30,7 +30,8 @@ function start(){
     document.getElementById("input").style.display = "inline-block"
     document.getElementById("author_text").style.display = "none"
     document.getElementById("word").style.display = "grid"
-    document.getElementById("lifes").innerHTML = "\u2764".repeat(5)
+    document.getElementById("lifes").innerHTML = "Liczba żyć: " + document.getElementById('numlifes').innerHTML
+    document.getElementById("lifes").innerHTML = '0'
     let list = []
     loadJSON(function(response) {
         let words = JSON.parse(response);
@@ -54,10 +55,9 @@ function start(){
             single.appendChild(document.createTextNode(chosenWord[i]))
             parent.appendChild(single)
         }
-        let style = ("1fr ".repeat(len))
-        let element = document.getElementById("word")
-        element.style.gridTemplateColumns = style
-    });
+        let cols = ("1fr ".repeat(len))
+        document.getElementById("word").style.gridTemplateColumns = cols
+    })
 }
 
 function loadJSON(callback) {   
@@ -84,6 +84,7 @@ function loadJSON(callback) {
     }
     let jest = false
     let success = document.getElementById("numsuccess").innerHTML
+    console.log(success)
     for(let i = 0; i < word.length; i++){
         if(word[i] == letter){
             jest = true
@@ -100,7 +101,7 @@ function loadJSON(callback) {
         jest = false
     }
     if(lifes == 0){
-        document.getElementById("lifes").innerHTML = "\u2764".repeat(lifes) + "\u2620".repeat(5 - lifes)
+        document.getElementById("lifes").innerHTML = "Liczba żyć: 0"
         for(let i = 0; i < word.length; i++){
             document.getElementById("letter" + i).style.color = "crimson"
         }
@@ -111,13 +112,15 @@ function loadJSON(callback) {
     document.getElementById("numsuccess").innerHTML = success
     if(success == word.length){
         for(let i = 0; i < word.length; i++){
-            document.getElementById("letter" + i).style.color = "green"
+            document.getElementById("word").removeChild(document.getElementById("letter" + i))
         }
-        document.getElementById("fail").style.display = "inline-block"
-        document.getElementById("success").style.display = "none"
-        document.getElementById("numsuccess").style.display = "none"
         alert("Wygrana!")
+        document.getElementById('numlifes').innerHTML = lifes + 5
+        document.getElementById('numsuccess').value = 0
+        start()
     }
-    document.getElementById("lifes").innerHTML = "\u2764".repeat(lifes) + "\u2620".repeat(5 - lifes)
+    document.getElementById("lifes").innerHTML = "Liczba żyć: " + lifes
     document.getElementById('numlifes').innerHTML = lifes
+    document.getElementById('numsuccess').value = 0
+    document.getElementById('litera').value = ''
  }
