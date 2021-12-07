@@ -10,7 +10,7 @@ button {
 }
 
 body {
-    width: 30%;
+    width: 50%;
     margin: auto;
     background-color: rgba(218, 190, 222, 1);
     font-family: 'Lato', sans-serif;
@@ -31,4 +31,8 @@ header {
 
 .q-label {
     line-height: 1.6;
+}
+
+input {
+    text-align: center;
 }
