@@ -3,6 +3,6 @@ function go() {
         document.getElementById("questions").style.display = "block"
         document.getElementById("first").style.display = "none"
     } else {
-        alert("Przed wyruszeniem w drogę, należy zebrać drużynę!")
+        alert("Przed rozpoczęciem testu, należy podać dane!")
     }
 }
