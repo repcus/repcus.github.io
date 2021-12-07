@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="/formtry/style.css">
+    <link rel="stylesheet" href="/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
@@ -14,6 +14,15 @@
 
 <body>
     <form action="https://formspree.io/f/mrgjgzvo" method="POST">
+        <div class="visible" id="first">
+            <label>Imię i nazwisko nauczyciela:</label>
+            <input id="teacher" class="f-text" type="text" placeholder="wpisz" name="nauczyciel">
+            <br>
+            <label>Twoje imię i nazwisko:</label>
+            <input id="student" class="f-text" type="text" placeholder="wpisz" name="uczen">
+            <button type="button" class="f-text" onclick="go()">Zaczynajmy!</button>
+        </div>
+        <span id="questions" class="hidden">
         <div>
             <h2>
                 Pytanie 1
@@ -60,7 +69,9 @@
         </br>
         </br>
         <button type="submit">ZAPISZ!</button>
+    </span>
     </form>
+    <script src="first.js"></script>
 </body>
 
 </html>

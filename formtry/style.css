@@ -36,3 +36,22 @@ header {
 input {
     text-align: center;
 }
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+#first {
+    padding-top: 10%;
+    font-size: 2rem;
+    display: grid;
+    grid-template: 1fr 1fr;
+}
+
+.f-text {
+    font-size: 2rem;
+}
