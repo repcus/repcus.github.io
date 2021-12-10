@@ -1,0 +1,21 @@
+#executionCarousel{
+    width: 80%;
+    height: 80%;
+    margin: auto;
+}
+
+.row{
+    background-color: rgba(229,229,229,1);
+}
+button{
+    margin: auto;
+    background-color: green;
+    border: none;
+    color: white;
+    padding: 2%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+    font-size: 1em;
+}
