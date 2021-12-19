@@ -14,17 +14,43 @@ footer {
 
 .col-8 {
     text-align: center;
-    padding-top: 2%;
+    margin: 2%;
 }
 
-
-/* .col-6 {
-    border: solid;
+.machine{
+    padding-bottom: 5%;
 }
 
-.col-4 {
-    border: solid;
-} */
+.user{
+    padding-bottom: 5%;
+}
+
+.title{
+    width:100%; 
+    display: inline;
+}
+
+.description{
+    width:100%;
+    height:300px;
+    display: inline-block;
+}
+
+.argument{
+    width:10%; 
+    display: inline;
+}
+
+.row{
+    border: 3px solid RGB(107, 117, 125);
+    border-radius: 25px;
+    margin-bottom: 2%;
+    height:fit-content;
+}
+
+.noborder{
+    border: 0;
+}
 
 .left {
     text-align: right;

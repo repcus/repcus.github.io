@@ -6,6 +6,7 @@
 
 .row{
     background-color: rgba(229,229,229,1);
+    border: 5px black;
 }
 button{
     margin: auto;
