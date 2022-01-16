@@ -53,3 +53,7 @@ $argumentValue - number - additional argument value for machine operation (time 
 
 ## What else is required:
  - list of allowed operations with required arguments for certain operation
+
+## Setup:
+ - docker installation [windows](https://docs.docker.com/desktop/windows/install/) [ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+ - docker on windows may be grumpy, container may be reachable under vm ip, so on windows sometimes you need change localhost or 127.0.0.1 to 192.168.99.100
