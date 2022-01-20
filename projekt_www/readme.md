@@ -56,4 +56,17 @@ $argumentValue - number - additional argument value for machine operation (time 
 
 ## Setup:
  - docker installation [windows](https://docs.docker.com/desktop/windows/install/) [ubuntu](https://docs.docker.com/engine/install/ubuntu/)
- - docker on windows may be grumpy, container may be reachable under vm ip, so on windows sometimes you need change localhost or 127.0.0.1 to 192.168.99.100
+ - containers on linux are usually at `localhost`, on windows docker is creating vm to handle networking (and other stuff I guess), so you need to check and adjust ip to access conatiner in application, to check run `docker-machine ip`
+
+## Docker
+- in projekt_www directory run `docker-compose up -d` to build and run mongodb container
+- next step is to run setup script `node init-mongo.js` (workaround for docker volumes not beeing friendly on windows)
+- `docker-compose down` to tear down all docker compose containers with their current state (including db stored data)
+- you can connect to db as root user using command `docker exec -it mongodb mongo -u root -p password`
+- to connect as application user `docker exec -it mongodb mongo applicationDb -u user -p password`
+
+## MongoDB shell
+- JS synthax
+- after connecting `show dbs`, `use <db_name>`, `show collections`, `use <collection_name>`
+- [query data](https://docs.mongodb.com/manual/reference/method/db.collection.find/)
+- or use Mongo Compass
