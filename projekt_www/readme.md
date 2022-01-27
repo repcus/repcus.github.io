@@ -70,3 +70,7 @@ $argumentValue - number - additional argument value for machine operation (time 
 - after connecting `show dbs`, `use <db_name>`, `show collections`, `use <collection_name>`
 - [query data](https://docs.mongodb.com/manual/reference/method/db.collection.find/)
 - or use Mongo Compass
+
+## NodeJS
+-install express
+-install node-localstorage

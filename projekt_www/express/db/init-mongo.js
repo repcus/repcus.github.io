@@ -1,13 +1,13 @@
 const { MongoClient } = require('mongodb');
 
 //todo maybe extract it to properties file
-const containerIp = '192.168.99.100';
-const mongoConnectionString = `mongodb://${containerIp}:27017`;
-const userName = "user";
-const password = "password";
-const dbName = "applicationDb";
-const operationsCollectionName = "operations";
-const recipesCollectionName = "recipes";
+const containerIp = localStorage.getItem('containerIp');
+const mongoConnectionString = localStorage.getItem('mongoConnectionString');
+const userName = localStorage.getItem('userName');
+const password = localStorage.getItem('password');
+const dbName = localStorage.getItem('dbName');
+const operationsCollectionName = localStorage.getItem('operationsCollectionName');
+const recipesCollectionName = localStorage.getItem('recipesCollectionName');
 
 MongoClient.connect(mongoConnectionString, { 
   auth:{authdb:'admin', username:'root', password:'password'},
