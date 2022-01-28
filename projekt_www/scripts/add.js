@@ -264,27 +264,30 @@ function saveRecipe() {
     console.log(ingredients.length)
     for (i = 1; i < ingredients.length + 1; i++) {
         console.log(i)
-        jsonToBe += "\t\t{\n\t\t\t\"name\": " + document.getElementById("ingredient" + i).value +
-            ",\n\t\t\t\"weight\": " + document.getElementById("weight" + i).value +
+        jsonToBe += "\t\t{\n\t\t\t\"name\": \"" + document.getElementById("ingredient" + i).value +
+            "\",\n\t\t\t\"weight\": " + document.getElementById("weight" + i).value +
             "\n\t\t},\n"
     }
-    jsonToBe += "\t],\n"
+    jsonToBe = jsonToBe.slice(0, -2)
+    jsonToBe += "\n\t],\n"
         //human steps
     jsonToBe += "\t\"steps\": [\n"
     containers.forEach(container => {
         jsonToBe += "\t\t{\n\t\t\t\"number\": " +
-            container.id + ",\n\t\t\t\"title\": " + document.getElementById("title" + container.id).value +
-            ",\n\t\t\t\"description\": " + document.getElementById("description" + container.id).value + "\n\t\t},\n"
+            container.id + ",\n\t\t\t\"title\": \"" + document.getElementById("title" + container.id).value +
+            "\",\n\t\t\t\"description\": \"" + document.getElementById("description" + container.id).value + "\"\n\t\t},\n"
     })
+    jsonToBe = jsonToBe.slice(0, -2)
     jsonToBe += "\t],\n"
         //machine steps
-    jsonToBe += "\t\"stepsForMachine\": [\n"
+    jsonToBe += "\n\t\"stepsForMachine\": [\n"
     containers.forEach(container => {
-        jsonToBe += "\t\t{\n\t\t\t\"number\": " + container.id + ",\n\t\t\t\"operation\": " + document.getElementById("mode" + container.id).innerText + ",\n\t\t\t\"additionalArguments\": [\n\t\t\t\t{\n" +
-            "\t\t\t\t\t\"argumentType\": moc,\n\t\t\t\t\t\"argumentValue\": " + document.getElementById("power" + container.id).value + "\n\t\t\t\t},\n\t\t\t]\n" +
+        jsonToBe += "\t\t{\n\t\t\t\"number\": " + container.id + ",\n\t\t\t\"operation\": \"" + document.getElementById("mode" + container.id).innerText + "\",\n\t\t\t\"additionalArguments\": [\n\t\t\t\t{\n" +
+            "\t\t\t\t\t\"argumentType\": \"moc\",\n\t\t\t\t\t\"argumentValue\": " + document.getElementById("power" + container.id).value + "\n\t\t\t\t}\n\t\t\t]\n" +
             "\t\t},\n"
     })
-    jsonToBe += "\t]"
+    jsonToBe = jsonToBe.slice(0, -2)
+    jsonToBe += "\n\t]"
         //end
     jsonToBe += "\n}"
     download('test.json', jsonToBe);
