@@ -36,40 +36,54 @@
             </div>
         </div>
     </nav>
+
+    <div class="ingredients" id="ingredients">
+        <div class="row justify-content-center">
+            <div class="ingredient col-8">
+                <h5>
+                    Składniki
+                </h5>
+                składnik
+                <input id="ingredient1" class="form-control argument-wide" type="text" aria-label="default input example"> waga
+                <input id="weight1" class="form-control argument" type="text" aria-label="default input example"> g</br>
+                <button class="btn btn-outline-primary" onclick="addIngredient(1)">Dodaj składnik</button>
+            </div>
+        </div>
+    </div>
+
     <div class="timeline" id="timeline" style="height:auto">
-        <div class="container">
+        <div class="container" id="1">
             <div class="row justify-content-center">
                 <div class="col-8">
-                    <div class="machine" id="machinestep 1">
+                    <div class="machine" id="machinestep">
                         <h5>Instrukcja MaszynaKuchenna:</h5>
                         <div class="dropdown" style="display: inline;">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="mode" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-secondary dropdown-toggle" id="mode1" data-bs-toggle="dropdown" aria-expanded="false">
                                 tryb
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="mode">
-                                <li><a onclick="setMode(this)" id="arg1" class="dropdown-item">miksowanie</a></li>
-                                <li><a onclick="setMode(this)" id="arg2" class="dropdown-item">podgrzewanie</a></li>
+                            <ul class="dropdown-menu" aria-labelledby="mode1">
+                                <li><a onclick="setMode(this)" class="dropdown-item">miksowanie</a></li>
+                                <li><a onclick="setMode(this)" class="dropdown-item">podgrzewanie</a></li>
                             </ul>
                             moc
-                            <input class="form-control argument" type="text" aria-label="default input example"> 
-                            czas
-                            <input class="form-control argument" type="text" aria-label="default input example"> 
+                            <input id="power1" class="form-control argument" type="text" aria-label="default input example"> czas
+                            <input id="time1" class="form-control argument" type="text" aria-label="default input example">
                         </div>
                     </div>
-                    <div class="user" id="userstep 1">
+                    <div class="user" id="userstep">
                         <h5>Instrukcja dla użytkownika:</h5>
                         Tytuł:
-                        <input class="form-control title" type="text" aria-label="default input example">
-                        Opis:
-                        <input class="form-control description" type="text" aria-label="default input example">
+                        <input id="title1" class="form-control title" type="text" aria-label="default input example"> Opis:
+                        <input id="description1" class="form-control description" type="text" aria-label="default input example">
                     </div>
                 </div>
             </div>
             <div class="row justify-content-center noborder">
                 <div class="col-8">
-                    <a onclick="addStep()">
-                        <object data="resources/plus-circle.svg" width="30" height="30"> </object>
-                    </a>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-outline-primary" onclick="addStep(document.getElementById(&quot;1&quot;))">Dodaj krok dla MaszynaKuchenna</button>
+                        <button class="btn btn-outline-success" onclick="saveRecipe()">Zapisz przepis</button>
+                    </div>
                 </div>
             </div>
         </div>
