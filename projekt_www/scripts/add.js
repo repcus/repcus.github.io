@@ -278,7 +278,7 @@ function saveRecipe() {
             "\",\n\t\t\t\"description\": \"" + document.getElementById("description" + container.id).value + "\"\n\t\t},\n"
     })
     jsonToBe = jsonToBe.slice(0, -2)
-    jsonToBe += "\t],\n"
+    jsonToBe += "\n\t],\n"
         //machine steps
     jsonToBe += "\n\t\"stepsForMachine\": [\n"
     containers.forEach(container => {
