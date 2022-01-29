@@ -1,12 +1,13 @@
 const { MongoClient } = require('mongodb');
+var properties = require('./properties');
 
-const containerIp = localStorage.getItem('containerIp');
-const mongoConnectionString = localStorage.getItem('mongoConnectionString');
-const userName = localStorage.getItem('userName');
-const password = localStorage.getItem('password');
-const dbName = localStorage.getItem('dbName');
-const operationsCollectionName = localStorage.getItem('operationsCollectionName');
-const recipesCollectionName = localStorage.getItem('recipesCollectionName');
+const mongoConnectionString = properties.mongoConnectionString;
+const userName = properties.userName;
+const password = properties.password;
+const dbName = properties.dbName;
+const operationsCollectionName = properties.operationsCollectionName;
+const recipesCollectionName = properties.recipesCollectionName;
+
 
 /*
     Create new instance, call connect method, do what you need and call disconect

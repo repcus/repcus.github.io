@@ -88,11 +88,12 @@ var pattern =
 
 router.post('*index.html', function(req, res){
   // var jv = new JSONValidation.JSONValidation();
-   var temp = JSON.stringify(req.body)
+   var temp = req.body //JSON.parse(req.body)
   // var result = jv.validate(temp,pattern);
   // res.send(result);
   var db = new repository();
   try{
+    db.connect();
     db.saveRecipe(temp);
 
   }
