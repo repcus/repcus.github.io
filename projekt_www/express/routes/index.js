@@ -95,22 +95,30 @@ var pattern =
 };
 
 
-router.post('*index.html', function(req, res){
+router.post('*index.html', async (req, res) => {
   var jv = new JSONValidation.JSONValidation();
-  var body = req.body
-  var result = jv.validate(body, pattern);
-  console.log(result)
-  // // res.send(result);
-  // var db = new repository();
-  // try{
-  //   db.connect();
-  //   db.saveRecipe(temp);
+  var json = req.body
+  var validationResult = jv.validate(json, pattern);
+  console.log(validationResult)
 
-  // }
-  // catch(error){
-  //   res.send("false");
-  // }
-  res.send("Ok");
+  if(validationResult.ok == true) {
+    var db = new repository();
+    var saveResult = "Db error, not saved";
+    res.statusCode = 500 // backend or db error
 
+    try{
+      await db.connect();
+      saveResult = await db.saveRecipe(json);
+      res.statusCode = 201 // created
+      console.log(saveResult)
+    }
+    catch(error){
+      console.log(error)
+    }
+    res.end(saveResult);
+  } else {
+    res.end(`Wrong JSON: ${validationResult.stringify()}`)
+  }
  });
+
 module.exports = router;

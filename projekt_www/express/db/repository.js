@@ -49,10 +49,10 @@ class MongoDbRepository {
         this.#recipesCollection.insertOne(json, function(err, res) {
             if(err) {
                 console.log(err);
-                return;
+                return "Error, recipe not saved!";
             }
-            console.log(res);
             console.log(`Saved to ${recipesCollectionName}: ${json.toArray}`);
+            return "Saved recipe."
         });
     }
 
