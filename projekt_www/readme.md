@@ -71,6 +71,8 @@ $argumentValue - number - additional argument value for machine operation (time 
 - [query data](https://docs.mongodb.com/manual/reference/method/db.collection.find/)
 - or use Mongo Compass
 
+## Express
+- to run server open command prompt in  "projekt_www/express/bin/" by command: "node www"
+
 ## NodeJS
--install express
--install node-localstorage
+- install node-localstorage
