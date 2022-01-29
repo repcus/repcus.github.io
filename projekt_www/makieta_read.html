@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/style_car.css">
 </head>
 
-<body>
+<body onload="readJSON()">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="/projekt_www/index.html">
@@ -36,80 +36,13 @@
             </div>
         </div>
     </nav>
-    <div id="executionCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="slide-content">
-                    <div class="row">
-                        <div class="col-5">
-                            <img src="resources/pan.png">
-                        </div>
-                        <div class="col-7">
-                            <h1>Krok 1</h1>
-                            <ul>
-                                <li>
-                                    obierz ziemniaka
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <button type="button" data-bs-target="#executionCarousel" data-bs-slide="next">przycisk "dalej" dostępny po odliczaniu</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="slide-content">
-                    <div class="row">
-                        <div class="col-5">
-                            <img src="resources/pan.png">
-                        </div>
-                        <div class="col-7">
-                            <h1>Krok 2</h1>
-                            <ul>
-                                <li>
-                                    gotuj ziemniaka przez milion lat
-                                </li>
-                                <li>
-                                    timer odblokowujący przycisk dalej
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <button type="button" data-bs-target="#executionCarousel" data-bs-slide="next">przycisk "dalej" dostępny po odliczaniu</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="slide-content">
-                    <div class="row">
-                        <div class="col-5">
-                            <img src="resources/pan.png">
-                        </div>
-                        <div class="col-7">
-                            <h1>Krok 3</h1>
-                            <ul>
-                                <li>
-                                    zjedz ziemniaka
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <button type="button" data-bs-target="#executionCarousel" data-bs-slide="next">przycisk "dalej" dostępny po odliczaniu</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div id="executionCarousel" interval="false" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+        <div class="carousel-inner" id="car-inner">
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="/projekt_www/scripts/read.js"></script>
+
     <footer>
         <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
     </footer>
