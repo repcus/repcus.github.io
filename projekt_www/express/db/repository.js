@@ -46,13 +46,16 @@ class MongoDbRepository {
     }
     
     async saveRecipe(json) {
-        this.#recipesCollection.insertOne(json, function(err, res) {
-            if(err) {
-                console.log(err);
-                return "Error, recipe not saved!";
-            }
-            console.log(`Saved to ${recipesCollectionName}: ${json.toArray}`);
-            return "Saved recipe."
+        return new Promise((resolve, reject) => {
+            this.#recipesCollection.insertOne(json, 
+                function(err, res) {
+                if(err) {
+                    console.log(err);
+                    reject(new Error("Error, recipe not saved!"));
+                }
+                console.log(`Saved to ${recipesCollectionName}: ${json.toArray}`);
+                resolve("Saved recipe.");
+            });
         });
     }
 

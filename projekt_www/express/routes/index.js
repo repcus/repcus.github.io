@@ -103,21 +103,24 @@ router.post('*index.html', async (req, res) => {
 
   if(validationResult.ok == true) {
     var db = new repository();
-    var saveResult = "Db error, not saved";
-    res.statusCode = 500 // backend or db error
-
+    
     try{
       await db.connect();
-      saveResult = await db.saveRecipe(json);
-      res.statusCode = 201 // created
-      console.log(saveResult)
+      db.saveRecipe(json).then( (insertResult) => {
+          res.statusCode = 201; // created
+          res.end(insertResult);
+        }, (error) => {
+          console.log(error)
+          res.statusCode = 500;
+          res.end(error.toString());
+      });
+      
     }
     catch(error){
       console.log(error)
     }
-    res.end(saveResult);
   } else {
-    res.end(`Wrong JSON: ${validationResult.stringify()}`)
+    res.end(`Wrong JSON: ${JSON.stringify(validationResult)}`)
   }
  });
 
