@@ -76,3 +76,4 @@ $argumentValue - number - additional argument value for machine operation (time 
 
 ## NodeJS
 - install node-localstorage
+- install install json-validation
