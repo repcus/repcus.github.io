@@ -13,41 +13,38 @@ const recipesCollectionName = properties.recipesCollectionName;
     Create new instance, call connect method, do what you need and call disconect
 */
 class MongoDbRepository {
-    #client;
-    #db;
-    #recipesCollection;
-    #operationsCollection;
+    
 
     constructor() {}
 
     async connect() {
-        this.#client = new MongoClient(mongoConnectionString, { 
+        this.client = new MongoClient(mongoConnectionString, { 
             auth:{authdb: dbName, username:userName, password:password },
             authSource: dbName,
             useNewUrlParser: true });
 
-        this.#client.connect();
-        this.#db = this.#client.db(dbName);
-        this.#recipesCollection = this.#db.collection(recipesCollectionName);
-        this.#operationsCollection = this.#db.collection(operationsCollectionName);
+        this.client.connect();
+        this.db = this.client.db(dbName);
+        this.recipesCollection = this.db.collection(recipesCollectionName);
+        this.operationsCollection = this.db.collection(operationsCollectionName);
         console.log("Connected to mongodb");
     }
 
     async findAllRecipesNames() {
-        return await this.#recipesCollection.find({}, { "name": 1, _id: 1 }).toArray();
+        return await this.recipesCollection.find({}, { "name": 1, _id: 1 }).toArray();
     }
 
     async findRecipeByName(name) {
-        return await this.#recipesCollection.find({ "name": name }).toArray();
+        return await this.recipesCollection.find({ "name": name }).toArray();
     }
 
     async findAllOperations() {
-        return await this.#operationsCollection.find().toArray();
+        return await this.operationsCollection.find().toArray();
     }
     
     async saveRecipe(json) {
         return new Promise((resolve, reject) => {
-            this.#recipesCollection.insertOne(json, 
+            this.recipesCollection.insertOne(json, 
                 function(err, res) {
                 if(err) {
                     console.log(err);
@@ -60,7 +57,7 @@ class MongoDbRepository {
     }
 
     disconect() {
-        this.#client.close();
+        this.client.close();
         console.log('Disconected from mongo');
     }
 }
