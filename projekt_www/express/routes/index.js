@@ -61,45 +61,55 @@ router.get('/resources/pan_bzz.png',function(req,res,next){
 });
 var pattern = 
   {
-    "type": "array",
-          "minItems": 1,
-          "items":[
-              {"type":"string"},
-              {"type":"number"}],
-    "type": "array",
-          "minItems": 1,
-          "items":[
-              {"type":"number"},
-              {"type":"string"},
-              {"description":"string"}],
-    "type": "array",
-    "minItems": 1,
-    "items":[
-        {"type":"number"},
-        {"type":"string"},
-        {"additionalArguments":"array",
-            "maxItems":2,
-            "items":[
-                {"type":"string"},
-                {"type":"number"}]}
-            ]
+    "type": "object",
+    "properties": {
+      "ingredients": { "type": "array", "minItems": 1, "required": true,
+                      "items":
+                        { "type": "object", "properties":
+                          { "name": {"type":"string", "required": true}, "weight": {"type":"number", "required": true} } }
+                    },
+      "steps": { "type": "array", "minItems": 1, "required": true,
+                      "items":
+                        { "type": "object", "properties":
+                          { "number": {"type":"number", "required": true},
+                            "title": {"type":"string", "required": true},
+                            "description": {"type":"string", "required": true} }
+                        }
+                      
+                    },
+      "stepsForMachine": {"type": "array", "minItems": 1, "required": true,
+                      "items":
+                        { "type": "object", "properties":
+                          { "number": {"type":"number", "required": true}, "operation": {"type":"string", "required": true}, 
+                            "additionalArguments": {"type":"array", "maxItems": 2,
+                                "items":
+                                  { "type": "object", "properties": 
+                                    { "argumentType": {"type":"string", "required": true}, "argumentValue": {"type":"number", "required": true} } }
+                                
+                            }
+                          }
+                        }
+                      
+                    }
+    }
 };
 
 
 router.post('*index.html', function(req, res){
-  // var jv = new JSONValidation.JSONValidation();
-   var temp = req.body //JSON.parse(req.body)
-  // var result = jv.validate(temp,pattern);
-  // res.send(result);
-  var db = new repository();
-  try{
-    db.connect();
-    db.saveRecipe(temp);
+  var jv = new JSONValidation.JSONValidation();
+  var body = req.body
+  var result = jv.validate(body, pattern);
+  console.log(result)
+  // // res.send(result);
+  // var db = new repository();
+  // try{
+  //   db.connect();
+  //   db.saveRecipe(temp);
 
-  }
-  catch(error){
-    res.send("false");
-  }
+  // }
+  // catch(error){
+  //   res.send("false");
+  // }
   res.send("Ok");
 
  });
