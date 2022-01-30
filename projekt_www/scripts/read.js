@@ -42,8 +42,11 @@ async function getRecipeByName(name){
 
 function create(json) {
     execCar = document.getElementById("executionCarousel")
-
+    hide = document.getElementById("mode1")
+    hide.classList.add("hidden")
+    execCar.classList.remove("hidden")
     inner = document.getElementById("car-inner")
+
 
     for (i in Object.keys(json.stepsForMachine)) {
         modalwindow = document.createElement("div")
