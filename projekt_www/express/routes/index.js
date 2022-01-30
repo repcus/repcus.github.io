@@ -83,7 +83,28 @@ router.get('/projekt_www/makieta_read.html/names', async (req,res,next) => {
   }
 });
 
+router.get('/projekt_www/makieta_read.html:name', async (req,res,next) => {
+  
+  var db = new repository();
+  try{
+    await db.connect();
+    db.findRecipeByName(req.query.name).then( (insertResult) => {
+        res.statusCode = 200;
+        res.send( insertResult );
+        db.disconect();
+      }, (error) => {
+        console.log(error)
+        res.statusCode = 500;
+        res.end(error.toString());
+        db.disconect();
+    });
+    
+  }
+  catch(error){
+    console.log(error)
+  }
 
+});
 
 var pattern = 
   {
