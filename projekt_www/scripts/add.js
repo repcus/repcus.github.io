@@ -279,7 +279,7 @@ function saveRecipe() {
         //human steps
     jsonToBe += "\t\"steps\": [\n"
     containers.forEach(container => {
-        if(document.getElementById("power" + container.id).value = -1 === ""){
+        if(document.getElementById("power" + container.id).value === ""){
             document.getElementById("power" + container.id).value = -1
         }
         jsonToBe += "\t\t{\n\t\t\t\"number\": " +
