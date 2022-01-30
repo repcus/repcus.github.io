@@ -37,8 +37,34 @@ footer {
 }
 
 .argument{
-    width:10%; 
+    width: 15%;
     display: inline;
+}
+
+.argument-wide {
+    width: 50%;
+    display: inline;
+}
+
+.argument-title {
+    width: 100%;
+    display: inline;
+    text-align: center;
+}
+
+.ingredients{
+    padding-top: 10%;
+    margin: auto;
+    width: 60%;
+    height: auto;
+}
+
+.recipe-title{
+    padding-top: 10%;
+    margin: auto;
+    width: 60%;
+    height: auto;
+    text-align: center;
 }
 
 .row{
