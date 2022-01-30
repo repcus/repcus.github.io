@@ -1,18 +1,52 @@
 async function readJSON() {
-    const requestURL = 'https://raw.githubusercontent.com/repcus/repcus.github.io/main/projekt_www/resources/test.json';
-    const request = new Request(requestURL);
+    var req = new XMLHttpRequest()
+    req.open('GET', 'http://localhost:3000/users', false)
+    req.send(null)
+    if(req.status == 200)
+        createDropdown(req.responseText)
+    
+    // const requestURL = 'https://raw.githubusercontent.com/repcus/repcus.github.io/main/projekt_www/resources/test.json';
+    // const request = new Request(requestURL);
 
-    const response = await fetch(request);
-    const test = await response.text();
+    // const response = await fetch(request);
+    // const test = await response.text();
 
-    const testJson = JSON.parse(test);
-    create(testJson)
+    // const testJson = JSON.parse(test);
+    //create(testJson)
+}
+function createDropdown(names){
+    base = document.getElementById("dropdownAdd")
+    names = JSON.parse(names)
+    for(i = 0; i < names.length; i++){
+        li = document.createElement("li")
+        a = document.createElement("a")
+        a.setAttribute("onclick", "getRecipeByName(\"" + names[i].name + "\")")
+        a.classList.add("dropdown-item")
+        a.innerText = names[i].name
+        li.appendChild(a)
+        base.appendChild(li)
+    }
+}
+
+async function getRecipeByName(name){
+    console.log(name)
+    document.getElementById("executionCarousel").classList.remove("hidden")
+    var req = new XMLHttpRequest()
+    url = 'http://localhost:3000/makieta_read.html/' + name
+    req.open('GET', url, false)
+    req.send(null)
+    if(req.status == 200){
+        create(req.responseText)
+    }
 }
 
 function create(json) {
     execCar = document.getElementById("executionCarousel")
-
+    hide = document.getElementById("mode1")
+    hide.classList.add("hidden")
+    execCar.classList.remove("hidden")
     inner = document.getElementById("car-inner")
+
 
     for (i in Object.keys(json.stepsForMachine)) {
         modalwindow = document.createElement("div")

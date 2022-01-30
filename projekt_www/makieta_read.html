@@ -30,13 +30,17 @@
                         </ul>
                     </li>
                 </ul>
-                <span class="navbar-text">
-                    Zalogowany użytkownik: user1
-                </span>
             </div>
         </div>
     </nav>
-    <div id="executionCarousel" interval="false" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+    <div id="readRecipe" class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" id="mode1" data-bs-toggle="dropdown" aria-expanded="false">
+            Wybierz przepis
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="mode1" id="dropdownAdd">
+        </ul>
+    </div>
+    <div id="executionCarousel" interval="false" class="carousel slide hidden" data-bs-ride="carousel" data-bs-interval="false">
         <div class="carousel-inner" id="car-inner">
         </div>
     </div>

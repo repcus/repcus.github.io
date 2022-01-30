@@ -85,9 +85,10 @@ router.get('/projekt_www/makieta_read.html/names', async (req,res,next) => {
 
 router.get('*makieta_read.html/:name', async (req,res,next) => {
   var db = new repository();
+  console.log(decodeURIComponent(req.params.name));
   try{
     await db.connect();
-    db.findRecipeByName(req.params.name).then( (insertResult) => {
+    db.findRecipeByName(decodeURIComponent(req.params.name)).then( (insertResult) => {
         res.statusCode = 200;
         res.send( insertResult );
         db.disconect();
@@ -109,7 +110,7 @@ var pattern =
   {
     "type": "object",
     "properties": {
-      "name": { "type": "string", "required": true},
+      "name": { "type": "string", "required": true,"minLength": 2},
       "ingredients": { "type": "array", "minItems": 1, "required": true,
                       "items":
                         { "type": "object", "properties":
