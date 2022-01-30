@@ -11,11 +11,11 @@ router.get('/', function(req, res, next) {
 router.get('*index.html', function(req, res, next) {
   res.sendFile(path.join(__dirname+'../../../index.html'));
 });
-router.get('/projekt_www/makieta_write*',function(req, res, next) {
+router.get('/projekt_www/makieta_write.html',function(req, res, next) {
   
   res.sendFile(path.join(__dirname+'../../../makieta_write.html'));
 });
-router.get('/projekt_www/makieta_read*',function(req, res, next) {
+router.get('/projekt_www/makieta_read.html',function(req, res, next) {
   
   res.sendFile(path.join(__dirname+'../../../makieta_read.html'));
 });
@@ -59,6 +59,52 @@ router.get('*/resources/pan_bzz.png',function(req,res,next){
 
   res.sendFile(path.join(__dirname+'../../../resources/pan_bzz.png'));
 });
+
+router.get('/projekt_www/makieta_read.html/names', async (req,res,next) => {
+
+  var db = new repository();
+    
+  try{
+    await db.connect();
+    db.findAllRecipesNames().then( (insertResult) => {
+        res.statusCode = 200;
+        res.send(insertResult);
+        db.disconect();
+      }, (error) => {
+        console.log(error)
+        res.statusCode = 500;
+        res.send(error.toString());
+        db.disconect();
+    });
+    
+  }
+  catch(error){
+    console.log(error)
+  }
+});
+
+router.get('*makieta_read.html/:name', async (req,res,next) => {
+  var db = new repository();
+  try{
+    await db.connect();
+    db.findRecipeByName(req.params.name).then( (insertResult) => {
+        res.statusCode = 200;
+        res.send( insertResult );
+        db.disconect();
+      }, (error) => {
+        console.log(error)
+        res.statusCode = 500;
+        res.end(error.toString());
+        db.disconect();
+    });
+    
+  }
+  catch(error){
+    console.log(error)
+  }
+
+});
+
 var pattern = 
   {
     "type": "object",
