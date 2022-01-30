@@ -88,7 +88,7 @@ router.get('*makieta_read.html/:name', async (req,res,next) => {
   console.log(decodeURIComponent(req.params.name));
   try{
     await db.connect();
-    db.findRecipeByName('test').then( (insertResult) => {
+    db.findRecipeByName(decodeURIComponent(req.params.name)).then( (insertResult) => {
         res.statusCode = 200;
         res.send( insertResult );
         db.disconect();
