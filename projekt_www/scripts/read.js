@@ -1,6 +1,6 @@
 async function readJSON() {
     var req = new XMLHttpRequest()
-    req.open('GET', 'http://127.0.0.1:3000/users', false)
+    req.open('GET', 'http://localhost:3000/users', false)
     req.send(null)
     if(req.status == 200)
         createDropdown(req.responseText)
