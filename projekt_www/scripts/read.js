@@ -46,7 +46,8 @@ function create(json) {
     hide.classList.add("hidden")
     execCar.classList.remove("hidden")
     inner = document.getElementById("car-inner")
-
+    
+    json = JSON.parse(json)[0];
 
     for (i in Object.keys(json.stepsForMachine)) {
         modalwindow = document.createElement("div")
