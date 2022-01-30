@@ -77,7 +77,7 @@ function create(json) {
 
         nextBtn.setAttribute("id", "button" + Object.values(json.stepsForMachine)[i].number)
         if (Object.values(json.stepsForMachine)[i].operation != "tryb") {
-            nextBtn.innerText = "Kliknięcie spowoduje odczekanie " + Object.values(json.stepsForMachine)[i].additionalArguments[1].argumentValue + " sekund (przyspieszone stukrotnie)"
+            nextBtn.innerText = "Kliknięcie spowoduje odczekanie " + Object.values(json.stepsForMachine)[i].additionalArguments[1].argumentValue + " sekund (przyspieszone dziesięciokrotnie)"
             nextBtn.setAttribute("onclick", "waitSeconds(" + Object.values(json.stepsForMachine)[i].additionalArguments[1].argumentValue + ")")
         }
         col12.appendChild(nextBtn)
