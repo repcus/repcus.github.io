@@ -1,0 +1,109 @@
+{
+    "name": "Pyszne danie",
+    "ingredients": [{
+            "name": "Ziemniaki",
+            "weight": 1000
+        },
+        {
+            "name": "Lewa noga pandy małej",
+            "weight": 250
+        },
+        {
+            "name": "Filet z rekina wielorybiego",
+            "weight": 600000
+        }
+    ],
+    "steps": [{
+            "number": 1,
+            "title": "Miksowanie ziemniaków ze mięsem",
+            "description": "Wrzuć obrane ziemniaki i nogę pandy do urządzenia MaszynaKuchenna i zamknij pokrywkę."
+        },
+        {
+            "number": 2,
+            "title": "Gotowanie gulaszu",
+            "description": "Zmiksowane składniki pozostaw w urządzeniu MaszynaKuchenna i włącz podgrzewanie."
+        },
+        {
+            "number": 3,
+            "title": "Krojenie mięsa rekina",
+            "description": "Pokrój połowę (300 kg) mięsa rekina w drobną kostkę."
+        },
+        {
+            "number": 4,
+            "title": "Łączenie gulaszu z filetem",
+            "description": "Pokrojoną część filetu z rekina wrzuć do urządzenia MaszynaKuchenna."
+        },
+        {
+            "number": 5,
+            "title": "Serwowanie posiłku",
+            "description": "Pokrój resztę filetu w cienkie plasterki. Wylej gotowy gulasz na talerz i przystrój przygotowanymi plasterkami."
+        }
+    ],
+
+    "stepsForMachine": [{
+            "number": 1,
+            "operation": "miksowanie",
+            "additionalArguments": [{
+                    "argumentType": "moc",
+                    "argumentValue": 100
+                },
+                {
+                    "argumentType": "czas",
+                    "argumentValue": 250
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "operation": "podgrzewanie",
+            "additionalArguments": [{
+                    "argumentType": "moc",
+                    "argumentValue": 1000
+                },
+                {
+                    "argumentType": "czas",
+                    "argumentValue": 2500
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "operation": "tryb",
+            "additionalArguments": [{
+                    "argumentType": "moc",
+                    "argumentValue": -1
+                },
+                {
+                    "argumentType": "czas",
+                    "argumentValue": -1
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "operation": "podgrzewanie",
+            "additionalArguments": [{
+                    "argumentType": "moc",
+                    "argumentValue": 10
+                },
+                {
+                    "argumentType": "czas",
+                    "argumentValue": 132
+                }
+            ]
+        },
+        {
+            "number": 5,
+            "operation": "tryb",
+            "additionalArguments": [{
+                    "argumentType": "moc",
+                    "argumentValue": -1
+                },
+                {
+                    "argumentType": "czas",
+                    "argumentValue": -1
+                }
+            ]
+        }
+    ]
+}

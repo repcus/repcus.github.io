@@ -1,5 +1,6 @@
 const { MongoClient } = require('mongodb');
 var properties = require('./properties')
+var sampleRecipe = require('./sampleRecipe.json')
 
 const mongoConnectionString = properties.mongoConnectionString;
 const userName = properties.userName;
@@ -64,4 +65,5 @@ function createCollection(db, collectionName)  {
 
 async function populateDb(db) {
     await db.collection(operationsCollectionName).insertOne({operation: 'slice', machineOperation: 'slice'} );
+    await db.collection(recipesCollectionName).insertOne(sampleRecipe);
 }
