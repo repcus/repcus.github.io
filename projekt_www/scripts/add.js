@@ -318,6 +318,18 @@ function download(filename, data) {
     xhr.send(JSON.stringify(JSON.parse(data)))
     //koniec
     var pom = document.createElement('a');
+    xhr.onreadystatechange = function() { // Call a function when the state changes.
+        document.getElementById("successAlert").classList.remove("hidden");
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 201) {
+            document.getElementById("successAlert").innerHTML = "Zapisano przepis";
+        } else {
+            var resultError = "Nie zapisano przepisu: błąd serwisu";
+            if(xhr.response.toString().startsWith("Wrong JSON"))
+                resultError = "Nie zapisano przepisu: błędne pole";
+            document.getElementById("successAlert").innerHTML = resultError; 
+            console.log();
+        }
+    }
     pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
     pom.setAttribute('download', filename);
 
