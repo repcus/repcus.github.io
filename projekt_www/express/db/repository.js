@@ -31,7 +31,7 @@ class MongoDbRepository {
     }
 
     async findAllRecipesNames() {
-        return await this.recipesCollection.find({}, { "name": 1, _id: 1 }).toArray();
+        return await this.recipesCollection.find({name: { $exists: true, $not: {$size: 0} }}).project({name: 1, _id: 0}).toArray();
     }
 
     async findRecipeByName(name) {

@@ -63,6 +63,7 @@ var pattern =
   {
     "type": "object",
     "properties": {
+      "name": { "type": "string", "required": true},
       "ingredients": { "type": "array", "minItems": 1, "required": true,
                       "items":
                         { "type": "object", "properties":
@@ -109,10 +110,12 @@ router.post('*index.html', async (req, res) => {
       db.saveRecipe(json).then( (insertResult) => {
           res.statusCode = 201; // created
           res.end(insertResult);
+          db.disconect();
         }, (error) => {
           console.log(error)
           res.statusCode = 500;
           res.end(error.toString());
+          db.disconect();
       });
       
     }

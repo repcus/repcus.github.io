@@ -2,6 +2,7 @@
 Schema for recipe
 ```
 {
+    "name": $name
     "ingredients": [
         {
             "name": $name,
