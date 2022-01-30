@@ -1,4 +1,3 @@
-const https = require('https')
 function addIngredient(prev) {
     addedId = parseInt(prev) + 1
     ingredients = document.getElementById("ingredients")
