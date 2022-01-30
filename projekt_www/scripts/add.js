@@ -263,10 +263,13 @@ function saveRecipe() {
     jsonToBe += "\t\"name\": \""
     jsonToBe += document.getElementById("rec-title").value
         //ingredients
-    jsonToBe += "\",\n\t\"ingredients\": [\n"
+    jsonToBe += "\"\n\t\"ingredients\": [\n"
     console.log(ingredients.length)
     for (i = 1; i < ingredients.length + 1; i++) {
         console.log(i)
+        if(document.getElementById("weight" + i).value === undefined){
+            document.getElementById("weight" + i).value = -1
+        }
         jsonToBe += "\t\t{\n\t\t\t\"name\": \"" + document.getElementById("ingredient" + i).value +
             "\",\n\t\t\t\"weight\": " + document.getElementById("weight" + i).value +
             "\n\t\t},\n"
@@ -276,6 +279,9 @@ function saveRecipe() {
         //human steps
     jsonToBe += "\t\"steps\": [\n"
     containers.forEach(container => {
+        if(document.getElementById("power" + container.id).value = -1 === undefined){
+            document.getElementById("power" + container.id).value = -1
+        }
         jsonToBe += "\t\t{\n\t\t\t\"number\": " +
             container.id + ",\n\t\t\t\"title\": \"" + document.getElementById("title" + container.id).value +
             "\",\n\t\t\t\"description\": \"" + document.getElementById("description" + container.id).value + "\"\n\t\t},\n"
