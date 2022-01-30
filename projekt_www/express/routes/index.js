@@ -60,7 +60,6 @@ router.get('*/resources/pan_bzz.png',function(req,res,next){
   res.sendFile(path.join(__dirname+'../../../resources/pan_bzz.png'));
 });
 
-
 router.get('/projekt_www/makieta_read.html/names', async (req,res,next) => {
 
   var db = new repository();
@@ -83,6 +82,7 @@ router.get('/projekt_www/makieta_read.html/names', async (req,res,next) => {
     console.log(error)
   }
 });
+
 
 
 var pattern = 
