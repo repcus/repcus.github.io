@@ -83,12 +83,11 @@ router.get('/projekt_www/makieta_read.html/names', async (req,res,next) => {
   }
 });
 
-router.get('/projekt_www/makieta_read.html:name', async (req,res,next) => {
-  
+router.get('*makieta_read.html/:name', async (req,res,next) => {
   var db = new repository();
   try{
     await db.connect();
-    db.findRecipeByName(req.query.name).then( (insertResult) => {
+    db.findRecipeByName(req.params.name).then( (insertResult) => {
         res.statusCode = 200;
         res.send( insertResult );
         db.disconect();
