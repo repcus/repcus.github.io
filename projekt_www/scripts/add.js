@@ -267,7 +267,7 @@ function saveRecipe() {
     console.log(ingredients.length)
     for (i = 1; i < ingredients.length + 1; i++) {
         console.log(i)
-        if(document.getElementById("weight" + i).value === undefined){
+        if(document.getElementById("weight" + i).value === ""){
             document.getElementById("weight" + i).value = -1
         }
         var weight = 0;
