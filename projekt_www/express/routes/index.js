@@ -47,15 +47,15 @@ router.get('*read.js',function(req,res,next){
 
   res.sendFile(path.join(__dirname+'../../../scripts/read.js'));
 });
-router.get('/resources/pan.png',function(req,res,next){
+router.get('*/resources/pan.png',function(req,res,next){
 
   res.sendFile(path.join(__dirname+'../../../resources/pan.png'));
 });
-router.get('/resources/pan_fire.png',function(req,res,next){
+router.get('*/resources/pan_fire.png',function(req,res,next){
 
   res.sendFile(path.join(__dirname+'../../../resources/pan_fire.png'));
 });
-router.get('/resources/pan_bzz.png',function(req,res,next){
+router.get('*/resources/pan_bzz.png',function(req,res,next){
 
   res.sendFile(path.join(__dirname+'../../../resources/pan_bzz.png'));
 });
@@ -96,7 +96,7 @@ var pattern =
 };
 
 
-router.post('*index.html', async (req, res) => {
+router.post('*makieta_write.html*', async (req, res) => {
   var jv = new JSONValidation.JSONValidation();
   var json = req.body
   var validationResult = jv.validate(json, pattern);
