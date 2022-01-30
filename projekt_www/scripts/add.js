@@ -1,4 +1,3 @@
-const https = require('https')
 function addIngredient(prev) {
     addedId = parseInt(prev) + 1
     ingredients = document.getElementById("ingredients")
@@ -264,7 +263,7 @@ function saveRecipe() {
     jsonToBe += "\t\"name\": \""
     jsonToBe += document.getElementById("rec-title").value
         //ingredients
-    jsonToBe += "\"\n\t\"ingredients\": [\n"
+    jsonToBe += "\",\n\t\"ingredients\": [\n"
     console.log(ingredients.length)
     for (i = 1; i < ingredients.length + 1; i++) {
         console.log(i)
@@ -302,7 +301,7 @@ function download(filename, data) {
     xhr = new XMLHttpRequest()
     xhr.open("POST", document.baseURI, true)
     xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.send(data)
+    xhr.send(JSON.stringify(JSON.parse(data)))
     //koniec
     var pom = document.createElement('a');
     pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
