@@ -170,6 +170,7 @@ router.post('*makieta_write.html*', async (req, res) => {
       console.log(error)
     }
   } else {
+    res.statusCode = 400;
     res.end(`Wrong JSON: ${JSON.stringify(validationResult)}`)
   }
  });
