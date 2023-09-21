@@ -1,4 +1,4 @@
-filename		timestamp			pano_pos_x	pano_pos_y	pano_pos_z	pano_ori_w	pano_ori_x	pano_ori_y	pano_ori_z
+filename	timestamp	pano_pos_x	pano_pos_y	pano_pos_z	pano_ori_w	pano_ori_x	pano_ori_y	pano_ori_z
 "./00000-pano.jpg"	1679390692.278105	1.557392	-2.721774	0.992868	0.933938	0.021353	0.005970	-0.356747
 "./00001-pano.jpg"	1679390712.601588	3.186601	1.207998	0.998925	0.943020	0.011825	0.021080	-0.331858
 "./00002-pano.jpg"	1679390729.751189	2.201383	2.839140	1.000682	0.448556	-0.042992	0.017169	0.892555
